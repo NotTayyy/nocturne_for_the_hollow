@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://btjeex4giaghl"]
+
+[ext_resource type="Texture2D" uid="uid://b3eatgjkptdge" path="res://Levels/Test Level/Test_BG.jpg" id="1_px5jc"]
+[ext_resource type="PackedScene" uid="uid://bxrdw0dnmitbh" path="res://Systems/Game_Manager.tscn" id="2_px5jc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_px5jc"]
+size = Vector2(2838, 159)
+
+[node name="Test Level" type="Node2D"]
+
+[node name="BG" type="Sprite2D" parent="."]
+z_index = -15
+z_as_relative = false
+position = Vector2(-6, 16)
+scale = Vector2(3.74521, 3.38987)
+texture = ExtResource("1_px5jc")
+
+[node name="Stage" type="StaticBody2D" parent="."]
+z_index = 10
+z_as_relative = false
+position = Vector2(-4, 434)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stage"]
+position = Vector2(-2, 84)
+shape = SubResource("RectangleShape2D_px5jc")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Stage"]
+position = Vector2(1430, -525)
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_px5jc")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Stage"]
+position = Vector2(-1434, -548)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_px5jc")
+
+[node name="GameManager" parent="." instance=ExtResource("2_px5jc")]

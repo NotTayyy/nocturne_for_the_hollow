@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://cgwrwt6tm5svo"]
+
+[ext_resource type="PackedScene" uid="uid://dg33asvi0qgfr" path="res://Characters/Tmp_Byakuya/Char_Byakuya.tscn" id="1_68hxm"]
+[ext_resource type="Script" uid="uid://cpq072udwjvmf" path="res://Characters/BaseFighter/CharacterData.gd" id="1_kowt0"]
+
+[resource]
+script = ExtResource("1_kowt0")
+character_name = "Byakuya"
+fighter_scene = ExtResource("1_68hxm")
+max_health = 13000
+negative_debuff_Res = 3
+toughness = 3
+guts = 2
+dashType = 1
+fwd_walk_speed = 200.0
+bwd_walk_speed = 140.0
+forward_dash = 0
+run_int = 300.0
+run_acc = 150
+run_max = 450.0
+backdash = 30
+backdash_Invuln = 10
+prejump = 4
+jump_velocity = -1350.0
+fwd_jump_velocity = -800.0
+bwd_jump_velocity = -800.0
+super_jump_velocity = -1650.0
+fwd_super_jump_velocity = -1650.0
+bwd_super_jump_velocity = -1650.0
+gravity = 3500.0
+air_Jumps = 1
+air_Dashes = 1
+metadata/_custom_type_script = "uid://cpq072udwjvmf"

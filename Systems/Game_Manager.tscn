@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxrdw0dnmitbh"]
+
+[ext_resource type="Script" uid="uid://ddsi1x1w1leub" path="res://Systems/game_manager.gd" id="1_thld5"]
+[ext_resource type="PackedScene" uid="uid://4uaa400vgmam" path="res://Systems/Camera_Manager.tscn" id="2_h53vq"]
+[ext_resource type="PackedScene" uid="uid://dsja1ovopp7m3" path="res://Systems/Audio_Manager.tscn" id="3_gfaia"]
+[ext_resource type="PackedScene" uid="uid://b6ndt7pp1tfmd" path="res://Systems/Character_Manager.tscn" id="4_3ese2"]
+
+[node name="Game_Manager" type="Node"]
+script = ExtResource("1_thld5")
+
+[node name="Audio_Manager" parent="." instance=ExtResource("3_gfaia")]
+Volume = 1
+
+[node name="Camera_Manager" parent="." instance=ExtResource("2_h53vq")]
+
+[node name="Character_Manager" parent="." instance=ExtResource("4_3ese2")]
+P1_Select = "Kokonoe"
+P2_Select = "Byakuya"

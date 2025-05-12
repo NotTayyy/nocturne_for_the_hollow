@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://ccd1r5gxmqfaw"]
+
+[ext_resource type="Script" uid="uid://py2igs7y0usn" path="res://Players/player_Controller.gd" id="1_ei3sg"]
+[ext_resource type="Texture2D" uid="uid://cby78dyvktfw8" path="res://Assets/Character Sprites/Kokonoe/kk003_02.png" id="2_h53b3"]
+[ext_resource type="Resource" uid="uid://2h1kch7jg8gs" path="res://Characters/Kokonoe.tres" id="2_ru3s8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h53b3"]
+size = Vector2(80, 182.75)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_ei3sg")
+character_data = ExtResource("2_ru3s8")
+
+[node name="Main Collision" type="CollisionShape2D" parent="."]
+z_index = 1
+position = Vector2(-1, -82)
+scale = Vector2(0.900108, 0.900108)
+shape = SubResource("RectangleShape2D_h53b3")
+
+[node name="Char_Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+scale = Vector2(0.900108, 0.900108)
+texture = ExtResource("2_h53b3")
+offset = Vector2(0, -170)

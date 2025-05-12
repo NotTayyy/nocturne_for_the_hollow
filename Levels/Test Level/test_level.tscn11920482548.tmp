@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://btjeex4giaghl"]
+
+[ext_resource type="Texture2D" uid="uid://b3eatgjkptdge" path="res://Levels/Test Level/Test_BG.jpg" id="1_px5jc"]
+[ext_resource type="PackedScene" uid="uid://dungvdhgkavxy" path="res://Scripts/Systems/CharacterSpawner.tscn" id="2_px5jc"]
+[ext_resource type="PackedScene" uid="uid://ccd1r5gxmqfaw" path="res://Players/Player.tscn" id="3_nkneg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_px5jc"]
+size = Vector2(2326, 159)
+
+[node name="Test Level" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+z_index = 10
+position = Vector2(22, 69)
+zoom = Vector2(1.5, 1.5)
+editor_draw_limits = true
+
+[node name="BG" type="Sprite2D" parent="."]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("1_px5jc")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(26, 398)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_px5jc")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Ground"]
+position = Vector2(973, -525)
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_px5jc")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Ground"]
+position = Vector2(-1023, -545)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_px5jc")
+
+[node name="CharacterSpawner" parent="." instance=ExtResource("2_px5jc")]
+player1_scene = ExtResource("3_nkneg")
+player2_scene = ExtResource("3_nkneg")

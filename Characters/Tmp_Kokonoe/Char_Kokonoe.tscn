@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dkycgk2cgyyy4"]
+
+[ext_resource type="Script" uid="uid://b2mbt1fgs1aks" path="res://Characters/Tmp_Kokonoe/char_kokonoe.gd" id="1_rskdy"]
+[ext_resource type="Texture2D" uid="uid://d3112jh4qthyl" path="res://Characters/Tmp_Kokonoe/Kokonoe/kk001_02.png" id="2_tyfk6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_msu1h"]
+size = Vector2(80.5, 198)
+
+[node name="CharKokonoe" type="CharacterBody2D"]
+script = ExtResource("1_rskdy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = 1
+position = Vector2(1, 71)
+shape = SubResource("RectangleShape2D_msu1h")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tyfk6")

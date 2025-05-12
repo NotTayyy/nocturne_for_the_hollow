@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dg33asvi0qgfr"]
+
+[ext_resource type="Script" uid="uid://d2ruw43pyssh8" path="res://Characters/Tmp_Byakuya/char_byakuya.gd" id="1_tqmcm"]
+[ext_resource type="Texture2D" uid="uid://c7swkhogcpkmh" path="res://Characters/Tmp_Byakuya/Byakuya/000.png" id="2_t652o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4lanw"]
+size = Vector2(92.3125, 201.625)
+
+[node name="CharByakuya" type="CharacterBody2D"]
+script = ExtResource("1_tqmcm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = 1
+position = Vector2(4.84375, 76.8125)
+shape = SubResource("RectangleShape2D_4lanw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_t652o")
+region_enabled = true
+region_rect = Rect2(557.208, 325.96, 163.979, 370.417)

@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://4uaa400vgmam"]
+
+[ext_resource type="Script" uid="uid://c1r80m2etrtfr" path="res://Systems/camera_manager.gd" id="1_5otwh"]
+
+[node name="Camera_Manager" type="Node2D"]
+script = ExtResource("1_5otwh")
+
+[node name="Forground_Camera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(1.3, 1.3)
+
+[node name="Background_Camera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+visible = false
