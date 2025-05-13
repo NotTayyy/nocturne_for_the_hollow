@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://b1bnyb38yobsf"
+path="res://.godot/imported/jn203_03.png-9036e601c8e3ef68e1d66a9d92f999e5.ctex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://Characters/Tmp_Jin/Jin Sprites/jn203_03.png"
+dest_files=["res://.godot/imported/jn203_03.png-9036e601c8e3ef68e1d66a9d92f999e5.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

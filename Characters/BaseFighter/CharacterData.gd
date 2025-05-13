@@ -9,10 +9,15 @@ enum DashType { Step, Run, Teleport, Hover, None }
 @export var fighter_scene: PackedScene
 
 @export_category("Basics Data")
-@export var max_health: int = 13000
-@export var negative_debuff_Res: int = 3
-@export_range(0, 5, 1) var toughness: int = 3
+@export var max_health: int = 15000
+#If the player moves back to much or isnt attacking we will give them a neg Debuff
+#That will make them take more Damage when they do get Hit(Higer is more Res)
+@export_range(3, 5, 1) var negative_Penalty_Res: int = 4
+#This is like Defense? Take less damage the tougher they are
+@export_range(0, 5, 1) var toughness: int = 3 #Might Not Use
 @export_range(0, 5, 1) var guts: int = 2
+@export var ground_throw_range: int = 70
+@export var air_throw_range: int = 120
 
 @export_category("Ground Movement")
 @export var dashType: DashType = DashType.Run
@@ -20,11 +25,13 @@ enum DashType { Step, Run, Teleport, Hover, None }
 @export var bwd_walk_speed: float = 140
 @export var forward_dash: int = 0
 @export var run_int: float = 300
+@export var run_skid: float = 60
 #@export var run_acc: int = 150
 #@export var run_max: float = 450
 @export var backdash: int = 30
 @export var backdash_Invuln: int = 10
 @export var backdash_Distance: int = 400
+@export var backdash_duration: int = 30
 
 @export_category("Air Movement")
 @export var prejump: int = 4

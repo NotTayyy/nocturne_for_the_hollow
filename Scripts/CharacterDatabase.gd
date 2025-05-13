@@ -10,6 +10,7 @@ func _ready() -> void:
 func load_characters():
 	characters["Kokonoe"] = preload("res://Characters/Tmp_Kokonoe/Data_Kokonoe.tres")
 	characters["Byakuya"] = preload("res://Characters/Tmp_Byakuya/Data_Byakuya.tres")
+	characters["Jin"] = preload("res://Characters/Tmp_Jin/Data_Jin.tres")
 
 func get_character_names() -> PackedStringArray:
 	return characters.keys()

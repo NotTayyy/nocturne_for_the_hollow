@@ -35,7 +35,6 @@ func setup_input_actions():
 			move_right = "P1_Right"
 			move_up = "P1_Up"
 			move_down = "P1_Down"
-			menu = "P1_Btn_Menu"
 			btn_a = "P1_Btn_A"
 			btn_b = "P1_Btn_B"
 			btn_c = "P1_Btn_C"
@@ -45,7 +44,6 @@ func setup_input_actions():
 			move_right = "P2_Right"
 			move_up = "P2_Up"
 			move_down = "P2_Down"
-			menu = "P2_Btn_Menu"
 			btn_a = "P2_Btn_A"
 			btn_b = "P2_Btn_B"
 			btn_c = "P2_Btn_C"
@@ -70,14 +68,12 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
-	if Input.is_action_just_pressed("P1_Btn_Exit"):
+	if Input.is_action_just_pressed("Btn_Exit"):
 		get_tree().quit()
-
 
 func handle_gravity(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += char_data.gravity * delta
-
 
 func handle_jump_logic() -> void:
 	if prejump_timer > 0:
@@ -93,7 +89,6 @@ func handle_jump_logic() -> void:
 
 	elif Input.is_action_just_pressed(move_up) and is_on_floor():
 		prejump_timer = char_data.prejump
-
 
 func handle_horizontal_movement(delta: float) -> void:
 	move_dir = Input.get_axis(move_left, move_right)

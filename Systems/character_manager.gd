@@ -1,7 +1,7 @@
 extends Node2D
 
-@export_enum("Kokonoe", "Byakuya") var P1_Select: String
-@export_enum("Kokonoe", "Byakuya") var P2_Select: String
+@export_enum("Kokonoe", "Byakuya", "Jin") var P1_Select: String
+@export_enum("Kokonoe", "Byakuya", "Jin") var P2_Select: String
 
 var game_manager: Node
 
