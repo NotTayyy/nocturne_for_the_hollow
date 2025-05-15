@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://brjkebepdyk3d" path="res://Characters/Tmp_Jin/char_jin.gd" id="1_wk43p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wk43p"]
-size = Vector2(110, 188)
+size = Vector2(100, 188)
 
 [node name="CharJin" type="CharacterBody2D"]
 script = ExtResource("1_wk43p")
@@ -15,4 +15,4 @@ shape = SubResource("RectangleShape2D_wk43p")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_p7ssr")
-offset = Vector2(0, -85)
+offset = Vector2(0, -88)

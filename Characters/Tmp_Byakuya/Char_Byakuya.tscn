@@ -4,17 +4,18 @@
 [ext_resource type="Texture2D" uid="uid://c7swkhogcpkmh" path="res://Characters/Tmp_Byakuya/Byakuya/000.png" id="2_t652o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4lanw"]
-size = Vector2(110, 188)
+size = Vector2(100, 188)
 
 [node name="CharByakuya" type="CharacterBody2D"]
 script = ExtResource("1_tqmcm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = 1
+position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_4lanw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(4, -86)
 texture = ExtResource("2_t652o")
+offset = Vector2(0, -82)
 region_enabled = true
 region_rect = Rect2(557.208, 325.96, 163.979, 370.417)

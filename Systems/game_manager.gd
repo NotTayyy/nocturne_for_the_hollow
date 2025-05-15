@@ -6,6 +6,6 @@ extends Node
 
 func _ready() -> void:
 	if character_manager and camera_manager and audio_manager:
-		print("Game Manager Loaded!")
+		print("Managers Loaded!")
 	else:
 		print("GM Buggered")

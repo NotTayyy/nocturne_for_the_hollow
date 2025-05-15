@@ -4,9 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://d3112jh4qthyl" path="res://Characters/Tmp_Kokonoe/Kokonoe/kk001_02.png" id="2_tyfk6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_msu1h"]
-size = Vector2(110, 188)
+size = Vector2(100, 188)
 
 [node name="CharKokonoe" type="CharacterBody2D"]
+z_index = 1
 script = ExtResource("1_rskdy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -14,5 +15,5 @@ z_index = 1
 shape = SubResource("RectangleShape2D_msu1h")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(2, -83)
 texture = ExtResource("2_tyfk6")
+offset = Vector2(0, -83)

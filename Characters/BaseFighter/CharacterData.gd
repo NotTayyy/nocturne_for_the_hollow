@@ -23,11 +23,11 @@ enum DashType { Step, Run, Teleport, Hover, None }
 @export var dashType: DashType = DashType.Run
 @export var fwd_walk_speed: float = 200
 @export var bwd_walk_speed: float = 140
-@export var forward_dash: int = 0
+@export var dash_Startup: int = 4
 @export var run_int: float = 300
 @export var run_skid: float = 60
-#@export var run_acc: int = 150
-#@export var run_max: float = 450
+@export var run_acc: int = 150
+@export var run_max: float = 450
 @export var backdash: int = 30
 @export var backdash_Invuln: int = 10
 @export var backdash_Distance: int = 400

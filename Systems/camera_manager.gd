@@ -6,7 +6,6 @@ var Player_2: Node2D
 var game_manager: Node
 
 @onready var Foreground_camera: Camera2D = %Forground_Camera
-@onready var Background_camera: Camera2D = %Background_Camera
 
 func set_targets(P1: Node2D, P2: Node2D):
 	Player_1 = P1
@@ -25,4 +24,3 @@ func _process(delta: float) -> void:
 
 func move_Camera(mid: Vector2):
 	Foreground_camera.global_position = mid
-	Background_camera.global_position = mid

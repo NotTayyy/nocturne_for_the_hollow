@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://fva40gp7h6e1"]
+[gd_scene load_steps=3 format=3 uid="uid://rq3dokbtmexe"]
 
 [ext_resource type="Script" uid="uid://i2tp0w1tim18" path="res://Characters/BaseFighter/Fighter.gd" id="1_k0ccl"]
 
