@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://4uaa400vgmam"]
+[gd_scene load_steps=3 format=3 uid="uid://4uaa400vgmam"]
 
 [ext_resource type="Script" uid="uid://c1r80m2etrtfr" path="res://Systems/camera_manager.gd" id="1_5otwh"]
+[ext_resource type="Texture2D" uid="uid://cieet12mpwjwb" path="res://Assets/UI/Untitled-1.png" id="2_n75co"]
 
 [node name="Camera_Manager" type="Node2D"]
 script = ExtResource("1_5otwh")
@@ -8,3 +9,21 @@ script = ExtResource("1_5otwh")
 [node name="Forground_Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
 scale = Vector2(0.380673, 0.00985325)
+zoom = Vector2(0.8, 0.8)
+
+[node name="Control" type="Control" parent="Forground_Camera"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Forground_Camera/Control"]
+layout_mode = 0
+offset_left = -1972.82
+offset_top = -41103.2
+offset_right = -52.8218
+offset_bottom = -40023.2
+scale = Vector2(2.03489, 80.1052)
+texture = ExtResource("2_n75co")
+expand_mode = 1
+stretch_mode = 3

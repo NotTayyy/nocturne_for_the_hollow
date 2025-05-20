@@ -5,9 +5,8 @@ class_name Fighter
 var char_data: CharacterData
 var opponent: Fighter = null
 
-@onready var input_buffer: InputBuffer = InputBuffer.new()
+@onready var input_buffer := %InputBuffer
 
-#region Input Actions 
 var move_left: String
 var move_right: String
 var move_up: String
@@ -19,7 +18,6 @@ var btn_b: String
 var btn_c: String
 var btn_d: String
 var debug: String
-#endregion
 
 # State tracking
 var is_running: bool = false
@@ -33,10 +31,16 @@ func _ready() -> void:
 		return
 		
 	setup_input_actions()
-	add_child(input_buffer)
 
 func get_move_speed() -> float:
 	return char_data.fwd_walk_speed
+	
+func _capture_input():
+	for action in [move_left, move_right, move_up, move_down, btn_a, btn_b, btn_c, btn_d]:
+		if Input.is_action_just_pressed(action):
+			input_buffer.register_input(char_data.character_name ,action, "press")
+		elif Input.is_action_just_released(action):
+			input_buffer.register_input(char_data.character_name, action, "release")
 
 func setup_input_actions():
 	match player_id:
@@ -64,12 +68,11 @@ func setup_input_actions():
 func _physics_process(delta: float) -> void:
 	if not char_data:
 		return
-
-	handle_gravity(delta)
-	handle_jump_logic()
+		
+	_capture_input()
 	handle_horizontal_movement(delta)
-	buffer_Inputs()
-	
+	handle_jump_logic()
+	handle_gravity(delta)
 	move_and_slide()
 	
 	if Input.is_action_just_pressed("Btn_Exit"):
@@ -89,7 +92,6 @@ func handle_jump_logic() -> void:
 
 		elif prejump_timer == 0:
 			velocity.y = char_data.jump_velocity
-			is_jumping = true
 
 	elif Input.is_action_just_pressed(move_up) and is_on_floor():
 		prejump_timer = char_data.prejump
@@ -101,32 +103,3 @@ func handle_horizontal_movement(_delta: float) -> void:
 		velocity.x = move_dir * get_move_speed()
 	else:
 		velocity.x = 0
-
-func buffer_Inputs():
-	var current_dir = get_direction_input()
-	print("Direction Input: ", get_direction_input(), current_dir)
-		
-func get_direction_input() -> String:
-	var vertical = ""
-	var horizontal = ""
-
-	if Input.is_action_pressed(move_up) and !Input.is_action_pressed(move_down):
-		vertical = "up"
-	elif Input.is_action_pressed(move_down) and !Input.is_action_pressed(move_up):
-		vertical = "down"
-
-	if Input.is_action_pressed(move_right) and !Input.is_action_pressed(move_left):
-		horizontal = "right"
-	elif Input.is_action_pressed(move_left) and !Input.is_action_pressed(move_right):
-		horizontal = "left"
-
-	match [vertical, horizontal]:
-		["up", "left"]: return "up-left"
-		["up", "right"]: return "up-right"
-		["down", "left"]: return "down-left"
-		["down", "right"]: return "down-right"
-		["up", ""]: return "up"
-		["down", ""]: return "down"
-		["", "left"]: return "left"
-		["", "right"]: return "right"
-		_: return "neutral"

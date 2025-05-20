@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dkycgk2cgyyy4"]
+[gd_scene load_steps=5 format=3 uid="uid://dkycgk2cgyyy4"]
 
 [ext_resource type="Script" uid="uid://b2mbt1fgs1aks" path="res://Characters/Tmp_Kokonoe/char_kokonoe.gd" id="1_rskdy"]
 [ext_resource type="Texture2D" uid="uid://d3112jh4qthyl" path="res://Characters/Tmp_Kokonoe/Kokonoe/kk001_02.png" id="2_tyfk6"]
+[ext_resource type="PackedScene" uid="uid://5ucjfk86rrqd" path="res://Scripts/Components/InputBuffer.tscn" id="3_7vgrp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_msu1h"]
 size = Vector2(100, 188)
@@ -17,3 +18,8 @@ shape = SubResource("RectangleShape2D_msu1h")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_tyfk6")
 offset = Vector2(0, -83)
+
+[node name="Components" type="Node" parent="."]
+
+[node name="InputBuffer" parent="Components" instance=ExtResource("3_7vgrp")]
+unique_name_in_owner = true

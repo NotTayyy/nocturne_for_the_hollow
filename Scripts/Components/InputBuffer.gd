@@ -1,24 +1,49 @@
 extends Node
 class_name InputBuffer
 
-const _Max_Buffer_Length := 30
+@export var max_buffer_length : int = 6
+@export var buffer_limit : int = 10
 
-var buffer: Array = []
+var current_frame = 0
 
-func push_input(action: String, input_type: String) -> void:
-	var frame = Engine.get_physics_frames()
-	buffer.append({
+var buffer_history: Array = []
+
+func register_input(char_name: String, action: String, type: String) -> void:
+	buffer_history.append({
+		"name": char_name,
 		"action": action,
-		"frame": frame,
-		"type": input_type
+		"action_frame": current_frame,
+		"type": type
 	})
 	
-	while buffer.size() > 1000:
-		buffer.pop_front()
+	while buffer_history.size() > max_buffer_length:
+		buffer_history.remove_at(0)
 
-func get_recent_inputs(legal_frames: int = 10) -> Array:
-	var current_frame = Engine.get_physics_frames()
-	return buffer.filter(func(entry): return current_frame - entry.frame <= legal_frames)
+func check_input(action: String, type: String, frame_limit: int = buffer_limit) -> bool:
+	for entry in buffer_history:
+		if entry.action == action and entry.type == type and current_frame - entry.action_frame <= frame_limit:
+			return true
+	return false
 
-func clear_buffer():
-	buffer.clear()
+
+func clear():
+	buffer_history.clear()
+
+func get_sequence(types: Array = ["press", "release"]) -> Array:
+	return buffer_history.filter(func(entry):
+		return current_frame - entry.action_frame <= buffer_limit and entry.type in types
+	).map(func(entry): return entry.action + ":" + entry.type)
+	
+func print_buffer():
+	#print("Buffer: ", get_sequence(), " ", buffer_history.size())
+	pass
+	
+#func check_buffer() -> String:
+	#for entry in range(buffer_history.size() -1, -1, -1):
+		#if entry.action
+#
+
+func _physics_process(delta: float) -> void:
+	current_frame = Engine.get_physics_frames()
+	#print_buffer()
+	print(buffer_history)

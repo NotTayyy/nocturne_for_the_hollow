@@ -9,6 +9,7 @@ size = Vector2(100, 188)
 
 [node name="CharByakuya" type="CharacterBody2D"]
 script = ExtResource("1_tqmcm")
+player_id = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = 1
