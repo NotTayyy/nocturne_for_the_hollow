@@ -34,13 +34,61 @@ func _ready() -> void:
 
 func get_move_speed() -> float:
 	return char_data.fwd_walk_speed
-	
+
 func _capture_input():
-	for action in [move_left, move_right, move_up, move_down, btn_a, btn_b, btn_c, btn_d]:
+	var direction_changed : bool = false
+	var held_directions = []
+		
+	for action in [move_left, move_right, move_up, move_down]:
+		if Input.is_action_just_pressed(action) or Input.is_action_just_released(action):
+			direction_changed = true
+		
+	if direction_changed:
+		for action in [move_left, move_right, move_up, move_down]:
+			if Input.is_action_pressed(action):
+				held_directions.append(action)
+			if Input.is_action_just_released(action):
+				input_buffer.register_input(action, "release")
+				
+	var direction = parse_direction(held_directions)
+	if direction != "":
+		input_buffer.register_input(direction, "press")
+		
+	for action in [btn_a, btn_b, btn_c, btn_d]:
 		if Input.is_action_just_pressed(action):
-			input_buffer.register_input(char_data.character_name ,action, "press")
+			input_buffer.register_input(action, "press")
 		elif Input.is_action_just_released(action):
-			input_buffer.register_input(char_data.character_name, action, "release")
+			input_buffer.register_input(action, "release")
+
+func parse_direction(held: Array) -> String:
+	var vertical := ""
+	var horizontal := ""
+
+	# Cancel opposing vertical inputs
+	if move_up in held and move_down in held:
+		vertical = ""
+	elif move_up in held:
+		vertical = move_up
+	elif move_down in held:
+		vertical = move_down
+
+	# Cancel opposing horizontal inputs
+	if move_left in held and move_right in held:
+		horizontal = ""
+	elif move_left in held:
+		horizontal = move_left
+	elif move_right in held:
+		horizontal = move_right
+
+	# Combine if both are valid
+	if vertical != "" and horizontal != "":
+		return vertical + "-" + horizontal
+	elif vertical != "":
+		return vertical
+	elif horizontal != "":
+		return horizontal
+	else:
+		return ""
 
 func setup_input_actions():
 	match player_id:
