@@ -28,8 +28,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	distance = (Player_1.position.x - Player_2.position.x)/1000
-	print(distance)
-	#tween.tween_property(Foreground_camera, "zoom", )
 	var midpoint: Vector2 = (Player_1.global_position + Player_2.global_position + cam_offset) * 0.5 + Vector2(0, -120)
 	move_Camera(midpoint)
 

@@ -12,12 +12,14 @@ scale = Vector2(0.380673, 0.00985325)
 zoom = Vector2(0.8, 0.8)
 
 [node name="Control" type="Control" parent="Forground_Camera"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="Forground_Camera/Control"]
+visible = false
 layout_mode = 0
 offset_left = -1972.82
 offset_top = -41103.2
