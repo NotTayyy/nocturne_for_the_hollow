@@ -24,6 +24,7 @@ func register_input(action: String, type: String) -> void:
 		buffer_history.remove_at(0)
 
 	check_commands()
+	print_buffer()
 
 func clear():
 	buffer_history.clear()
@@ -32,10 +33,12 @@ func check_commands():
 	pass
 
 func print_buffer():
-	var entry = buffer_history[-1]
-	print("Action: ", entry["type"], " : ", entry["action"], " at frame ", entry["action_frame"])
+	if buffer_history != []:
+		var entry = buffer_history[-1]
+		print("Action: ", entry["type"], " : ", entry["action"], " at frame ", entry["action_frame"])
 
 func _physics_process(delta: float) -> void:
+
 	pass
 
 #[{ "action": "P1_Down", "action_frame": 955, "type": "press" },

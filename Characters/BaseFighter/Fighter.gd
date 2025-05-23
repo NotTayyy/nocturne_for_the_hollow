@@ -43,17 +43,11 @@ func _capture_input():
 	var held_directions = []
 		
 	for action in [move_left, move_right, move_up, move_down]:
-		if Input.is_action_just_pressed(action) or Input.is_action_just_released(action):
+		if Input.is_action_just_pressed(action):
 			for actions in [move_left, move_right, move_up, move_down]:
 				if Input.is_action_pressed(actions):
 					held_directions.append(actions)
-				if Input.is_action_just_released(actions):
-					input_buffer.register_input(actions, "release")
-		
-	if direction_changed:
-		for action in [move_left, move_right, move_up, move_down]:
-			if Input.is_action_pressed(action):
-				held_directions.append(action)
+		if Input.is_action_just_released(action):
 			if Input.is_action_just_released(action):
 				input_buffer.register_input(action, "release")
 				
@@ -61,11 +55,15 @@ func _capture_input():
 	if direction != "":
 		input_buffer.register_input(direction, "press")
 		
+		
+		
 	for action in [btn_a, btn_b, btn_c, btn_d]:
 		if Input.is_action_just_pressed(action):
 			input_buffer.register_input(action, "press")
 		elif Input.is_action_just_released(action):
 			input_buffer.register_input(action, "release")
+	
+	
 
 func parse_direction(held: Array) -> String:
 	var vertical := ""
