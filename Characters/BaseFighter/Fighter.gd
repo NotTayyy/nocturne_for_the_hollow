@@ -2,8 +2,11 @@ extends CharacterBody2D
 class_name Fighter
 
 @export_range(0, 2) var player_id: int = 0
-var char_data: CharacterData
 var opponent: Fighter = null
+
+var char_data: CharacterData
+
+@export_enum("Left", "Right") var dir_facing: String
 
 @onready var input_buffer := %InputBuffer
 
@@ -41,7 +44,11 @@ func _capture_input():
 		
 	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_just_pressed(action) or Input.is_action_just_released(action):
-			direction_changed = true
+			for actions in [move_left, move_right, move_up, move_down]:
+				if Input.is_action_pressed(actions):
+					held_directions.append(actions)
+				if Input.is_action_just_released(actions):
+					input_buffer.register_input(actions, "release")
 		
 	if direction_changed:
 		for action in [move_left, move_right, move_up, move_down]:
@@ -116,7 +123,11 @@ func setup_input_actions():
 func _physics_process(delta: float) -> void:
 	if not char_data:
 		return
-		
+	if self.global_position.x > opponent.global_position.x:
+		dir_facing = "Left"
+	else:
+		dir_facing = "Right"
+	
 	_capture_input()
 	handle_horizontal_movement(delta)
 	handle_jump_logic()

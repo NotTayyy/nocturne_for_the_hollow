@@ -22,9 +22,6 @@ func register_input(action: String, type: String) -> void:
 	
 	while buffer_history.size() > max_buffer_length:
 		buffer_history.remove_at(0)
-	
-	if not buffer_history == []:
-		print_buffer()
 
 	check_commands()
 
