@@ -11,7 +11,6 @@ var min_zoom: Vector2 = Vector2(1.2, 1.2)
 var game_manager: Node
 
 @onready var Foreground_camera: Camera2D = %Forground_Camera
-@onready var tween = get_tree().create_tween()
 
 func set_targets(P1: Node2D, P2: Node2D):
 	Player_1 = P1
@@ -26,7 +25,7 @@ func _ready() -> void:
 		print("Camera Manager Loaded!")
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	distance = (Player_1.position.x - Player_2.position.x)/1000
 	var midpoint: Vector2 = (Player_1.global_position + Player_2.global_position + cam_offset) * 0.5 + Vector2(0, -120)
 	move_Camera(midpoint)

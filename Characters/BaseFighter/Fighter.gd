@@ -23,6 +23,7 @@ var btn_d: String
 var debug: String
 
 # State tracking
+var was_idle: bool = false
 var is_running: bool = false
 var is_jumping: bool = false
 var prejump_timer: int = 0
@@ -35,35 +36,88 @@ func _ready() -> void:
 		
 	setup_input_actions()
 
+func _physics_process(delta: float) -> void:
+	if not char_data:
+		return
+	if self.global_position.x > opponent.global_position.x:
+		dir_facing = "Left"
+	else:
+		dir_facing = "Right"
+	
+	_capture_input()
+	handle_horizontal_movement(delta)
+	handle_jump_logic()
+	handle_gravity(delta)
+	move_and_slide()
+	
+	if Input.is_action_just_pressed("Btn_Exit"):
+		get_tree().quit()
+
 func get_move_speed() -> float:
 	return char_data.fwd_walk_speed
 
 func _capture_input():
-	var direction_changed : bool = false
 	var held_directions = []
+	var released_directions = []
+	var btn = ""
+	var direction = ""
 		
 	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_just_pressed(action):
 			for actions in [move_left, move_right, move_up, move_down]:
 				if Input.is_action_pressed(actions):
 					held_directions.append(actions)
+					direction = parse_direction(held_directions)
+			
+			if was_idle:
+				input_buffer.register_input("5", "release")
+				was_idle = false
+		
 		if Input.is_action_just_released(action):
-			if Input.is_action_just_released(action):
-				input_buffer.register_input(action, "release")
-				
-	var direction = parse_direction(held_directions)
+			released_directions.append(action)
+			direction = parse_direction(released_directions)
+			if direction != "":
+				input_buffer.register_input(direction, "release")
+				direction = ""
+			for actions in [move_left, move_right, move_up, move_down]:
+				if Input.is_action_pressed(actions):
+					held_directions.append(actions)
+					direction = parse_direction(held_directions)
 	if direction != "":
 		input_buffer.register_input(direction, "press")
 		
+	var still_held := false
+	for action in [move_left, move_right, move_up, move_down]:
+		if Input.is_action_pressed(action):
+			still_held = true
+			break
+
+	if not still_held and not was_idle:
+		# 🟢 We just transitioned to neutral: press "5"
+		input_buffer.register_input("5", "press")
+		was_idle = true  # 🟢 Update state
 		
 		
 	for action in [btn_a, btn_b, btn_c, btn_d]:
 		if Input.is_action_just_pressed(action):
-			input_buffer.register_input(action, "press")
+			btn = parse_buttons(action)
+			input_buffer.register_input(btn, "press")
 		elif Input.is_action_just_released(action):
-			input_buffer.register_input(action, "release")
-	
-	
+			btn = parse_buttons(action)
+			input_buffer.register_input(btn, "release")
+
+func parse_buttons(button: String) -> String:
+	match button:
+		btn_a:
+			return "A"
+		btn_b:
+			return "B"
+		btn_c:
+			return "C"
+		btn_d:
+			return "D"
+		_:
+			return ""
 
 func parse_direction(held: Array) -> String:
 	var vertical := ""
@@ -73,27 +127,41 @@ func parse_direction(held: Array) -> String:
 	if move_up in held and move_down in held:
 		vertical = ""
 	elif move_up in held:
-		vertical = move_up
+		vertical = "8"
 	elif move_down in held:
-		vertical = move_down
+		vertical = "2"
 
 	# Cancel opposing horizontal inputs
-	if move_left in held and move_right in held:
-		horizontal = ""
-	elif move_left in held:
-		horizontal = move_left
-	elif move_right in held:
-		horizontal = move_right
+	if dir_facing == "Left":
+		if move_left in held and move_right in held:
+			horizontal = ""
+		elif move_left in held:
+			horizontal = "6"
+		elif move_right in held:
+			horizontal = "4"
+	else:
+		if move_left in held and move_right in held:
+			horizontal = "5"
+		elif move_left in held:
+			horizontal = "4"
+		elif move_right in held:
+			horizontal = "6"
 
 	# Combine if both are valid
 	if vertical != "" and horizontal != "":
-		return vertical + "-" + horizontal
+		if vertical == "8" and horizontal == "4":
+			return "7"
+		elif vertical == "8" and horizontal == "6":
+			return "9"
+		elif vertical == "2" and horizontal == "4":
+			return "1"
+		elif vertical == "2" and horizontal == "6":
+			return "3"
 	elif vertical != "":
 		return vertical
 	elif horizontal != "":
 		return horizontal
-	else:
-		return ""
+	return "5"
 
 func setup_input_actions():
 	match player_id:
@@ -117,23 +185,6 @@ func setup_input_actions():
 			btn_d = "P2_Btn_D"
 		_:
 			push_warning("Unhandled player_id: %d" % player_id)
-
-func _physics_process(delta: float) -> void:
-	if not char_data:
-		return
-	if self.global_position.x > opponent.global_position.x:
-		dir_facing = "Left"
-	else:
-		dir_facing = "Right"
-	
-	_capture_input()
-	handle_horizontal_movement(delta)
-	handle_jump_logic()
-	handle_gravity(delta)
-	move_and_slide()
-	
-	if Input.is_action_just_pressed("Btn_Exit"):
-		get_tree().quit()
 
 func handle_gravity(delta: float) -> void:
 	if not is_on_floor():

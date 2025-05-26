@@ -24,6 +24,7 @@ buses/default_bus_layout=""
 [autoload]
 
 CharacterDB="*res://Scripts/CharacterDatabase.gd"
+HitboxTypes="*res://Scripts/Hitbox_Types.gd"
 
 [input]
 
