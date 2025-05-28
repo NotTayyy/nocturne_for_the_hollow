@@ -33,6 +33,8 @@ func _ready() -> void:
 	if not char_data:
 		push_error("Missing CharacterData!")
 		return
+	
+	input_buffer.has_neg_edge = char_data.neg_edge
 		
 	setup_input_actions()
 
@@ -93,10 +95,8 @@ func _capture_input():
 			break
 
 	if not still_held and not was_idle:
-		# 🟢 We just transitioned to neutral: press "5"
 		input_buffer.register_input("5", "press")
-		was_idle = true  # 🟢 Update state
-		
+		was_idle = true
 		
 	for action in [btn_a, btn_b, btn_c, btn_d]:
 		if Input.is_action_just_pressed(action):
@@ -141,7 +141,7 @@ func parse_direction(held: Array) -> String:
 			horizontal = "4"
 	else:
 		if move_left in held and move_right in held:
-			horizontal = "5"
+			horizontal = ""
 		elif move_left in held:
 			horizontal = "4"
 		elif move_right in held:
