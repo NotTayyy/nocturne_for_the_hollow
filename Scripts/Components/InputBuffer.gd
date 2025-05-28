@@ -1,22 +1,43 @@
 extends Node
 class_name InputBuffer
 
-@export var max_buffer_frames: int = 15
+@export var max_buffer_frames: int = 25
 
 var current_frame = 0
 
 var buffer_history: Array = []
+var has_neg_edge: bool = false
 
+var release_command_list
+
+#Make Command List Per Character and Upload It Here
+#Charge Will also Be Under Here!
 var command_list = [
-	{ "Command": "Forward Dash", "Sequence": ["6", "5", "6"], "Priority": "1" },
-	{ "Command": "Backwards Dash", "Sequence": ["4", "5", "4"], "Priority": "1" },
-	{ "Command": "Universal Anti-Air", "Sequence": ["6", "A"], "Priority": "1", "Held": ["6"]}
+	#Basic Commands
+	{ "Command": "Forward Dash", "Sequence": ["6", "5", "6"], "Priority": 1 },
+	{ "Command": "Backwards Dash", "Sequence": ["4", "5", "4"], "Priority": 1 },
+	#Command Normals
+	{ "Command": "6A", "Sequence": ["6", "A"], "Priority": 1, "Held": ["6"]},
+	{ "Command": "6B", "Sequence": ["6", "B"], "Priority": 1, "Held": ["6"]},
+	{ "Command": "6C", "Sequence": ["6", "C"], "Priority": 1, "Held": ["6"]},
+	#Charge Moves
+	{ "Command": "Flash Kick A", "Sequence": ["2", "8", "A"], "Priority": 2, "Charge": 45, "Button": ["2"]},
+	{ "Command": "Back Charge A", "Sequence": ["2", "8", "A"], "Priority": 2, "Charge": 45, "Button": ["2"]},
+	#Special Moves
+	{ "Command": "22A", "Sequence": ["2", "5", "2", "A"], "Priority": 2},
+	{ "Command": "Quater-Circle Fwd A", "Sequence": ["2", "3", "6", "A"], "Priority": 3},
+	#Ultimates
+	{ "Command": "Half Circle Back Forwards", "Sequence": ["4", "1", "2", "3", "6", "A"], "Priority": 5},
+	{ "Command": "Golden Tager", "Sequence": ["4", "1", "2", "3", "6", "9", "8", "7", "4", "A"], "Priority": 8}
 ]
 
-var release_command_list = [
-	{ "Command": "Negative A", "Sequence": ["A"], "Priority": "1", "Charge": 15 },
-	{ "Command": "Flash Kick A", "Sequence": ["2", "8", "A"], "Priority": "2", "Charge": 15}
-]
+#Check if char even uses negative Edge Before loading this
+func _ready() -> void:
+	await get_tree().process_frame
+	if has_neg_edge:
+		release_command_list = [
+			{ "Command": "Negative A", "Type": "Command Normal", "Sequence": ["A"], "Priority": "1", "Charge": 15, "Button": ["A"] },
+		]
 
 func register_input(action: String, type: String) -> void:
 	current_frame = Engine.get_physics_frames()
@@ -41,9 +62,9 @@ func check_commands():
 	var last_entry = buffer_history[-1]
 	
 	if last_entry["type"] == "press":
-		check_Command_list(last_entry["type"], command_list)
-	elif last_entry["type"] == "release":
-		check_Command_list(last_entry["type"], release_command_list)
+		check_Command_list("press", command_list)
+	elif last_entry["type"] == "release" and release_command_list != null:
+		check_Command_list("release", release_command_list)
 
 func check_held_inputs() -> Array:
 	var held_inputs:= {}
@@ -64,17 +85,7 @@ func check_held_inputs() -> Array:
 					held_inputs[key] = true
 				if entry["type"] == "release":
 					held_inputs.erase(key)
-	
-	#var direction_held := false
-	#for dir in directions:
-		#if held_inputs.has(dir):
-			#direction_held = true
-			#break
-	#
-	#if not direction_held:
-		#held_inputs["5"] =  true
-	if held_inputs != {}:
-		print(held_inputs)
+					#BUG: If you Hold 4, then Hold 6, 4 Will still count as being held, Fix this
 	return held_inputs.keys()
 
 func check_Command_list(type, cmd_list: Array):
@@ -85,30 +96,71 @@ func check_Command_list(type, cmd_list: Array):
 		var priority = command["Priority"]
 		var seq_index = sequence.size() - 1
 		var prev_frame: int = -1
-		var match_buffer = []
-
-		for i in range(buffer_history.size() - 1, -1, -1):
-			var entry = buffer_history[i]
-			if entry["action"] == sequence[seq_index] and entry["type"] == type:
-				if prev_frame == -1:
-					if current_frame - entry["action_frame"] > max_buffer_frames:
-						break
-					prev_frame = entry["action_frame"]
-				else:
-					if prev_frame - entry["action_frame"] > max_buffer_frames:
-						break
-					else:
-						prev_frame = entry["action_frame"]
-				
-				seq_index -= 1
-				print(seq_index)
-				if seq_index == -1:
-					matched_commands.append(command["Command"])
+		var starter = buffer_history[-1]
+		
+		#Checks Only The Command Normals
+		if "Held" in command:
+			for i in range(buffer_history.size() - 1, -1, -1):
+				if seq_index < 0:
 					break
-	
-	if matched_commands != []:
-		print(matched_commands)	
+					
+				var entry = buffer_history[i]
+				if starter["action"] == sequence[-1]:
+					if entry["action"] == sequence[seq_index] and entry["type"] == type:
+						if current_frame - starter["action_frame"] < max_buffer_frames: 
+							seq_index -= 1
+							if seq_index == -1:
+								for held_input in command["Held"]:
+									if held_inputs.has(held_input):
+										matched_commands.append(command)
+								break	
+		#Checks only the Charge Based Commands
+		#if "Charge" in command:
+			#var charge_Btn = command["Button"]
+			#var charge_Frames = command["Charge"]
+			#for i in range(buffer_history.size() - 1, -1, -1):
+				#var entry = buffer_history[i]
+				#if starter["action"] == sequence[-1]:
+					#if entry["action"] == sequence[seq_index] and entry["type"] == type:
+						#if current_frame - entry
+		#Checks only the leftover Commands.
+		else: 
+			for i in range(buffer_history.size() - 1, -1, -1):
+				if seq_index < 0:
+					break
+					
+				var entry = buffer_history[i]
+				if entry["action"] == sequence[seq_index] and entry["type"] == type:
+					if prev_frame == -1:
+						if current_frame - entry["action_frame"] > max_buffer_frames:
+							break
+						prev_frame = entry["action_frame"]
+					else:
+						if prev_frame - entry["action_frame"] > max_buffer_frames:
+							break
+						else:
+							prev_frame = entry["action_frame"]
+					
+					seq_index -= 1
+				if seq_index == -1:
+					matched_commands.append(command)
+					break
+
+	if matched_commands.size() == 1:
+		print(matched_commands[0]["Command"])
 		return
+	elif matched_commands.size() > 1:
+		var curr_priority: int = -1
+		var curr_command = null
+		print(matched_commands)
+		for entry in matched_commands:
+			if entry["Priority"] > curr_priority:
+				curr_command = entry
+				curr_priority = entry["Priority"]
+		print(curr_command["Command"])
+		return
+		
+		
 
 func print_buffer():
 	var entry = buffer_history[-1]
