@@ -9,35 +9,10 @@ var buffer_history: Array = []
 var has_neg_edge: bool = false
 
 var release_command_list
+var command_list 
 
-#Make Command List Per Character and Upload It Here
-#Charge Will also Be Under Here!
-var command_list = [
-	#Basic Commands
-	{ "Command": "Forward Dash", "Sequence": ["6", "5", "6"], "Priority": 1 },
-	{ "Command": "Backwards Dash", "Sequence": ["4", "5", "4"], "Priority": 1 },
-	#Command Normals
-	{ "Command": "6A", "Sequence": ["6", "A"], "Priority": 1, "Held": ["6"]},
-	{ "Command": "6B", "Sequence": ["6", "B"], "Priority": 1, "Held": ["6"]},
-	{ "Command": "6C", "Sequence": ["6", "C"], "Priority": 1, "Held": ["6"]},
-	#Charge Moves
-	{ "Command": "Flash Kick A", "Sequence": ["2", "8", "A"], "Priority": 2, "Charge": 45, "Button": ["2"]},
-	{ "Command": "Back Charge A", "Sequence": ["2", "8", "A"], "Priority": 2, "Charge": 45, "Button": ["2"]},
-	#Special Moves
-	{ "Command": "22A", "Sequence": ["2", "5", "2", "A"], "Priority": 2},
-	{ "Command": "Quater-Circle Fwd A", "Sequence": ["2", "3", "6", "A"], "Priority": 3},
-	#Ultimates
-	{ "Command": "Half Circle Back Forwards", "Sequence": ["4", "1", "2", "3", "6", "A"], "Priority": 5},
-	{ "Command": "Golden Tager", "Sequence": ["4", "1", "2", "3", "6", "9", "8", "7", "4", "A"], "Priority": 8}
-]
-
-#Check if char even uses negative Edge Before loading this
 func _ready() -> void:
-	await get_tree().process_frame
-	if has_neg_edge:
-		release_command_list = [
-			{ "Command": "Negative A", "Type": "Command Normal", "Sequence": ["A"], "Priority": "1", "Charge": 15, "Button": ["A"] },
-		]
+		await get_tree().process_frame
 
 func register_input(action: String, type: String) -> void:
 	current_frame = Engine.get_physics_frames()
@@ -50,7 +25,6 @@ func register_input(action: String, type: String) -> void:
 	
 	print_buffer()
 	check_commands()
-
 
 func clear():
 	buffer_history.clear()

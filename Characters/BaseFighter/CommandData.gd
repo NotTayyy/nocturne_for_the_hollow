@@ -1,4 +1,6 @@
 extends Resource
 class_name CommandData
 
-@export var command_list: Array[Dictionary] = []
+@export_category("Character Moves")
+@export var command_list: Array = []
+@export var relese_cmnd_list: Array = []

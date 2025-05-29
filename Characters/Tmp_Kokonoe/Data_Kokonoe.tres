@@ -1,20 +1,22 @@
-[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://2h1kch7jg8gs"]
+[gd_resource type="Resource" script_class="CharacterData" load_steps=4 format=3 uid="uid://2h1kch7jg8gs"]
 
 [ext_resource type="PackedScene" uid="uid://dkycgk2cgyyy4" path="res://Characters/Tmp_Kokonoe/Char_Kokonoe.tscn" id="1_6exky"]
+[ext_resource type="Resource" uid="uid://bpyaugxgsxocc" path="res://Characters/Tmp_Kokonoe/Kokonoe_Comands.tres" id="1_xxw3f"]
 [ext_resource type="Script" uid="uid://cpq072udwjvmf" path="res://Characters/BaseFighter/CharacterData.gd" id="1_yiyej"]
 
 [resource]
 script = ExtResource("1_yiyej")
 character_name = "Kokonoe"
 fighter_scene = ExtResource("1_6exky")
+command_list = ExtResource("1_xxw3f")
+neg_edge = false
+charge_moves = true
 max_health = 15000
-negative_Penalty_Res = 4
+negative_Penalty_Res = 3
 toughness = 3
-guts = 2
+guts = 3
 ground_throw_range = 70
 air_throw_range = 120
-neg_edge = false
-charge_moves = false
 dashType = 1
 fwd_walk_speed = 200.0
 bwd_walk_speed = 140.0

@@ -3,13 +3,14 @@ class_name Fighter
 
 @export_range(0, 2) var player_id: int = 0
 var opponent: Fighter = null
-
 var char_data: CharacterData
+var cmd_data
+
 
 @export_enum("Left", "Right") var dir_facing: String
-
 @onready var input_buffer := %InputBuffer
 
+#region Controls
 var move_left: String
 var move_right: String
 var move_up: String
@@ -21,6 +22,7 @@ var btn_b: String
 var btn_c: String
 var btn_d: String
 var debug: String
+#endregion
 
 # State tracking
 var was_idle: bool = false
@@ -35,12 +37,17 @@ func _ready() -> void:
 		return
 	
 	input_buffer.has_neg_edge = char_data.neg_edge
+	if char_data.neg_edge != false:
+		input_buffer.release_command_list = char_data.command_list.relese_cmnd_list
+	input_buffer.command_list = char_data.command_list.command_list
 		
 	setup_input_actions()
 
 func _physics_process(delta: float) -> void:
+	await get_tree().process_frame
 	if not char_data:
 		return
+	
 	if self.global_position.x > opponent.global_position.x:
 		dir_facing = "Left"
 	else:

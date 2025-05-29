@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="CommandData" load_steps=2 format=3 uid="uid://bpyaugxgsxocc"]
+
+[ext_resource type="Script" uid="uid://bhoay45i4tsn" path="res://Characters/BaseFighter/CommandData.gd" id="1_jf8xy"]
+
+[resource]
+script = ExtResource("1_jf8xy")
+command_list = [{
+"Command": "Forward Dash",
+"Priority": 1,
+"Sequence": ["6", "5", "6"]
+}, {
+"Command": "Backwards Dash",
+"Priority": 1,
+"Sequence": ["4", "5", "4"]
+}, {
+"Command": "6A",
+"Held": ["6"],
+"Priority": 1,
+"Sequence": ["6", "A"]
+}, {
+"Command": "6B",
+"Held": ["6"],
+"Priority": 1,
+"Sequence": ["6", "B"]
+}, {
+"Command": "6C",
+"Held": ["6"],
+"Priority": 1,
+"Sequence": ["6", "C"]
+}, {
+"Button": ["2"],
+"Charge": 45,
+"Command": "Flash Kick A",
+"Priority": 2,
+"Sequence": ["2", "8", "A"]
+}, {
+"Button": ["2"],
+"Charge": 45,
+"Command": "Back Charge A",
+"Priority": 2,
+"Sequence": ["2", "8", "A"]
+}, {
+"Command": "22A",
+"Priority": 2,
+"Sequence": ["2", "5", "2", "A"]
+}, {
+"Command": "Quater-Circle Fwd A",
+"Priority": 3,
+"Sequence": ["2", "3", "6", "A"]
+}, {
+"Command": "Half Circle Back Forwards",
+"Priority": 5,
+"Sequence": ["4", "1", "2", "3", "6", "A"]
+}, {
+"Command": "Golden Tager",
+"Priority": 8,
+"Sequence": ["4", "1", "2", "3", "6", "9", "8", "7", "4", "A"]
+}]
+relese_cmnd_list = []
+metadata/_custom_type_script = "uid://bhoay45i4tsn"

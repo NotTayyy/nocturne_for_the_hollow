@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://caqiyxh2cpy1j"]
+[gd_resource type="Resource" script_class="CharacterData" load_steps=4 format=3 uid="uid://caqiyxh2cpy1j"]
 
+[ext_resource type="Resource" uid="uid://qhy2gjy5rogd" path="res://Characters/Tmp_Jin/Jin_Commands.tres" id="1_l5k0q"]
 [ext_resource type="Script" uid="uid://cpq072udwjvmf" path="res://Characters/BaseFighter/CharacterData.gd" id="1_m6ua2"]
 [ext_resource type="PackedScene" uid="uid://c4sp332pyd3nh" path="res://Characters/Tmp_Jin/Char_Jin.tscn" id="1_tbc18"]
 
@@ -7,18 +8,23 @@
 script = ExtResource("1_m6ua2")
 character_name = "Jin Kisaragi"
 fighter_scene = ExtResource("1_tbc18")
+command_list = ExtResource("1_l5k0q")
+neg_edge = true
+charge_moves = false
 max_health = 15000
-negative_Penalty_Res = 4
+negative_Penalty_Res = 3
 toughness = 3
-guts = 2
+guts = 3
 ground_throw_range = 70
 air_throw_range = 120
 dashType = 1
 fwd_walk_speed = 200.0
 bwd_walk_speed = 140.0
-forward_dash = 0
+dash_Startup = 4
 run_int = 300.0
 run_skid = 60.0
+run_acc = 150
+run_max = 450.0
 backdash = 30
 backdash_Invuln = 10
 backdash_Distance = 400

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CommandData" load_steps=2 format=3 uid="uid://chrorrmb5b5g4"]
+
+[ext_resource type="Script" uid="uid://bhoay45i4tsn" path="res://Characters/BaseFighter/CommandData.gd" id="1_434gg"]
+
+[resource]
+script = ExtResource("1_434gg")
+command_list = Array[Dictionary]([])
+metadata/_custom_type_script = "uid://bhoay45i4tsn"
