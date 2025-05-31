@@ -17,7 +17,6 @@ func set_targets(P1: Node2D, P2: Node2D):
 	Player_2 = P2
 
 func _ready() -> void:
-	
 	await get_tree().process_frame
 	game_manager = get_parent()
 	

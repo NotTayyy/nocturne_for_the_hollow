@@ -26,6 +26,10 @@ buses/default_bus_layout=""
 CharacterDB="*res://Scripts/CharacterDatabase.gd"
 HitboxTypes="*res://Scripts/Hitbox_Types.gd"
 
+[dotnet]
+
+project/assembly_name="Nocturne for the Hollow"
+
 [input]
 
 P1_Left={

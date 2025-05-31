@@ -34,11 +34,11 @@ command_list = [{
 "Priority": 2,
 "Sequence": ["2", "8", "A"]
 }, {
-"Button": ["2"],
+"Button": ["4"],
 "Charge": 45,
 "Command": "Back Charge A",
 "Priority": 2,
-"Sequence": ["2", "8", "A"]
+"Sequence": ["4", "6", "A"]
 }, {
 "Command": "22A",
 "Priority": 2,
