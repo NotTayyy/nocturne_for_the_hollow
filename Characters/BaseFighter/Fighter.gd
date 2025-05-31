@@ -2,13 +2,16 @@ extends CharacterBody2D
 class_name Fighter
 
 @export_range(0, 2) var player_id: int = 0
+@export_enum("Left", "Right") var dir_facing: String
+@onready var input_buffer: InputBuffer = %InputBuffer
 var opponent: Fighter = null
 var char_data: CharacterData
 var cmd_data
 
-
-@export_enum("Left", "Right") var dir_facing: String
-@onready var input_buffer := %InputBuffer
+# State tracking
+var was_idle: bool = false
+var prejump_timer: int = -1
+var move_dir: float = 0.0
 
 #region Controls
 var move_left: String
@@ -24,36 +27,49 @@ var btn_d: String
 var debug: String
 #endregion
 
-# State tracking
-var was_idle: bool = false
-var is_running: bool = false
-var is_jumping: bool = false
-var prejump_timer: int = 0
-var move_dir: float = 0.0
-
 func _ready() -> void:
 	if not char_data:
 		push_error("Missing CharacterData!")
 		return
 	
 	input_buffer.has_neg_edge = char_data.neg_edge
+	input_buffer.command_list = char_data.command_list.command_list
+	
 	if char_data.neg_edge != false:
 		input_buffer.release_command_list = char_data.command_list.relese_cmnd_list
-	input_buffer.command_list = char_data.command_list.command_list
-		
+	
 	setup_input_actions()
+
+func setup_input_actions():
+	match player_id:
+		1:
+			move_left = "P1_Left"
+			move_right = "P1_Right"
+			move_up = "P1_Up"
+			move_down = "P1_Down"
+			btn_a = "P1_Btn_A"
+			btn_b = "P1_Btn_B"
+			btn_c = "P1_Btn_C"
+			btn_d = "P1_Btn_D"
+		2:
+			move_left = "P2_Left"
+			move_right = "P2_Right"
+			move_up = "P2_Up"
+			move_down = "P2_Down"
+			btn_a = "P2_Btn_A"
+			btn_b = "P2_Btn_B"
+			btn_c = "P2_Btn_C"
+			btn_d = "P2_Btn_D"
+		_:
+			push_warning("Unhandled player_id: %d" % player_id)
 
 func _physics_process(delta: float) -> void:
 	await get_tree().process_frame
 	if not char_data:
 		return
-	
-	if self.global_position.x > opponent.global_position.x:
-		dir_facing = "Left"
-	else:
-		dir_facing = "Right"
-	
-	_capture_input()
+
+	get_facing_dir()
+	capture_input()
 	handle_horizontal_movement(delta)
 	handle_jump_logic()
 	handle_gravity(delta)
@@ -62,10 +78,25 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Btn_Exit"):
 		get_tree().quit()
 
-func get_move_speed() -> float:
-	return char_data.fwd_walk_speed
+func get_facing_dir():
+	if self.global_position.x > opponent.global_position.x:
+		dir_facing = "Left"
+	else:
+		dir_facing = "Right"
 
-func _capture_input():
+func get_move_speed(dir: float) -> float:
+	if dir_facing == "Right":
+		if dir == -1:
+			return char_data.bwd_walk_speed
+		else:
+			return char_data.fwd_walk_speed
+	else:
+		if dir == -1:
+			return char_data.fwd_walk_speed
+		else:
+			return char_data.bwd_walk_speed
+
+func capture_input():
 	var held_directions = []
 	var released_directions = []
 	var btn = ""
@@ -170,29 +201,6 @@ func parse_direction(held: Array) -> String:
 		return horizontal
 	return "5"
 
-func setup_input_actions():
-	match player_id:
-		1:
-			move_left = "P1_Left"
-			move_right = "P1_Right"
-			move_up = "P1_Up"
-			move_down = "P1_Down"
-			btn_a = "P1_Btn_A"
-			btn_b = "P1_Btn_B"
-			btn_c = "P1_Btn_C"
-			btn_d = "P1_Btn_D"
-		2:
-			move_left = "P2_Left"
-			move_right = "P2_Right"
-			move_up = "P2_Up"
-			move_down = "P2_Down"
-			btn_a = "P2_Btn_A"
-			btn_b = "P2_Btn_B"
-			btn_c = "P2_Btn_C"
-			btn_d = "P2_Btn_D"
-		_:
-			push_warning("Unhandled player_id: %d" % player_id)
-
 func handle_gravity(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += char_data.gravity * delta
@@ -215,6 +223,6 @@ func handle_horizontal_movement(_delta: float) -> void:
 	move_dir = Input.get_axis(move_left, move_right)
 
 	if move_dir != 0:
-		velocity.x = move_dir * get_move_speed()
+		velocity.x = move_dir * get_move_speed(move_dir)
 	else:
 		velocity.x = 0

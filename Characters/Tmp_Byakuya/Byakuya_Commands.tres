@@ -55,6 +55,22 @@ command_list = [{
 "Command": "Golden Tager",
 "Priority": 8,
 "Sequence": ["4", "1", "2", "3", "6", "9", "8", "7", "4", "A"]
+}, {
+"Command": "Button A",
+"Priority": 1,
+"Sequence": ["A"]
+}, {
+"Command": "Button B",
+"Priority": 1,
+"Sequence": ["B"]
+}, {
+"Command": "Button C",
+"Priority": 1,
+"Sequence": ["C"]
+}, {
+"Command": "Button D",
+"Priority": 1,
+"Sequence": ["D"]
 }]
 relese_cmnd_list = []
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

@@ -163,7 +163,9 @@ func check_Command_list(type, cmd_list: Array):
 					if seq_index == -1:
 						matched_commands.append(command)
 						break
-
+#We need to make a list of possible actions during any given state
+#Then relate the possible actions to the ones that were possibly inputted and only compare
+#Priorities for the possible ones
 	if matched_commands.size() == 1:
 		print(matched_commands[0]["Command"])
 		return
