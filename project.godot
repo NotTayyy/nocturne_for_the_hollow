@@ -8,6 +8,19 @@
 
 config_version=5
 
+[addons]
+
+resources_spreadsheet_view/array_color_tint=100.0
+resources_spreadsheet_view/color_rows=true
+resources_spreadsheet_view/array_min_width=128.0
+resources_spreadsheet_view/resource_preview_size=32.0
+resources_spreadsheet_view/clip_headers=false
+resources_spreadsheet_view/dupe_arrays=true
+resources_spreadsheet_view/context_menu_on_leftclick=false
+resources_spreadsheet_view/fold_docks=true
+resources_spreadsheet_view/resource_cell_label_mode=1
+resources_spreadsheet_view/freeze_first_column=true
+
 [application]
 
 config/name="Nocturne for the Hollow"
@@ -23,8 +36,9 @@ buses/default_bus_layout=""
 
 [autoload]
 
-CharacterDB="*res://Scripts/CharacterDatabase.gd"
-HitboxTypes="*res://Scripts/Hitbox_Types.gd"
+G_CharacterDB="*res://Scripts/CharacterDatabase.gd"
+G_HitboxTypes="*res://Scripts/Hitbox_Types.gd"
+G_LevelDB="*res://Scripts/LevelDatabase.gd"
 
 [dotnet]
 

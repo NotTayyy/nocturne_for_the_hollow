@@ -37,7 +37,7 @@ func spawn_players():
 
 
 func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> Fighter:
-	var data: CharacterData = CharacterDB.get_data(char_name)
+	var data: CharacterData = G_CharacterDB.get_data(char_name)
 	if data == null:
 		push_warning("Character data for '%s' not found!" % char_name)
 		return
