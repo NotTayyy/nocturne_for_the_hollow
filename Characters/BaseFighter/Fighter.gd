@@ -97,53 +97,64 @@ func get_move_speed(dir: float) -> float:
 			return char_data.bwd_walk_speed
 
 func capture_input():
-	var held_directions = []
-	var released_directions = []
-	var btn = ""
-	var direction = ""
-		
+	var current_directions := []
+	var released_directions := []
+	var direction := ""
+
+	# Collect current held directions
+	for action in [move_left, move_right, move_up, move_down]:
+		if Input.is_action_pressed(action):
+			current_directions.append(action)
+
+	# Direction Just Pressed
 	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_just_pressed(action):
-			for actions in [move_left, move_right, move_up, move_down]:
-				if Input.is_action_pressed(actions):
-					held_directions.append(actions)
-					direction = parse_direction(held_directions)
-			
+			var prev_direction = parse_direction(current_directions.filter(func(a): return a != action))
+			var new_direction = parse_direction(current_directions)
+
 			if was_idle:
 				input_buffer.register_input("5", "release")
 				was_idle = false
-		
+
+			if prev_direction != "" and prev_direction != new_direction:
+				input_buffer.register_input(prev_direction, "release")
+
+			if new_direction != "":
+				input_buffer.register_input(new_direction, "press")
+			break  # One press is enough
+
+	# Direction Just Released
+	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_just_released(action):
 			released_directions.append(action)
-			direction = parse_direction(released_directions)
-			if direction != "":
-				input_buffer.register_input(direction, "release")
-				direction = ""
-			for actions in [move_left, move_right, move_up, move_down]:
-				if Input.is_action_pressed(actions):
-					held_directions.append(actions)
-					direction = parse_direction(held_directions)
-	if direction != "":
-		input_buffer.register_input(direction, "press")
-		
-	var still_held := false
-	for action in [move_left, move_right, move_up, move_down]:
-		if Input.is_action_pressed(action):
-			still_held = true
-			break
 
-	if not still_held and not was_idle:
+	if released_directions.size() > 0:
+		var release_dir = parse_direction(released_directions)
+		if release_dir != "":
+			input_buffer.register_input(release_dir, "release")
+
+		# Re-evaluate what's currently being held
+		current_directions.clear()
+		for action in [move_left, move_right, move_up, move_down]:
+			if Input.is_action_pressed(action):
+				current_directions.append(action)
+		var new_direction = parse_direction(current_directions)
+		if new_direction != "":
+			input_buffer.register_input(new_direction, "press")
+
+	# Detect return to neutral (idle)
+	if current_directions.size() == 0 and not was_idle:
 		input_buffer.register_input("5", "press")
 		was_idle = true
-		
+
+	# Button inputs
 	for action in [btn_a, btn_b, btn_c, btn_d]:
+		var btn = parse_buttons(action)
 		if Input.is_action_just_pressed(action):
-			btn = parse_buttons(action)
 			input_buffer.register_input(btn, "press")
 		elif Input.is_action_just_released(action):
-			btn = parse_buttons(action)
 			input_buffer.register_input(btn, "release")
-
+			
 func parse_buttons(button: String) -> String:
 	match button:
 		btn_a:

@@ -1,13 +1,11 @@
 extends Node
 class_name InputBuffer
 
-@export var max_buffer_frames: int = 12
+@export var max_buffer_frames: int = 30
 
 var current_frame = 0
-
 var buffer_history: Array = []
 var has_neg_edge: bool = false
-
 var release_command_list
 var command_list 
 
@@ -23,7 +21,6 @@ func register_input(action: String, type: String) -> void:
 		"type": type
 	})
 	
-	#print_buffer()
 	check_commands()
 
 func clear():
@@ -32,7 +29,8 @@ func clear():
 func check_commands():
 	if buffer_history.is_empty():
 		return
-	
+	print_buffer()
+
 	var last_entry = buffer_history[-1]
 	
 	if last_entry["type"] == "press":
@@ -40,31 +38,46 @@ func check_commands():
 	elif last_entry["type"] == "release" and release_command_list != null:
 		check_Command_list("release", release_command_list)
 
+#Bug I Dont know if it was here but Holding 1 then holding 3 wont cancel out 4 and 6
+#Bug When Canceling 4 AND 6 OR 8 And 2 it will not register a release. Just a press of 5
+
 func check_held_inputs() -> Array:
 	var held_inputs:= {}
-	var direction_map:= {
-		"1": ["2", "4"],
-		"3": ["2", "6"],
-		"7": ["8", "4"],
-		"9": ["8", "6"]
-	}
-	var directions := ["2", "4", "6", "8"]
+	var directions := ["2", "4", "6", "8", "1", "3", "7", "9"]
 	var buttons:= ["A", "B", "C", "D"]
-	
+	var direction_map:= {
+		"1": ["1", "2", "4"],
+		"3": ["3", "2", "6"],
+		"7": ["7", "8", "4"],
+		"9": ["9", "8", "6"],
+	}
+	var release_map:= {
+		"2": ["1", "2", "3"],
+		"4": ["1", "4", "7"],
+		"8": ["7", "8", "9"],
+		"6": ["9", "6", "3"],
+	}
+
 	for entry in buffer_history:
-		var keys = direction_map.get(entry.action, [entry.action])
-		for key in keys:
+		var Inputs = direction_map.get(entry.action, [entry.action])
+		var release = release_map.get(entry.action, [entry.action])
+		for key in Inputs:
+			if key == "5" and entry["type"] == "press":
+				held_inputs.clear()
 			if key in directions or key in buttons:
 				if entry["type"] == "press":
 					held_inputs[key] = true
 				if entry["type"] == "release":
-					held_inputs.erase(key)
-					#BUG: If you Hold 4, then Hold 6, 4 Will still count as being held, Fix this
+					for btn in release:
+						held_inputs.erase(btn)
+	
 	return held_inputs.keys()
 
 func check_Command_list(type, cmd_list: Array):
 	var held_inputs = check_held_inputs()
 	var matched_commands: Array = []
+	print(held_inputs)
+	
 	for command in cmd_list:
 		var sequence: Array = command["Sequence"]
 		var priority: int = command["Priority"]
@@ -78,7 +91,7 @@ func check_Command_list(type, cmd_list: Array):
 			for i in range(buffer_history.size() - 1, -1, -1):
 				if seq_index < 0:
 					break
-					
+				
 				var entry = buffer_history[i]
 				if starter["action"] == sequence[-1]:
 					if current_frame - starter["action_frame"] < max_buffer_frames: 
@@ -87,7 +100,7 @@ func check_Command_list(type, cmd_list: Array):
 							if seq_index == -1:
 								for held_input in command["Held"]:
 									#Fixed Bug(Diagonals Would make this run)
-									if held_inputs.has(held_input) and held_inputs.size() == 2:
+									if held_inputs.has(held_input):
 										matched_commands.append(command)
 								break
 		
@@ -123,7 +136,7 @@ func check_Command_list(type, cmd_list: Array):
 					if sequence[seq_index] == charge_btn:
 						if entry["type"] != "release":
 							continue
-						if current_frame - entry["action_frame"] > max_buffer_frames:
+						if prev_frame - entry["action_frame"] > max_buffer_frames:
 							break
 					else:
 						if entry["type"] != type:
@@ -163,6 +176,7 @@ func check_Command_list(type, cmd_list: Array):
 					if seq_index == -1:
 						matched_commands.append(command)
 						break
+
 #We need to make a list of possible actions during any given state
 #Then relate the possible actions to the ones that were possibly inputted and only compare
 #Priorities for the possible ones
@@ -176,6 +190,7 @@ func check_Command_list(type, cmd_list: Array):
 			if entry["Priority"] > curr_priority:
 				curr_command = entry
 				curr_priority = entry["Priority"]
+		print(matched_commands)
 		print(curr_command["Command"])
 		return
 

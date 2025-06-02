@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="CommandData" load_steps=2 format=3 uid="uid://debnxvsyjvuhp"]
+[gd_resource type="Resource" script_class="CommandData" load_steps=2 format=3 uid="uid://ca62x4gkhxc6o"]
 
-[ext_resource type="Script" uid="uid://bhoay45i4tsn" path="res://Characters/BaseFighter/CommandData.gd" id="1_61bqc"]
+[ext_resource type="Script" uid="uid://bhoay45i4tsn" path="res://Characters/BaseFighter/CommandData.gd" id="1_q63nq"]
 
 [resource]
-script = ExtResource("1_61bqc")
+script = ExtResource("1_q63nq")
 command_list = [{
 "Command": "Forward Dash",
 "Priority": 1,
@@ -28,6 +28,11 @@ command_list = [{
 "Priority": 1,
 "Sequence": ["6", "C"]
 }, {
+"Command": "3C",
+"Held": ["3"],
+"Priority": 2,
+"Sequence": ["3", "C"]
+}, {
 "Button": ["2"],
 "Charge": 45,
 "Command": "Flash Kick A",
@@ -48,8 +53,18 @@ command_list = [{
 "Priority": 3,
 "Sequence": ["2", "3", "6", "A"]
 }, {
-"Command": "Half Circle Back Forwards",
+"Command": "Half Circle Forwards A",
 "Priority": 5,
+"Sequence": ["4", "1", "2", "3", "6", "A"]
+}, {
+"Command": "Quater-Circle back Half-Circle Forwards A",
+"Priority": 8,
+"Sequence": ["2", "1", "4", "1", "2", "3", "6", "A"]
+}, {
+"Button": ["4"],
+"Charge": 30,
+"Command": "Charge Back Half Circle Forwards A",
+"Priority": 8,
 "Sequence": ["4", "1", "2", "3", "6", "A"]
 }, {
 "Command": "Golden Tager",
@@ -57,19 +72,19 @@ command_list = [{
 "Sequence": ["4", "1", "2", "3", "6", "9", "8", "7", "4", "A"]
 }, {
 "Command": "Button A",
-"Priority": 1,
+"Priority": 0,
 "Sequence": ["A"]
 }, {
 "Command": "Button B",
-"Priority": 1,
+"Priority": 0,
 "Sequence": ["B"]
 }, {
 "Command": "Button C",
-"Priority": 1,
+"Priority": 0,
 "Sequence": ["C"]
 }, {
 "Command": "Button D",
-"Priority": 1,
+"Priority": 0,
 "Sequence": ["D"]
 }]
 relese_cmnd_list = []
