@@ -36,9 +36,9 @@ buses/default_bus_layout=""
 
 [autoload]
 
-G_CharacterDB="*res://Scripts/CharacterDatabase.gd"
-G_HitboxTypes="*res://Scripts/Hitbox_Types.gd"
-G_LevelDB="*res://Scripts/LevelDatabase.gd"
+G_CharacterDB="*res://Scripts/Globals/CharacterDatabase.gd"
+G_HitboxTypes="*res://Scripts/Globals/Hitbox_Types.gd"
+G_LevelDB="*res://Scripts/Globals/LevelDatabase.gd"
 
 [dotnet]
 

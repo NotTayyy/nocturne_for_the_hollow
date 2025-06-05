@@ -23,3 +23,10 @@ offset = Vector2(0, -83)
 
 [node name="InputBuffer" parent="Components" instance=ExtResource("3_7vgrp")]
 unique_name_in_owner = true
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -54.0
+offset_top = -295.0
+offset_right = -14.0
+offset_bottom = -272.0

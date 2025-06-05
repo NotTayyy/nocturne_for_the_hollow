@@ -1,16 +1,19 @@
 extends Node
 class_name InputBuffer
 
-@export var max_buffer_frames: int = 30
-
-var current_frame = 0
+@export var max_buffer_frames: int = 12
+@onready var label: Label = %Label
+var current_frame: int = 0
 var buffer_history: Array = []
 var has_neg_edge: bool = false
 var release_command_list
 var command_list 
+var character
 
 func _ready() -> void:
 		await get_tree().process_frame
+		
+		character = get_parent().get_parent()
 
 func register_input(action: String, type: String) -> void:
 	current_frame = Engine.get_physics_frames()
@@ -37,9 +40,6 @@ func check_commands():
 		check_Command_list("press", command_list)
 	elif last_entry["type"] == "release" and release_command_list != null:
 		check_Command_list("release", release_command_list)
-
-#Bug I Dont know if it was here but Holding 1 then holding 3 wont cancel out 4 and 6
-#Bug When Canceling 4 AND 6 OR 8 And 2 it will not register a release. Just a press of 5
 
 func check_held_inputs() -> Array:
 	var held_inputs:= {}
@@ -76,7 +76,7 @@ func check_held_inputs() -> Array:
 func check_Command_list(type, cmd_list: Array):
 	var held_inputs = check_held_inputs()
 	var matched_commands: Array = []
-	print(held_inputs)
+	#print(held_inputs)
 	
 	for command in cmd_list:
 		var sequence: Array = command["Sequence"]
@@ -181,7 +181,8 @@ func check_Command_list(type, cmd_list: Array):
 #Then relate the possible actions to the ones that were possibly inputted and only compare
 #Priorities for the possible ones
 	if matched_commands.size() == 1:
-		print(matched_commands[0]["Command"])
+		#print(matched_commands[0]["Command"])
+		character.set_queue(matched_commands[0]["Command"])
 		return
 	elif matched_commands.size() > 1:
 		var curr_priority: int = -1
@@ -190,13 +191,46 @@ func check_Command_list(type, cmd_list: Array):
 			if entry["Priority"] > curr_priority:
 				curr_command = entry
 				curr_priority = entry["Priority"]
-		print(matched_commands)
-		print(curr_command["Command"])
+		#print(matched_commands)
+		#print(curr_command["Command"])
+		character.set_queue(curr_command["Command"])
 		return
 
 func print_buffer():
 	var entry = buffer_history[-1]
+	label.text = parse_emoji(entry["action"])
 	print("Action: ", entry["type"], " : ", entry["action"], " at frame ", entry["action_frame"])
+
+func parse_emoji(button: String) -> String:
+	match button:
+		"1":
+			return "🢇"
+		"2":
+			return "🢃"
+		"3":
+			return "🢆"
+		"4":
+			return "🢀"
+		"5":
+			return "⚤"
+		"6":
+			return "🢂"
+		"7":
+			return "🢄"
+		"8":
+			return "🢁"
+		"9":
+			return "🢅"
+		"A":
+			return "🅰️"
+		"B":
+			return "🅱️"
+		"C":
+			return "𝓒"
+		"D":
+			return "Ɗ"
+		_:
+			return ""
 
 func _physics_process(_delta: float) -> void:
 	pass

@@ -4,6 +4,7 @@ class_name Fighter
 @export_range(0, 2) var player_id: int = 0
 @export_enum("Left", "Right") var dir_facing: String
 @onready var input_buffer: InputBuffer = %InputBuffer
+
 var opponent: Fighter = null
 var char_data: CharacterData
 var cmd_data
@@ -11,7 +12,7 @@ var cmd_data
 # State tracking
 var was_idle: bool = false
 var prejump_timer: int = -1
-var move_dir: float = 0.0
+var move_dir: int = 0
 
 #region Controls
 var move_left: String
@@ -39,6 +40,9 @@ func _ready() -> void:
 		input_buffer.release_command_list = char_data.command_list.relese_cmnd_list
 	
 	setup_input_actions()
+
+func set_queue(command: String) -> void:
+	print(command)
 
 func setup_input_actions():
 	match player_id:

@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dg33asvi0qgfr"]
+[gd_scene load_steps=8 format=3 uid="uid://dg33asvi0qgfr"]
 
 [ext_resource type="Script" uid="uid://d2ruw43pyssh8" path="res://Characters/Tmp_Byakuya/char_byakuya.gd" id="1_tqmcm"]
 [ext_resource type="Texture2D" uid="uid://c7swkhogcpkmh" path="res://Characters/Tmp_Byakuya/Byakuya/000.png" id="2_t652o"]
 [ext_resource type="PackedScene" uid="uid://5ucjfk86rrqd" path="res://Scripts/Components/InputBuffer.tscn" id="3_txuk2"]
+[ext_resource type="PackedScene" uid="uid://bahyb0ntrxf8f" path="res://Scripts/Components/State_Manager.tscn" id="4_e5bsc"]
+[ext_resource type="Script" uid="uid://dov7qxyafce8e" path="res://Scripts/Components/state_manager.gd" id="5_103do"]
+[ext_resource type="Script" uid="uid://bmf1k64ikwomo" path="res://Characters/Tmp_Byakuya/States/Idle_State.gd" id="6_103do"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4lanw"]
 size = Vector2(100, 188)
@@ -25,3 +28,19 @@ region_rect = Rect2(557.208, 325.96, 163.979, 370.417)
 
 [node name="InputBuffer" parent="Components" instance=ExtResource("3_txuk2")]
 unique_name_in_owner = true
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -26.0
+offset_top = -290.0
+offset_right = 14.0
+offset_bottom = -267.0
+text = "Placeholder"
+
+[node name="StateManager" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("4_e5bsc")]
+script = ExtResource("5_103do")
+initial_state = NodePath("Idle_State")
+
+[node name="Idle_State" type="Node" parent="StateManager"]
+script = ExtResource("6_103do")
+metadata/_custom_type_script = "uid://chkdlbw8h0hmv"

@@ -2,6 +2,7 @@ extends Resource
 class_name CharacterData
 
 enum DashType { Step, Run, Teleport, Hover, None }
+enum BackDashType { Step, Hover, Run }
 
 @export_category("Lore Data")
 @export var character_name: String = "Default Fighter"
@@ -24,26 +25,27 @@ enum DashType { Step, Run, Teleport, Hover, None }
 
 @export_category("Ground Movement")
 @export var dashType: DashType = DashType.Run
-@export var fwd_walk_speed: float = 200
-@export var bwd_walk_speed: float = 140
+@export var fwd_walk_speed: int = 200
+@export var bwd_walk_speed: int = 140
 @export var dash_Startup: int = 4
-@export var run_int: float = 300
-@export var run_skid: float = 60
+@export var run_int: int = 300
+@export var run_skid: int = 60
 @export var run_acc: int = 150
-@export var run_max: float = 450
+@export var run_max: int = 450
+@export var backdash_type: BackDashType = BackDashType.Run
 @export var backdash: int = 30
-@export var backdash_Invuln: int = 10
-@export var backdash_Distance: int = 400
+@export var backdash_invuln: int = 10
+@export var backdash_distance: int = 400
 @export var backdash_duration: int = 30
 
 @export_category("Air Movement")
 @export var prejump: int = 4
-@export var jump_velocity: float = -1350
-@export var fwd_jump_velocity: float = -800
-@export var bwd_jump_velocity: float = -800
-@export var super_jump_velocity: float = -1650
-@export var fwd_super_jump_velocity: float = -1650
-@export var bwd_super_jump_velocity: float = -1650
-@export var gravity: float = 3500
+@export var jump_velocity: int = -1350
+@export var fwd_jump_velocity: int = -800
+@export var bwd_jump_velocity: int = -800
+@export var super_jump_velocity: int = -1650
+@export var fwd_super_jump_velocity: int = -1650
+@export var bwd_super_jump_velocity: int = -1650
+@export var gravity: int = 3500
 @export var air_Jumps: int = 1
 @export var air_Dashes: int = 1

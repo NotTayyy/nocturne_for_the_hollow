@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://c4sp332pyd3nh"]
+[gd_scene load_steps=5 format=3 uid="uid://c4sp332pyd3nh"]
 
 [ext_resource type="Texture2D" uid="uid://dyp3g1r3ix2xx" path="res://Characters/Tmp_Jin/Jin Sprites/jn310_02.png" id="1_p7ssr"]
 [ext_resource type="Script" uid="uid://brjkebepdyk3d" path="res://Characters/Tmp_Jin/char_jin.gd" id="1_wk43p"]
+[ext_resource type="PackedScene" uid="uid://5ucjfk86rrqd" path="res://Scripts/Components/InputBuffer.tscn" id="3_crvpc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wk43p"]
 size = Vector2(100, 188)
@@ -16,3 +17,15 @@ shape = SubResource("RectangleShape2D_wk43p")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_p7ssr")
 offset = Vector2(0, -88)
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -68.0
+offset_top = -319.0
+offset_right = -28.0
+offset_bottom = -296.0
+
+[node name="Components" type="Node" parent="."]
+
+[node name="InputBuffer" parent="Components" instance=ExtResource("3_crvpc")]
+unique_name_in_owner = true

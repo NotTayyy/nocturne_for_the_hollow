@@ -86,6 +86,10 @@ command_list = [{
 "Command": "Button D",
 "Priority": 0,
 "Sequence": ["D"]
+}, {
+"Command": "Tiger Knee",
+"Priority": 4,
+"Sequence": ["6", "2", "3", "A"]
 }]
 relese_cmnd_list = []
 metadata/_custom_type_script = "uid://bhoay45i4tsn"
