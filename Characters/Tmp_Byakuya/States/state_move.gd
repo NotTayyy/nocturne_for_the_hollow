@@ -1,12 +1,11 @@
 extends State
 
 func Enter() -> void:
-	pass
+	
+	print("We Moving")
 
 func Update(_delta:float) -> void:
-	pass
 
-func _physics_process(delta: float) -> void:
 	pass
 
 func Exit() -> void:

@@ -43,6 +43,7 @@ func _ready() -> void:
 
 func set_queue(command: String) -> void:
 	print(command)
+	
 
 func setup_input_actions():
 	match player_id:

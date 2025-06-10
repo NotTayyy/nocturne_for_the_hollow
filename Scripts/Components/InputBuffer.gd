@@ -6,6 +6,7 @@ class_name InputBuffer
 var current_frame: int = 0
 var buffer_history: Array = []
 var has_neg_edge: bool = false
+@onready var state_mngr: FighterStateMachine = %FighterStateMachine
 var release_command_list
 var command_list 
 var character
@@ -63,7 +64,8 @@ func check_held_inputs() -> Array:
 		var release = release_map.get(entry.action, [entry.action])
 		for key in Inputs:
 			if key == "5" and entry["type"] == "press":
-				held_inputs.clear()
+				for dir in directions:
+					held_inputs.erase(dir)
 			if key in directions or key in buttons:
 				if entry["type"] == "press":
 					held_inputs[key] = true
@@ -80,11 +82,9 @@ func check_Command_list(type, cmd_list: Array):
 	
 	for command in cmd_list:
 		var sequence: Array = command["Sequence"]
-		var priority: int = command["Priority"]
 		var seq_index: int = sequence.size() - 1
 		var prev_frame: int = -1
 		var starter: Dictionary = buffer_history[-1]
-		var charge: int
 		
 		#Checks Only The Command Normals
 		if "Held" in command:
@@ -182,7 +182,7 @@ func check_Command_list(type, cmd_list: Array):
 #Priorities for the possible ones
 	if matched_commands.size() == 1:
 		#print(matched_commands[0]["Command"])
-		character.set_queue(matched_commands[0]["Command"])
+		state_mngr.set_queue(matched_commands[0]["Command"])
 		return
 	elif matched_commands.size() > 1:
 		var curr_priority: int = -1
@@ -193,13 +193,14 @@ func check_Command_list(type, cmd_list: Array):
 				curr_priority = entry["Priority"]
 		#print(matched_commands)
 		#print(curr_command["Command"])
-		character.set_queue(curr_command["Command"])
+		state_mngr.set_queue(curr_command["Command"])
 		return
 
 func print_buffer():
 	var entry = buffer_history[-1]
 	label.text = parse_emoji(entry["action"])
-	print("Action: ", entry["type"], " : ", entry["action"], " at frame ", entry["action_frame"])
+	if G_HitboxTypes.Debug == true:
+		print("Action: ", entry["type"], " : ", entry["action"], " at frame ", entry["action_frame"])
 
 func parse_emoji(button: String) -> String:
 	match button:

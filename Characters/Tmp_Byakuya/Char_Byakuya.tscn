@@ -39,6 +39,7 @@ offset_bottom = -267.0
 text = "Placeholder"
 
 [node name="FighterStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
 script = ExtResource("5_103do")
 initial_state = NodePath("State_Idle")
 metadata/_custom_type_script = "uid://dov7qxyafce8e"
@@ -47,10 +48,18 @@ metadata/_custom_type_script = "uid://dov7qxyafce8e"
 script = ExtResource("5_vg3mj")
 metadata/_custom_type_script = "uid://chkdlbw8h0hmv"
 
+[node name="State_Move" type="Node" parent="FighterStateMachine"]
+script = ExtResource("7_yj3rr")
+metadata/_custom_type_script = "uid://chkdlbw8h0hmv"
+
 [node name="State_Idle" type="Node" parent="FighterStateMachine"]
 script = ExtResource("6_103do")
 metadata/_custom_type_script = "uid://chkdlbw8h0hmv"
 
-[node name="State_Move" type="Node" parent="FighterStateMachine"]
-script = ExtResource("7_yj3rr")
-metadata/_custom_type_script = "uid://chkdlbw8h0hmv"
+[node name="State" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -28.0
+offset_top = -316.0
+offset_right = 12.0
+offset_bottom = -293.0
+text = "No State"
