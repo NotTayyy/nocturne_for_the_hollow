@@ -3,10 +3,8 @@ extends State
 var we_idle: bool
 
 func Enter() -> void:
-	possible_commands = ["Help"]
+	possible_commands = ["6A", "6B", "6C", "Forward Dash"]
 	state_machine.allowed_cmnds = possible_commands
-	
-	
 	
 	print("We Getting Lazy.. Oh Yeag")
 

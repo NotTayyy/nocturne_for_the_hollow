@@ -10,6 +10,7 @@ var has_neg_edge: bool = false
 var release_command_list
 var command_list 
 var character
+var current_state_commands
 
 func _ready() -> void:
 		await get_tree().process_frame
@@ -18,6 +19,7 @@ func _ready() -> void:
 
 func register_input(action: String, type: String) -> void:
 	current_frame = Engine.get_physics_frames()
+	current_state_commands = state_mngr.allowed_cmnds
 	
 	buffer_history.append({
 		"action": action,
@@ -81,120 +83,121 @@ func check_Command_list(type, cmd_list: Array):
 	#print(held_inputs)
 	
 	for command in cmd_list:
-		var sequence: Array = command["Sequence"]
-		var seq_index: int = sequence.size() - 1
-		var prev_frame: int = -1
-		var starter: Dictionary = buffer_history[-1]
-		
-		#Checks Only The Command Normals
-		if "Held" in command:
-			for i in range(buffer_history.size() - 1, -1, -1):
-				if seq_index < 0:
-					break
-				
-				var entry = buffer_history[i]
-				if starter["action"] == sequence[-1]:
-					if current_frame - starter["action_frame"] < max_buffer_frames: 
-						if entry["action"] == sequence[seq_index] and entry["type"] == type:
-							seq_index -= 1
-							if seq_index == -1:
-								for held_input in command["Held"]:
-									#Fixed Bug(Diagonals Would make this run)
-									if held_inputs.has(held_input):
-										matched_commands.append(command)
-								break
-		
-		#Checks only the Charge Based Commands
-		elif "Charge" in command:
-			var charge_btn: String  = command["Button"][0]
-			var charge_frames: int = command["Charge"]
-			var charge_met: bool = false
+		if command["Command"] in current_state_commands: #Only Legal moves will be Logged!!
+			var sequence: Array = command["Sequence"]
+			var seq_index: int = sequence.size() - 1
+			var prev_frame: int = -1
+			var starter: Dictionary = buffer_history[-1]
+			
+			#Checks Only The Command Normals
+			if "Held" in command:
+				for i in range(buffer_history.size() - 1, -1, -1):
+					if seq_index < 0:
+						break
 					
-			for i in range(buffer_history.size() - 1, -1, -1):
-				var release_entry = buffer_history[i]
-				if release_entry["action"] == charge_btn and release_entry["type"] == "release":
-					# Step 2: Find matching press before that release
-					for j in range(i - 1, -1, -1):
-						var press_entry = buffer_history[j]
-						if press_entry["action"] == charge_btn and press_entry["type"] == "press":
-							var held_frames = release_entry["action_frame"] - press_entry["action_frame"]
-							if held_frames >= charge_frames:
-								charge_met = true
-							break
-					break
-				
-			if not charge_met:
-				continue
-				
-			for i in range(buffer_history.size() -1, -1, -1):
-				if seq_index < 0:
-					break
-				
-				var entry = buffer_history[i]
-				if entry["action"] == sequence[seq_index]:
-					# If this is the charge button, expect a RELEASE
-					if sequence[seq_index] == charge_btn:
-						if entry["type"] != "release":
-							continue
-						if prev_frame - entry["action_frame"] > max_buffer_frames:
-							break
-					else:
-						if entry["type"] != type:
-							continue
-						if prev_frame == -1:
-							if current_frame - entry["action_frame"] > max_buffer_frames:
-								break
-						else:
-							if prev_frame - entry["action_frame"] > max_buffer_frames:
-								break
-						prev_frame = entry["action_frame"]
+					var entry = buffer_history[i]
+					if starter["action"] == sequence[-1]:
+						if current_frame - starter["action_frame"] < max_buffer_frames: 
+							if entry["action"] == sequence[seq_index] and entry["type"] == type:
+								seq_index -= 1
+								if seq_index == -1:
+									for held_input in command["Held"]:
+										#Fixed Bug(Diagonals Would make this run)
+										if held_inputs.has(held_input):
+											matched_commands.append(command)
+									break
+			
+			#Checks only the Charge Based Commands
+			elif "Charge" in command:
+				var charge_btn: String  = command["Button"][0]
+				var charge_frames: int = command["Charge"]
+				var charge_met: bool = false
 						
-					seq_index -= 1
-				if seq_index == -1:
-					matched_commands.append(command)
-		
-		#Checks only the leftover Commands.
-		else: 
-			for i in range(buffer_history.size() - 1, -1, -1):
-				if seq_index < 0:
-					break
-					
-				var entry = buffer_history[i]
-				if starter["action"] == sequence[-1]:
-					if entry["action"] == sequence[seq_index] and entry["type"] == type:
-						if prev_frame == -1:
-							if current_frame - entry["action_frame"] > max_buffer_frames:
+				for i in range(buffer_history.size() - 1, -1, -1):
+					var release_entry = buffer_history[i]
+					if release_entry["action"] == charge_btn and release_entry["type"] == "release":
+						# Step 2: Find matching press before that release
+						for j in range(i - 1, -1, -1):
+							var press_entry = buffer_history[j]
+							if press_entry["action"] == charge_btn and press_entry["type"] == "press":
+								var held_frames = release_entry["action_frame"] - press_entry["action_frame"]
+								if held_frames >= charge_frames:
+									charge_met = true
 								break
-							prev_frame = entry["action_frame"]
-						else:
+						break
+					
+				if not charge_met:
+					continue
+					
+				for i in range(buffer_history.size() -1, -1, -1):
+					if seq_index < 0:
+						break
+					
+					var entry = buffer_history[i]
+					if entry["action"] == sequence[seq_index]:
+						# If this is the charge button, expect a RELEASE
+						if sequence[seq_index] == charge_btn:
+							if entry["type"] != "release":
+								continue
 							if prev_frame - entry["action_frame"] > max_buffer_frames:
 								break
+						else:
+							if entry["type"] != type:
+								continue
+							if prev_frame == -1:
+								if current_frame - entry["action_frame"] > max_buffer_frames:
+									break
 							else:
-								prev_frame = entry["action_frame"]
-						
+								if prev_frame - entry["action_frame"] > max_buffer_frames:
+									break
+							prev_frame = entry["action_frame"]
+							
 						seq_index -= 1
 					if seq_index == -1:
 						matched_commands.append(command)
+			
+			#Checks only the leftover Commands.
+			else: 
+				for i in range(buffer_history.size() - 1, -1, -1):
+					if seq_index < 0:
 						break
+						
+					var entry = buffer_history[i]
+					if starter["action"] == sequence[-1]:
+						if entry["action"] == sequence[seq_index] and entry["type"] == type:
+							if prev_frame == -1:
+								if current_frame - entry["action_frame"] > max_buffer_frames:
+									break
+								prev_frame = entry["action_frame"]
+							else:
+								if prev_frame - entry["action_frame"] > max_buffer_frames:
+									break
+								else:
+									prev_frame = entry["action_frame"]
+							
+							seq_index -= 1
+						if seq_index == -1:
+							matched_commands.append(command)
+							break
 
-#We need to make a list of possible actions during any given state
-#Then relate the possible actions to the ones that were possibly inputted and only compare
-#Priorities for the possible ones
-	if matched_commands.size() == 1:
-		#print(matched_commands[0]["Command"])
-		state_mngr.set_queue(matched_commands[0]["Command"])
-		return
-	elif matched_commands.size() > 1:
-		var curr_priority: int = -1
-		var curr_command = null
-		for entry in matched_commands:
-			if entry["Priority"] > curr_priority:
-				curr_command = entry
-				curr_priority = entry["Priority"]
-		#print(matched_commands)
-		#print(curr_command["Command"])
-		state_mngr.set_queue(curr_command["Command"])
-		return
+	#We need to make a list of possible actions during any given state
+	#Then relate the possible actions to the ones that were possibly inputted and only compare
+	#Priorities for the possible ones
+		if matched_commands.size() == 1:
+			#print(matched_commands[0]["Command"])
+			state_mngr.set_queue(matched_commands[0]["Command"])
+			return
+		elif matched_commands.size() > 1:
+			var curr_priority: int = -1
+			var curr_command = null
+			for entry in matched_commands:
+				if entry["Priority"] > curr_priority:
+					curr_command = entry
+					curr_priority = entry["Priority"]
+			#print(matched_commands)
+			#print(curr_command["Command"])
+			state_mngr.set_queue(curr_command["Command"])
+			return
 
 func print_buffer():
 	var entry = buffer_history[-1]

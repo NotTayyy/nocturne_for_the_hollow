@@ -9,7 +9,7 @@ var possible_commands: Array[String]
 signal state_transition
 
 func Enter() -> void:
-	pass
+	state_machine.allowed_cmnds = possible_commands
 
 func Update(_delta:float) -> void:
 	pass
