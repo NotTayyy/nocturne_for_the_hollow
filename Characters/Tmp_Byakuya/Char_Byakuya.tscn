@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://dg33asvi0qgfr"]
+[gd_scene load_steps=9 format=3 uid="uid://dg33asvi0qgfr"]
 
 [ext_resource type="Script" uid="uid://d2ruw43pyssh8" path="res://Characters/Tmp_Byakuya/char_byakuya.gd" id="1_tqmcm"]
 [ext_resource type="Texture2D" uid="uid://c7swkhogcpkmh" path="res://Characters/Tmp_Byakuya/Byakuya/000.png" id="2_t652o"]
 [ext_resource type="PackedScene" uid="uid://5ucjfk86rrqd" path="res://Scripts/Components/InputBuffer.tscn" id="3_txuk2"]
-[ext_resource type="PackedScene" uid="uid://bahyb0ntrxf8f" path="res://Scripts/Components/State_Manager.tscn" id="4_e5bsc"]
 [ext_resource type="Script" uid="uid://dov7qxyafce8e" path="res://Scripts/Components/state_manager.gd" id="5_103do"]
-[ext_resource type="Script" uid="uid://bmf1k64ikwomo" path="res://Characters/Tmp_Byakuya/States/Idle_State.gd" id="6_103do"]
+[ext_resource type="Script" uid="uid://chcqgxalwnf0s" path="res://Characters/Tmp_Byakuya/States/state_pregame.gd" id="5_vg3mj"]
+[ext_resource type="Script" uid="uid://c83su2scto86q" path="res://Characters/Tmp_Byakuya/States/state_idle.gd" id="6_103do"]
+[ext_resource type="Script" uid="uid://g4i7jtxd02ev" path="res://Characters/Tmp_Byakuya/States/state_move.gd" id="7_yj3rr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4lanw"]
 size = Vector2(100, 188)
@@ -37,10 +38,19 @@ offset_right = 14.0
 offset_bottom = -267.0
 text = "Placeholder"
 
-[node name="StateManager" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("4_e5bsc")]
+[node name="FighterStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("5_103do")
-initial_state = NodePath("Idle_State")
+initial_state = NodePath("State_Idle")
+metadata/_custom_type_script = "uid://dov7qxyafce8e"
 
-[node name="Idle_State" type="Node" parent="StateManager"]
+[node name="State_Pregame" type="Node" parent="FighterStateMachine"]
+script = ExtResource("5_vg3mj")
+metadata/_custom_type_script = "uid://chkdlbw8h0hmv"
+
+[node name="State_Idle" type="Node" parent="FighterStateMachine"]
 script = ExtResource("6_103do")
+metadata/_custom_type_script = "uid://chkdlbw8h0hmv"
+
+[node name="State_Move" type="Node" parent="FighterStateMachine"]
+script = ExtResource("7_yj3rr")
 metadata/_custom_type_script = "uid://chkdlbw8h0hmv"

@@ -20,7 +20,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	game_manager = get_parent()
 	
-	if game_manager:
+	if game_manager and G_HitboxTypes.Debug == true:
 		print("Camera Manager Loaded!")
 
 

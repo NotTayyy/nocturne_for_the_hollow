@@ -18,7 +18,7 @@ var bgm_list: Dictionary = {
 func _ready() -> void:
 	await get_tree().process_frame
 	game_manager = get_parent()
-	if game_manager:
+	if game_manager and G_HitboxTypes.Debug == true:
 		print("Audio Manager Loaded!")
 	randomize()
 	update_volume()

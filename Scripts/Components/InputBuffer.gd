@@ -231,6 +231,3 @@ func parse_emoji(button: String) -> String:
 			return "Ɗ"
 		_:
 			return ""
-
-func _physics_process(_delta: float) -> void:
-	pass

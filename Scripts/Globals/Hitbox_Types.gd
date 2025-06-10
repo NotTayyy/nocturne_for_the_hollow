@@ -1,5 +1,7 @@
 extends Node
 
+@onready var Debug: bool = false
+
 enum HitboxType {
 	NONE,
 	GRAB,

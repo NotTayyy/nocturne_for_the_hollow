@@ -73,7 +73,6 @@ func _physics_process(delta: float) -> void:
 		return
 
 	get_facing_dir()
-	capture_input()
 	handle_horizontal_movement(delta)
 	handle_jump_logic()
 	handle_gravity(delta)
