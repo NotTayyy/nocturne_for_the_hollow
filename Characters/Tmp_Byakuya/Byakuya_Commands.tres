@@ -15,17 +15,17 @@ command_list = [{
 }, {
 "Command": "6A",
 "Held": ["6"],
-"Priority": 1,
+"Priority": 0,
 "Sequence": ["6", "A"]
 }, {
 "Command": "6B",
 "Held": ["6"],
-"Priority": 1,
+"Priority": 0,
 "Sequence": ["6", "B"]
 }, {
 "Command": "6C",
 "Held": ["6"],
-"Priority": 1,
+"Priority": 0,
 "Sequence": ["6", "C"]
 }, {
 "Command": "3C",

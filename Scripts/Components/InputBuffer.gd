@@ -80,7 +80,7 @@ func check_held_inputs() -> Array:
 func check_Command_list(type, cmd_list: Array):
 	var held_inputs = check_held_inputs()
 	var matched_commands: Array = []
-	#print(held_inputs)
+	print(held_inputs)
 	
 	for command in cmd_list:
 		if command["Command"] in current_state_commands: #Only Legal moves will be Logged!!
@@ -90,6 +90,8 @@ func check_Command_list(type, cmd_list: Array):
 			var starter: Dictionary = buffer_history[-1]
 			
 			#Checks Only The Command Normals
+			if buffer_history.size() == 0:
+				return
 			if "Held" in command:
 				for i in range(buffer_history.size() - 1, -1, -1):
 					if seq_index < 0:
@@ -179,25 +181,22 @@ func check_Command_list(type, cmd_list: Array):
 						if seq_index == -1:
 							matched_commands.append(command)
 							break
-
-	#We need to make a list of possible actions during any given state
-	#Then relate the possible actions to the ones that were possibly inputted and only compare
-	#Priorities for the possible ones
-		if matched_commands.size() == 1:
-			#print(matched_commands[0]["Command"])
-			state_mngr.set_queue(matched_commands[0]["Command"])
-			return
-		elif matched_commands.size() > 1:
-			var curr_priority: int = -1
-			var curr_command = null
-			for entry in matched_commands:
-				if entry["Priority"] > curr_priority:
-					curr_command = entry
-					curr_priority = entry["Priority"]
-			#print(matched_commands)
-			#print(curr_command["Command"])
-			state_mngr.set_queue(curr_command["Command"])
-			return
+							
+	if matched_commands.size() == 1:
+		print(matched_commands[0]["Command"])
+		#state_mngr.set_queue(matched_commands[0]["Command"])
+		return
+	elif matched_commands.size() > 1:
+		var curr_priority: int = -1
+		var curr_command = null
+		for entry in matched_commands:
+			if entry["Priority"] > curr_priority:
+				curr_command = entry
+				curr_priority = entry["Priority"]
+		print(matched_commands)
+		print(curr_command["Command"])
+		#state_mngr.set_queue(curr_command["Command"])
+		return
 
 func print_buffer():
 	var entry = buffer_history[-1]
