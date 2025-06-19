@@ -32,6 +32,39 @@ func register_input(action: String, type: String) -> void:
 func clear():
 	buffer_history.clear()
 
+func match_priority(command_type):
+	match command_type:
+		"Barrier":
+			return 13
+		"Overdrive":
+			return 12
+		"Rapid Cancel":
+			return 11
+		"Super Special 2":
+			return 10
+		"Super Special":
+			return 9
+		"Ext Special":
+			return 8
+		"Special 2":
+			return 7
+		"Special":
+			return 6
+		"Throw":
+			return 5
+		"Gaurd Crush":
+			return 4
+		"Command Normal":
+			return 3
+		"Normal":
+			return 2
+		"Jump":
+			return 1 
+		"Movement":
+			return 0
+		_:
+			return -1
+			
 func check_commands():
 	if buffer_history.is_empty():
 		return
@@ -190,9 +223,10 @@ func check_Command_list(type, cmd_list: Array):
 		var curr_priority: int = -1
 		var curr_command = null
 		for entry in matched_commands:
-			if entry["Priority"] > curr_priority:
+			var entry_prio = match_priority(entry["Priority"])
+			if entry_prio > curr_priority:
 				curr_command = entry
-				curr_priority = entry["Priority"]
+				curr_priority = entry_prio
 		print(matched_commands)
 		print(curr_command["Command"])
 		#state_mngr.set_queue(curr_command["Command"])
