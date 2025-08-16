@@ -6,11 +6,10 @@ class_name InputBuffer
 var current_frame: int = 0
 var buffer_history: Array = []
 var has_neg_edge: bool = false
-@onready var state_mngr: FighterStateMachine = %FighterStateMachine
 var release_command_list
 var command_list 
 var character
-var current_state_commands
+
 
 func _ready() -> void:
 		await get_tree().process_frame
@@ -19,8 +18,7 @@ func _ready() -> void:
 
 func register_input(action: String, type: String) -> void:
 	current_frame = Engine.get_physics_frames()
-	current_state_commands = state_mngr.allowed_cmnds
-	
+
 	buffer_history.append({
 		"action": action,
 		"action_frame": current_frame,
@@ -116,7 +114,7 @@ func check_Command_list(type, cmd_list: Array):
 	print(held_inputs)
 	
 	for command in cmd_list:
-		if command["Command"] in current_state_commands: #Only Legal moves will be Logged!!
+		if command["Command"] in command_list: #Only Legal moves will be Logged!!
 			var sequence: Array = command["Sequence"]
 			var seq_index: int = sequence.size() - 1
 			var prev_frame: int = -1
@@ -217,8 +215,8 @@ func check_Command_list(type, cmd_list: Array):
 							
 	if matched_commands.size() == 1:
 		print(matched_commands[0]["Command"])
-		#state_mngr.set_queue(matched_commands[0]["Command"])
 		return
+		
 	elif matched_commands.size() > 1:
 		var curr_priority: int = -1
 		var curr_command = null
@@ -229,7 +227,6 @@ func check_Command_list(type, cmd_list: Array):
 				curr_priority = entry_prio
 		print(matched_commands)
 		print(curr_command["Command"])
-		#state_mngr.set_queue(curr_command["Command"])
 		return
 
 func print_buffer():

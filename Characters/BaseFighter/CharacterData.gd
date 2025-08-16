@@ -2,13 +2,14 @@ extends Resource
 class_name CharacterData
 
 enum DashType { Step, Run, Teleport, Hover, None }
-enum BackDashType { Step, Hover, Run }
+enum BackDashType { Step, Run, Teleport, Hover, None }
 
 @export_category("Lore Data")
 @export var character_name: String = "Default Fighter"
 
 @export_category("Meta Data")
 @export var fighter_scene: PackedScene
+#The CommandData holds Neg and Regular Commands
 @export var command_list: CommandData
 @export var neg_edge: bool = false
 @export var charge_moves: bool = false
@@ -24,15 +25,18 @@ enum BackDashType { Step, Hover, Run }
 @export var air_throw_range: int = 120
 
 @export_category("Ground Movement")
-@export var dashType: DashType = DashType.Run
+#Walking
 @export var fwd_walk_speed: int = 200
 @export var bwd_walk_speed: int = 140
+#Dashing
+@export var dashType: DashType = DashType.Run
 @export var dash_Startup: int = 4
-@export var run_int: int = 300
-@export var run_skid: int = 60
-@export var run_acc: int = 150
-@export var run_max: int = 450
-@export var backdash_type: BackDashType = BackDashType.Run
+@export var dash_int: int = 300
+@export var dash_skid: int = 60
+@export var dash_acc: int = 150
+@export var dash_max: int = 450
+#Backdash
+@export var backdash_type: BackDashType = BackDashType.Step
 @export var backdash: int = 30
 @export var backdash_invuln: int = 10
 @export var backdash_distance: int = 400

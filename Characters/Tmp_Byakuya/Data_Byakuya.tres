@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterData" load_steps=4 format=3 uid="uid://cgwrwt6tm5svo"]
 
 [ext_resource type="PackedScene" uid="uid://dg33asvi0qgfr" path="res://Characters/Tmp_Byakuya/Char_Byakuya.tscn" id="1_68hxm"]
-[ext_resource type="Resource" uid="uid://ca62x4gkhxc6o" path="res://Characters/Tmp_Byakuya/Byakuya_Commands.tres" id="1_hrxsb"]
+[ext_resource type="Resource" uid="uid://d4jdugmro3xbp" path="res://Characters/Tmp_Byakuya/Byakuya_Commands.tres" id="1_hrxsb"]
 [ext_resource type="Script" uid="uid://cpq072udwjvmf" path="res://Characters/BaseFighter/CharacterData.gd" id="1_kowt0"]
 
 [resource]
@@ -17,14 +17,14 @@ toughness = 3
 guts = 3
 ground_throw_range = 70
 air_throw_range = 120
-dashType = 1
 fwd_walk_speed = 200
 bwd_walk_speed = 140
+dashType = 1
 dash_Startup = 4
-run_int = 300
-run_skid = 60
-run_acc = 150
-run_max = 450
+dash_int = 300
+dash_skid = 60
+dash_acc = 150
+dash_max = 450
 backdash_type = 2
 backdash = 30
 backdash_invuln = 10

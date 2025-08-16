@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CommandData" load_steps=2 format=3 uid="uid://ca62x4gkhxc6o"]
+[gd_resource type="Resource" script_class="CommandData" load_steps=2 format=3 uid="uid://d4jdugmro3xbp"]
 
 [ext_resource type="Script" uid="uid://bhoay45i4tsn" path="res://Characters/BaseFighter/CommandData.gd" id="1_q63nq"]
 
@@ -13,6 +13,22 @@ command_list = [{
 "Priority": "Movement",
 "Sequence": ["4", "5", "4"]
 }, {
+"Command": "Jump",
+"Priority": "Movement",
+"Sequence": ["8"]
+}, {
+"Command": "Super Jump",
+"Priority": "Movement",
+"Sequence": ["2", "8"]
+}, {
+"Command": "Fwd-Jump",
+"Priority": "Movement",
+"Sequence": ["9"]
+}, {
+"Command": "Bwd-Jump",
+"Priority": "Movement",
+"Sequence": ["7"]
+}, {
 "Command": "6A",
 "Held": ["6"],
 "Priority": "Command Normal",
@@ -22,6 +38,11 @@ command_list = [{
 "Held": ["6"],
 "Priority": "Command Normal",
 "Sequence": ["6", "B"]
+}, {
+"Command": "4B",
+"Held": ["4"],
+"Priority": "Command Normal",
+"Sequence": ["4", "B"]
 }, {
 "Command": "6C",
 "Held": ["6"],
@@ -86,6 +107,10 @@ command_list = [{
 "Command": "Tiger Knee",
 "Priority": "Special 2",
 "Sequence": ["6", "2", "3", "A"]
+}, {
+"Command": "Reverse Tiger Knee",
+"Priority": "Special",
+"Sequence": ["4", "2", "1"]
 }]
 relese_cmnd_list = []
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

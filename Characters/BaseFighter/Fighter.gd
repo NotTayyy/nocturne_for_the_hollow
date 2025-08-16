@@ -7,7 +7,7 @@ class_name Fighter
 
 var opponent: Fighter = null
 var char_data: CharacterData
-var cmd_data
+var cmd_data: CommandData
 
 # State tracking
 var was_idle: bool = false
