@@ -2,7 +2,7 @@ extends CharacterBody2D
 class_name Fighter
 
 @export_range(0, 2) var player_id: int = 0
-@export_enum("Left", "Right") var dir_facing: String
+@export_enum("Left", "Right") var dir_facing: String #Just checks for left and right
 @onready var input_buffer: InputBuffer = %InputBuffer
 
 var opponent: Fighter = null
@@ -11,8 +11,9 @@ var cmd_data: CommandData
 
 # State tracking
 var was_idle: bool = false
-var prejump_timer: int = -1
+var prejump_timer: int = -1 #Remove Eventually
 var move_dir: int = 0
+var is_airborn: bool = false
 
 #region Controls
 var move_left: String
@@ -72,11 +73,17 @@ func _physics_process(delta: float) -> void:
 	await get_tree().process_frame
 	if not char_data:
 		return
-
-	get_facing_dir()
+		
+	#This is Fine For the most part, Might make it cleaner
+	get_facing_dir() 
+	#This is Fine For the most part, Might make code to handle Movement with the Input Buffer
 	handle_horizontal_movement(delta)
+	##This should be Under Input Buffer in the Future, Its own State
 	handle_jump_logic()
+	## This Should be controlled by States, is_Airborn turned on and off in the state exit and enter Thus making gravity turn on and Off
 	handle_gravity(delta)
+	##This Capture Input might be moved to a Better Location in the Future
+	capture_input()
 	move_and_slide()
 	
 	if Input.is_action_just_pressed("Btn_Exit"):
@@ -173,8 +180,8 @@ func parse_buttons(button: String) -> String:
 			return ""
 
 func parse_direction(held: Array) -> String:
-	var vertical := ""
-	var horizontal := ""
+	var vertical : String = ""
+	var horizontal : String = ""
 
 	# Cancel opposing vertical inputs
 	if move_up in held and move_down in held:
@@ -214,7 +221,8 @@ func parse_direction(held: Array) -> String:
 		return vertical
 	elif horizontal != "":
 		return horizontal
-	return "5"
+		
+	return ""
 
 func handle_gravity(delta: float) -> void:
 	if not is_on_floor():

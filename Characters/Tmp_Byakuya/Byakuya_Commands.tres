@@ -111,6 +111,11 @@ command_list = [{
 "Command": "Reverse Tiger Knee",
 "Priority": "Special",
 "Sequence": ["4", "2", "1"]
+}, {
+"Command": "4B",
+"Held": ["4"],
+"Priority": "Command Normal",
+"Sequence": ["4", "B"]
 }]
 relese_cmnd_list = []
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

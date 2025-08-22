@@ -33,10 +33,3 @@ offset_top = -290.0
 offset_right = 14.0
 offset_bottom = -267.0
 text = "Placeholder"
-
-[node name="State" type="Label" parent="."]
-offset_left = -28.0
-offset_top = -316.0
-offset_right = 12.0
-offset_bottom = -293.0
-text = "No State"
