@@ -44,6 +44,10 @@ G_LevelDB="*res://Scripts/Globals/LevelDatabase.gd"
 
 project/assembly_name="Nocturne for the Hollow"
 
+[global_group]
+
+player=""
+
 [input]
 
 P1_Left={

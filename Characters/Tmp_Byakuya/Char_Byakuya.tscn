@@ -8,12 +8,8 @@
 size = Vector2(100, 188)
 
 [node name="CharByakuya" type="CharacterBody2D"]
+collision_layer = 0
 script = ExtResource("1_tqmcm")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-z_index = 1
-position = Vector2(0, -4)
-shape = SubResource("RectangleShape2D_4lanw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_t652o")
@@ -33,3 +29,8 @@ offset_top = -290.0
 offset_right = 14.0
 offset_bottom = -267.0
 text = "Placeholder"
+
+[node name="Collision_Box" type="CollisionShape2D" parent="."]
+z_index = 1
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_4lanw")

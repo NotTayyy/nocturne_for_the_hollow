@@ -67,7 +67,10 @@ func match_priority(command_type):
 			return 0
 		_:
 			return -1
-			
+
+func set_queue(command: String) -> void:
+	print(command)
+
 func check_commands():
 	if buffer_history.is_empty():
 		print("Buffer Empty")
@@ -193,6 +196,7 @@ func check_Command_list(type, cmd_list: Array):
 					seq_index -= 1
 				if seq_index == -1:
 					matched_commands.append(command)
+					
 		
 		#Checks only the leftover Commands.
 		else: 
