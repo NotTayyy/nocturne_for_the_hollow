@@ -9,11 +9,23 @@ var opponent: Fighter = null
 var char_data: CharacterData
 var cmd_data: CommandData
 
+#Grab Collision Boxes Important - Might Move https://www.youtube.com/shorts/yQ7rEx07Amg
+#Fist check if the boxes are actually Colliding
+#Then We check which sides are colliding
+#Then we Move them apart accordingly
+#Characters have no collions with eachother we move them so they never overlap
+@onready var collision_Box: CollisionShape2D = $Collision_Box
+var enm_Collision: CollisionShape2D
+
+var my_rect: Rect2
+var enemy_rect: Rect2
+
 # State tracking
 var was_idle: bool = false
 var prejump_timer: int = -1 #Remove Eventually
 var move_dir: int = 0
 var is_airborn: bool = false
+var is_Sprinting: bool = false
 
 #region Controls
 var move_left: String
@@ -42,10 +54,6 @@ func _ready() -> void:
 	
 	setup_input_actions()
 
-func set_queue(command: String) -> void:
-	print(command)
-	
-
 func setup_input_actions():
 	match player_id:
 		1:
@@ -73,6 +81,7 @@ func _physics_process(delta: float) -> void:
 	await get_tree().process_frame
 	if not char_data:
 		return
+
 		
 	#This is Fine For the most part, Might make it cleaner
 	get_facing_dir() 
@@ -85,9 +94,25 @@ func _physics_process(delta: float) -> void:
 	##This Capture Input might be moved to a Better Location in the Future
 	capture_input()
 	move_and_slide()
+	#Check for Overlap then if you are Move yourself
+	is_overlapping()
+	
 	
 	if Input.is_action_just_pressed("Btn_Exit"):
 		get_tree().quit()
+
+func is_overlapping():
+	my_rect = Rect2(collision_Box.global_position - collision_Box.shape.extents, collision_Box.shape.extents * 2)
+	enemy_rect = Rect2(enm_Collision.global_position - enm_Collision.shape.extents, enm_Collision.shape.extents * 2)
+	
+	#If we are overlapping then find how much then move Us
+	if my_rect.intersects(enemy_rect):
+		var overlap = my_rect.intersection(enemy_rect)
+		if overlap.size.x < overlap.size.y:
+			if my_rect.position.x < enemy_rect.position.x:
+				global_position.x -= overlap.size.x / 2
+			else:
+				global_position.x += overlap.size.x / 2
 
 func get_facing_dir():
 	if self.global_position.x > opponent.global_position.x:
@@ -96,7 +121,7 @@ func get_facing_dir():
 		dir_facing = "Right"
 
 func get_move_speed(dir: float) -> float:
-	if dir_facing == "Right":
+	if dir_facing == "Right" and is_Sprinting == false:
 		if dir == -1:
 			return char_data.bwd_walk_speed
 		else:
@@ -165,7 +190,7 @@ func capture_input():
 			input_buffer.register_input(btn, "press")
 		elif Input.is_action_just_released(action):
 			input_buffer.register_input(btn, "release")
-			
+
 func parse_buttons(button: String) -> String:
 	match button:
 		btn_a:
