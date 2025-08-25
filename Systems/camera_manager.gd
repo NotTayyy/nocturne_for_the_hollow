@@ -2,13 +2,19 @@ extends Node2D
 
 var Player_1: Node2D
 var Player_2: Node2D
-
-@export var cam_offset: Vector2 = Vector2(0, -65)
 var distance: float
-var max_zoom: Vector2 = Vector2(0.8, 0.8)
-var min_zoom: Vector2 = Vector2(1.2, 1.2)
-
 var game_manager: Node
+
+@export var cam_offset: Vector2 = Vector2(0, -300)
+@export var max_zoom: Vector2 = Vector2(0.5, 0.5)
+@export var min_zoom: Vector2 = Vector2(1., 1)
+@export var zoom_speed: float = 5.0
+@export var move_speed: float = 5.0
+
+@export var left_limit: float = 0
+@export var right_limit: float = 1920
+@export var top_limit: float = 0
+@export var bottom_limit: float = 1080
 
 @onready var Foreground_camera: Camera2D = %Forground_Camera
 
@@ -23,11 +29,22 @@ func _ready() -> void:
 	if game_manager and G_HitboxTypes.Debug == true:
 		print("Camera Manager Loaded!")
 
-
+## Currently Working on ZOOM And Camera Placement at 1080p
+#Need to make the Hud Scale wit hthe Cam
+#Need the cam to move and shit.
 func _process(_delta: float) -> void:
-	distance = (Player_1.position.x - Player_2.position.x)/1000
-	var midpoint: Vector2 = (Player_1.global_position + Player_2.global_position + cam_offset) * 0.5 + Vector2(0, -120)
-	move_Camera(midpoint)
-
-func move_Camera(mid: Vector2):
-	Foreground_camera.global_position = mid
+	if not Player_1 and not Player_2:
+		return
+	
+	var midpoint = (Player_1.global_position + Player_2.global_position ) * 0.5
+	midpoint.y += cam_offset.y
+	
+	midpoint.x = clamp(midpoint.x, left_limit, right_limit)
+	midpoint.y = clamp(midpoint.y, top_limit, bottom_limit)
+	Foreground_camera.global_position = Foreground_camera.global_position.lerp(midpoint, move_speed * _delta)
+	
+	var distamce = abs(Player_1.global_position.x - Player_2.global_position.x)
+	var t = clamp(distance/ 1000.0, 0, 1)
+	var target_zoom = min_zoom.lerp(max_zoom, t)
+	
+	Foreground_camera.zoom = Foreground_camera.zoom.lerp(target_zoom, zoom_speed * _delta)

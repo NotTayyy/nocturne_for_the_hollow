@@ -5,27 +5,26 @@
 
 [node name="Camera_Manager" type="Node2D"]
 script = ExtResource("1_5otwh")
+left_limit = -1920.0
 
 [node name="Forground_Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
-scale = Vector2(0.380673, 0.00985325)
-zoom = Vector2(0.8, 0.8)
+position = Vector2(960, 540)
+editor_draw_limits = true
 
-[node name="Control" type="Control" parent="Forground_Camera"]
-visible = false
+[node name="CanvasLayer" type="CanvasLayer" parent="Forground_Camera"]
+
+[node name="Control" type="Control" parent="Forground_Camera/CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 960.0
+offset_top = 540.0
+offset_right = 1000.0
+offset_bottom = 580.0
 
-[node name="TextureRect" type="TextureRect" parent="Forground_Camera/Control"]
-visible = false
-layout_mode = 0
-offset_left = -1972.82
-offset_top = -41103.2
-offset_right = -52.8218
-offset_bottom = -40023.2
-scale = Vector2(2.03489, 80.1052)
+[node name="TextureRect" type="TextureRect" parent="Forground_Camera/CanvasLayer/Control"]
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 568.0
 texture = ExtResource("2_n75co")
-expand_mode = 1
-stretch_mode = 3

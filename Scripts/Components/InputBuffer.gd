@@ -6,6 +6,7 @@ class_name InputBuffer
 
 var current_frame: int = 0 
 var buffer_history: Array = []
+var charged_inputs
 var has_neg_edge: bool = false
 var release_command_list: Array #Only turns on if neg_edge is true
 #The Entire Command list, A Seperate allowed commands for each state is needed in each state
@@ -17,7 +18,6 @@ var player_char #Selects the Current Character
 
 func _ready() -> void:
 	await get_tree().process_frame #pause a Frame
-	
 	player_char = get_parent().get_parent() #Searches up for Main node
 
 func register_input(action: String, type: String) -> void:
@@ -35,31 +35,29 @@ func register_input(action: String, type: String) -> void:
 func clear():
 	buffer_history.clear()
 
-func match_priority(command_type):
+func match_priority(command_type) -> int:
 	match command_type:
 		"Barrier":
-			return 13
-		"Overdrive":
 			return 12
-		"Rapid Cancel":
+		"Redline/Burst": #Also tossing Around "Overclock" or "Awakening" or "Gear Shift" or "Turbo"
 			return 11
-		"Super Special 2":
+		"Counter Attack":
 			return 10
-		"Super Special":
+		"Gear Shift": #I Think I Want a CS Like ability, 50 Meter to Freeze Time and Cancel Stuff
 			return 9
-		"Ext Special":
+		"EX Special":
 			return 8
-		"Special 2":
-			return 7
 		"Special":
-			return 6
+			return 7
 		"Throw":
-			return 5
+			return 6
 		"Gaurd Crush":
-			return 4
+			return 5
 		"Command Normal":
-			return 3
+			return 4
 		"Normal":
+			return 3
+		"Super Jump":
 			return 2
 		"Jump":
 			return 1 

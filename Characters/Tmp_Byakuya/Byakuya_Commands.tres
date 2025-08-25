@@ -75,17 +75,17 @@ command_list = [{
 "Sequence": ["2", "3", "6", "A"]
 }, {
 "Command": "Half Circle Forwards B",
-"Priority": "Ext Special",
+"Priority": "EX Special",
 "Sequence": ["4", "1", "2", "3", "6", "B"]
 }, {
 "Command": "Quater-Circle back Half-Circle Forwards C",
-"Priority": "Ext Special",
+"Priority": "EX Special",
 "Sequence": ["2", "1", "4", "1", "2", "3", "6", "C"]
 }, {
 "Button": ["4"],
 "Charge": 30,
 "Command": "Charge Back Half Circle Forwards A",
-"Priority": "Overdrive",
+"Priority": "EX Special",
 "Sequence": ["4", "1", "2", "3", "6", "A"]
 }, {
 "Command": "Button A",
@@ -105,17 +105,12 @@ command_list = [{
 "Sequence": ["D"]
 }, {
 "Command": "Tiger Knee",
-"Priority": "Special 2",
+"Priority": "Special",
 "Sequence": ["6", "2", "3", "A"]
 }, {
 "Command": "Reverse Tiger Knee",
 "Priority": "Special",
 "Sequence": ["4", "2", "1"]
-}, {
-"Command": "4B",
-"Held": ["4"],
-"Priority": "Command Normal",
-"Sequence": ["4", "B"]
 }]
 relese_cmnd_list = []
 metadata/_custom_type_script = "uid://bhoay45i4tsn"
