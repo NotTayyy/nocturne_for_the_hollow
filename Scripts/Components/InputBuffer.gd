@@ -1,27 +1,33 @@
 extends Node
 class_name InputBuffer
 
-@export var max_buffer_frames: int = 12
+@export var max_buffer_frames: int = 12 #Max Frames Between
 @onready var label: Label = %Label
-var current_frame: int = 0
+
+var current_frame: int = 0 
 var buffer_history: Array = []
+var charged_inputs
 var has_neg_edge: bool = false
-var release_command_list
-var command_list 
-var character
+var release_command_list: Array #Only turns on if neg_edge is true
+#The Entire Command list, A Seperate allowed commands for each state is needed in each state
+var command_list: Array = [] 
+#Different States will load their own Commands and this will keep Updating per State.
+var allowed_State_Commands: Array = []
+var player_char #Selects the Current Character
+
 
 func _ready() -> void:
-		await get_tree().process_frame
-		
-		character = get_parent().get_parent()
+	await get_tree().process_frame #pause a Frame
+	player_char = get_parent().get_parent() #Searches up for Main node
 
 func register_input(action: String, type: String) -> void:
 	current_frame = Engine.get_physics_frames()
-	
+
 	buffer_history.append({
-		"action": action,
-		"action_frame": current_frame,
-		"type": type
+		"action": action, #Command Name
+		"action_frame": current_frame, #Command Frame
+		"type": type, #Press or Release
+		"Character": player_char.name #Just to make The 
 	})
 	
 	check_commands()
@@ -29,8 +35,43 @@ func register_input(action: String, type: String) -> void:
 func clear():
 	buffer_history.clear()
 
+func match_priority(command_type) -> int:
+	match command_type:
+		"Barrier":
+			return 12
+		"Redline/Burst": #Also tossing Around "Overclock" or "Awakening" or "Gear Shift" or "Turbo"
+			return 11
+		"Counter Attack":
+			return 10
+		"Gear Shift": #I Think I Want a CS Like ability, 50 Meter to Freeze Time and Cancel Stuff
+			return 9
+		"EX Special":
+			return 8
+		"Special":
+			return 7
+		"Throw":
+			return 6
+		"Gaurd Crush":
+			return 5
+		"Command Normal":
+			return 4
+		"Normal":
+			return 3
+		"Super Jump":
+			return 2
+		"Jump":
+			return 1 
+		"Movement":
+			return 0
+		_:
+			return -1
+
+func set_queue(command: String) -> void:
+	print(command)
+
 func check_commands():
 	if buffer_history.is_empty():
+		print("Buffer Empty")
 		return
 	print_buffer()
 
@@ -63,7 +104,8 @@ func check_held_inputs() -> Array:
 		var release = release_map.get(entry.action, [entry.action])
 		for key in Inputs:
 			if key == "5" and entry["type"] == "press":
-				held_inputs.clear()
+				for dir in directions:
+					held_inputs.erase(dir)
 			if key in directions or key in buttons:
 				if entry["type"] == "press":
 					held_inputs[key] = true
@@ -76,17 +118,17 @@ func check_held_inputs() -> Array:
 func check_Command_list(type, cmd_list: Array):
 	var held_inputs = check_held_inputs()
 	var matched_commands: Array = []
-	#print(held_inputs)
+	print(held_inputs)
 	
 	for command in cmd_list:
 		var sequence: Array = command["Sequence"]
-		var priority: int = command["Priority"]
 		var seq_index: int = sequence.size() - 1
 		var prev_frame: int = -1
 		var starter: Dictionary = buffer_history[-1]
-		var charge: int
 		
 		#Checks Only The Command Normals
+		if buffer_history.size() == 0:
+			return
 		if "Held" in command:
 			for i in range(buffer_history.size() - 1, -1, -1):
 				if seq_index < 0:
@@ -152,6 +194,7 @@ func check_Command_list(type, cmd_list: Array):
 					seq_index -= 1
 				if seq_index == -1:
 					matched_commands.append(command)
+					
 		
 		#Checks only the leftover Commands.
 		else: 
@@ -176,58 +219,92 @@ func check_Command_list(type, cmd_list: Array):
 					if seq_index == -1:
 						matched_commands.append(command)
 						break
-
-#We need to make a list of possible actions during any given state
-#Then relate the possible actions to the ones that were possibly inputted and only compare
-#Priorities for the possible ones
+	
 	if matched_commands.size() == 1:
-		#print(matched_commands[0]["Command"])
-		character.set_queue(matched_commands[0]["Command"])
+		print(matched_commands[0]["Command"]) #The Chosen Highest Priority
 		return
+	
 	elif matched_commands.size() > 1:
 		var curr_priority: int = -1
 		var curr_command = null
+		
 		for entry in matched_commands:
-			if entry["Priority"] > curr_priority:
+			var entry_prio = match_priority(entry["Priority"])
+			if entry_prio > curr_priority:
 				curr_command = entry
-				curr_priority = entry["Priority"]
-		#print(matched_commands)
-		#print(curr_command["Command"])
-		character.set_queue(curr_command["Command"])
+				curr_priority = entry_prio
+		
+		print(matched_commands) #All commands that Could have passed
+		print(curr_command["Command"]) #The Chosen Highest Priority
 		return
 
 func print_buffer():
 	var entry = buffer_history[-1]
 	label.text = parse_emoji(entry["action"])
-	print("Action: ", entry["type"], " : ", entry["action"], " at frame ", entry["action_frame"])
+	if G_HitboxTypes.Debug == true:
+		print("Action: ", entry["type"], " : ", entry["action"], " at frame ",
+		entry["action_frame"], " by ", entry["Character"])
 
+#This just writes out the latest pressed button
 func parse_emoji(button: String) -> String:
-	match button:
-		"1":
-			return "🢇"
-		"2":
-			return "🢃"
-		"3":
-			return "🢆"
-		"4":
-			return "🢀"
-		"5":
-			return "⚤"
-		"6":
-			return "🢂"
-		"7":
-			return "🢄"
-		"8":
-			return "🢁"
-		"9":
-			return "🢅"
-		"A":
-			return "🅰️"
-		"B":
-			return "🅱️"
-		"C":
-			return "𝓒"
-		"D":
-			return "Ɗ"
-		_:
-			return ""
+	if player_char.dir_facing == "Right":
+		match button:
+			"1":
+				return "🢇"
+			"2":
+				return "🢃"
+			"3":
+				return "🢆"
+			"4":
+				return "🢀"
+			"5":
+				return "⚤"
+			"6":
+				return "🢂"
+			"7":
+				return "🢄"
+			"8":
+				return "🢁"
+			"9":
+				return "🢅"
+			"A":
+				return "🅰️"
+			"B":
+				return "🅱️"
+			"C":
+				return "𝓒"
+			"D":
+				return "Ɗ"
+			_:
+				return ""
+	
+	else:
+		match button:
+			"1":
+				return "🢆"
+			"2":
+				return "🢃"
+			"3":
+				return "🢇"
+			"4":
+				return "🢂"
+			"5":
+				return "⚤"
+			"6":
+				return "🢀"
+			"7":
+				return "🢅"
+			"8":
+				return "🢁"
+			"9":
+				return "🢄"
+			"A":
+				return "🅰️"
+			"B":
+				return "🅱️"
+			"C":
+				return "𝓒"
+			"D":
+				return "Ɗ"
+			_:
+				return ""

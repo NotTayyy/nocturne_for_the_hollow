@@ -10,3 +10,7 @@ func _ready() -> void:
 		print("Managers Loaded!")
 	else:
 		print("GM Buggered")
+
+func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("Toggle_Debug"):
+		G_HitboxTypes.Debug != G_HitboxTypes.Debug

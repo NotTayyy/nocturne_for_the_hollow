@@ -25,15 +25,24 @@ func spawn_players():
 	player2 = spawn_character(P2_Select, 2, P2_START_POS)
 	
 	if player1 and player2:
-		print("Character Manager Loaded!")
-		player1.opponent = player2
-		player2.opponent = player1
+		if G_HitboxTypes.Debug == true:
+			print("Character Manager Loaded!")
+		Opponent_Setup()
+		
 		
 		if game_manager.camera_manager:
-			print("Camera Found!")
+			if G_HitboxTypes.Debug == true:
+				print("Camera Found!")
 			game_manager.camera_manager.set_targets(player1, player2)
 		else:
 			print("Cam Not Found")
+
+func Opponent_Setup():
+	#Easiest way to pass Opponent Data at the same time
+		player1.opponent = player2
+		player2.opponent = player1
+		player1.enm_Collision = player2.collision_Box
+		player2.enm_Collision = player1.collision_Box
 
 
 func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> Fighter:
@@ -51,6 +60,7 @@ func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> F
 	fighter.player_id = player_id
 	fighter.position = spawn_pos
 	add_child(fighter)
-	print("✅ Spawned %s as Player %d" % [data.character_name, player_id])
+	if G_HitboxTypes.Debug == true:
+		print("✅ Spawned %s as Player %d" % [data.character_name, player_id])
 	
 	return fighter

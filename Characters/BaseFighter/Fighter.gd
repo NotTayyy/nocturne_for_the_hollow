@@ -2,17 +2,23 @@ extends CharacterBody2D
 class_name Fighter
 
 @export_range(0, 2) var player_id: int = 0
-@export_enum("Left", "Right") var dir_facing: String
 @onready var input_buffer: InputBuffer = %InputBuffer
+@onready var collision_Box: CollisionShape2D = $Collision_Box
 
-var opponent: Fighter = null
 var char_data: CharacterData
-var cmd_data
+var cmd_data: CommandData
+var dir_facing: String
 
-# State tracking
+var enm_Collision: CollisionShape2D
+var opponent: Fighter
+
+#region State Tracking
 var was_idle: bool = false
-var prejump_timer: int = -1
-var move_dir: int = 0
+var prejump_timer: int = -1 #Remove Eventually
+var move_dir: float = 0
+var is_airborn: bool = false
+var is_Sprinting: bool = false
+#endregion
 
 #region Controls
 var move_left: String
@@ -41,10 +47,7 @@ func _ready() -> void:
 	
 	setup_input_actions()
 
-func set_queue(command: String) -> void:
-	print(command)
-
-func setup_input_actions():
+func setup_input_actions() -> void:
 	match player_id:
 		1:
 			move_left = "P1_Left"
@@ -71,71 +74,88 @@ func _physics_process(delta: float) -> void:
 	await get_tree().process_frame
 	if not char_data:
 		return
-
-	get_facing_dir()
+		
+	#This is Fine For the most part, Might make it cleaner
+	dir_facing = get_facing_dir() 
 	handle_horizontal_movement(delta)
+	##This should be Under Input Buffer in the Future, Its own State
 	handle_jump_logic()
+	## This Should be controlled by States, is_Airborn turned on and off in the state exit and enter Thus making gravity turn on and Off
 	handle_gravity(delta)
+	capture_input()
 	move_and_slide()
+	push_if_overlapping()
+	
 	
 	if Input.is_action_just_pressed("Btn_Exit"):
 		get_tree().quit()
 
-func get_facing_dir():
-	if self.global_position.x > opponent.global_position.x:
-		dir_facing = "Left"
-	else:
-		dir_facing = "Right"
+func push_if_overlapping() -> void:
+	var my_rect: Rect2 = Rect2(collision_Box.global_position - collision_Box.shape.extents, collision_Box.shape.extents * 2)
+	var enemy_rect: Rect2 =  Rect2(enm_Collision.global_position - enm_Collision.shape.extents, enm_Collision.shape.extents * 2)
+	
+	#If we are overlapping then find how much then move Us
+	##Problem: We can Steal Corner, We need to Fix this
+	if my_rect.intersects(enemy_rect):
+		var overlap = my_rect.intersection(enemy_rect)
+		if overlap.size.x < overlap.size.y:
+			if my_rect.position.x < enemy_rect.position.x:
+				global_position.x -= overlap.size.x / 2
+			else:
+				global_position.x += overlap.size.x / 2
+
+func get_facing_dir() -> String:
+	return "Left" if self.global_position.x > opponent.global_position.x else "Right"
 
 func get_move_speed(dir: float) -> float:
-	if dir_facing == "Right":
-		if dir == -1:
-			return char_data.bwd_walk_speed
-		else:
-			return char_data.fwd_walk_speed
+	##This Sprinting Stuff is Temportary, Will be removed in place of a State in the Future
+	if is_Sprinting == false:
+		if dir_facing == "Right":
+			return char_data.bwd_walk_speed if  dir == -1 else char_data.fwd_walk_speed
+		else: # facing Left
+			return char_data.fwd_walk_speed if dir == -1 else char_data.bwd_walk_speed
 	else:
-		if dir == -1:
-			return char_data.fwd_walk_speed
-		else:
-			return char_data.bwd_walk_speed
+		if dir_facing == "Right":
+			return char_data.bwd_walk_speed if  dir == -1 else char_data.dash_max
+		else: # facing Left
+			return char_data.dash_max if dir == -1 else char_data.bwd_walk_speed
 
-func capture_input():
+func capture_input() -> void:
 	var current_directions := []
 	var released_directions := []
-	var direction := ""
-
-	# Collect current held directions
+	
+	# Re Collect current held directions
 	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_pressed(action):
 			current_directions.append(action)
-
-	# Direction Just Pressed
+	
+	# Add Direction Just Pressed
 	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_just_pressed(action):
 			var prev_direction = parse_direction(current_directions.filter(func(a): return a != action))
 			var new_direction = parse_direction(current_directions)
-
+			
 			if was_idle:
-				input_buffer.register_input("5", "release")
 				was_idle = false
-
+			
 			if prev_direction != "" and prev_direction != new_direction:
 				input_buffer.register_input(prev_direction, "release")
-
+			
 			if new_direction != "":
 				input_buffer.register_input(new_direction, "press")
 			break  # One press is enough
-
-	# Direction Just Released
+	
+	# Collect Direction Just Released
 	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_just_released(action):
 			released_directions.append(action)
-
+	
+	#Delete Released Directions
 	if released_directions.size() > 0:
 		var release_dir = parse_direction(released_directions)
 		if release_dir != "":
 			input_buffer.register_input(release_dir, "release")
-
+	
 		# Re-evaluate what's currently being held
 		current_directions.clear()
 		for action in [move_left, move_right, move_up, move_down]:
@@ -144,12 +164,11 @@ func capture_input():
 		var new_direction = parse_direction(current_directions)
 		if new_direction != "":
 			input_buffer.register_input(new_direction, "press")
-
+	
 	# Detect return to neutral (idle)
 	if current_directions.size() == 0 and not was_idle:
-		input_buffer.register_input("5", "press")
 		was_idle = true
-
+	
 	# Button inputs
 	for action in [btn_a, btn_b, btn_c, btn_d]:
 		var btn = parse_buttons(action)
@@ -157,7 +176,7 @@ func capture_input():
 			input_buffer.register_input(btn, "press")
 		elif Input.is_action_just_released(action):
 			input_buffer.register_input(btn, "release")
-			
+
 func parse_buttons(button: String) -> String:
 	match button:
 		btn_a:
@@ -172,8 +191,8 @@ func parse_buttons(button: String) -> String:
 			return ""
 
 func parse_direction(held: Array) -> String:
-	var vertical := ""
-	var horizontal := ""
+	var vertical : String = ""
+	var horizontal : String = ""
 
 	# Cancel opposing vertical inputs
 	if move_up in held and move_down in held:
@@ -213,6 +232,7 @@ func parse_direction(held: Array) -> String:
 		return vertical
 	elif horizontal != "":
 		return horizontal
+		
 	return "5"
 
 func handle_gravity(delta: float) -> void:
@@ -235,7 +255,6 @@ func handle_jump_logic() -> void:
 
 func handle_horizontal_movement(_delta: float) -> void:
 	move_dir = Input.get_axis(move_left, move_right)
-
 	if move_dir != 0:
 		velocity.x = move_dir * get_move_speed(move_dir)
 	else:

@@ -40,9 +40,20 @@ G_CharacterDB="*res://Scripts/Globals/CharacterDatabase.gd"
 G_HitboxTypes="*res://Scripts/Globals/Hitbox_Types.gd"
 G_LevelDB="*res://Scripts/Globals/LevelDatabase.gd"
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
+window/stretch/mode="canvas_items"
+
 [dotnet]
 
 project/assembly_name="Nocturne for the Hollow"
+
+[global_group]
+
+player=""
 
 [input]
 

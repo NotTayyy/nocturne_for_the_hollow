@@ -18,12 +18,11 @@ scale = Vector2(3.74521, 3.38987)
 texture = ExtResource("1_px5jc")
 
 [node name="TheGrid" type="Sprite2D" parent="."]
-position = Vector2(-35, 229)
-scale = Vector2(1.36214, 1.36214)
+position = Vector2(-3, 132)
+scale = Vector2(1.512, 1.85554)
 texture = ExtResource("2_nkneg")
 
 [node name="Stage" type="StaticBody2D" parent="."]
-visible = false
 z_index = 10
 z_as_relative = false
 position = Vector2(-4, 434)

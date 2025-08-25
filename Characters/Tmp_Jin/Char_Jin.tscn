@@ -10,7 +10,7 @@ size = Vector2(100, 188)
 [node name="CharJin" type="CharacterBody2D"]
 script = ExtResource("1_wk43p")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Collision_Box" type="CollisionShape2D" parent="."]
 z_index = 1
 shape = SubResource("RectangleShape2D_wk43p")
 
