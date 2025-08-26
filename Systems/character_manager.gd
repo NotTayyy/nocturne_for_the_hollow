@@ -1,14 +1,15 @@
 extends Node2D
 
+#There has to be a better way to Log all our Characters and Shit
 @export_enum("Kokonoe", "Byakuya", "Jin") var P1_Select: String
-@export_enum("Kokonoe", "Byakuya", "Jin") var P2_Select: String
+@export_enum("Kokonoe", "Byakuya", "Jin") var P2_Select: String 
 
 var game_manager: Node
 
 var player1: Fighter
 var player2: Fighter
-const P1_START_POS := Vector2(200, 400)
-const P2_START_POS := Vector2(600, 400)
+const P1_START_POS := Vector2(-250, 400)
+const P2_START_POS := Vector2(250, 400)
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -59,6 +60,7 @@ func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> F
 	fighter.char_data = data
 	fighter.player_id = player_id
 	fighter.position = spawn_pos
+	fighter.main_camera = game_manager.camera_manager.Foreground_camera
 	add_child(fighter)
 	if G_HitboxTypes.Debug == true:
 		print("✅ Spawned %s as Player %d" % [data.character_name, player_id])

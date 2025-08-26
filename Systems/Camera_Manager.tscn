@@ -1,30 +1,73 @@
-[gd_scene load_steps=3 format=3 uid="uid://4uaa400vgmam"]
+[gd_scene load_steps=5 format=3 uid="uid://4uaa400vgmam"]
 
 [ext_resource type="Script" uid="uid://c1r80m2etrtfr" path="res://Systems/camera_manager.gd" id="1_5otwh"]
 [ext_resource type="Texture2D" uid="uid://cieet12mpwjwb" path="res://Assets/UI/Untitled-1.png" id="2_n75co"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yghuh"]
+size = Vector2(20, 2400)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n75co"]
+size = Vector2(20, 2400)
+
 [node name="Camera_Manager" type="Node2D"]
 script = ExtResource("1_5otwh")
+max_zoom = Vector2(1.205, 1.2)
+min_vertical_offset = Vector2(0, -160)
+max_vertical_offset = Vector2(0, -185)
+min_distance = 850.0
+max_distance = 1100.0
 left_limit = -1920.0
 
 [node name="Forground_Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(960, 540)
+position = Vector2(7, -9)
 editor_draw_limits = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Forground_Camera"]
 
 [node name="Control" type="Control" parent="Forground_Camera/CanvasLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_left = 960.0
-offset_top = 540.0
-offset_right = 1000.0
-offset_bottom = 580.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
 
 [node name="TextureRect" type="TextureRect" parent="Forground_Camera/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = -960.0
 offset_top = -540.0
 offset_right = 960.0
-offset_bottom = 568.0
+offset_bottom = 569.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_n75co")
+
+[node name="Label" type="Label" parent="Forground_Camera/CanvasLayer/Control"]
+layout_mode = 0
+offset_left = -272.0
+offset_top = -293.0
+offset_right = -179.0
+offset_bottom = -270.0
+text = "Console Log"
+
+[node name="Left_Wall" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-491, 26)
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left_Wall"]
+shape = SubResource("RectangleShape2D_yghuh")
+
+[node name="Right_Wall" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(452, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Right_Wall"]
+shape = SubResource("RectangleShape2D_n75co")

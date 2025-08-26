@@ -12,6 +12,9 @@ var dir_facing: String
 var enm_Collision: CollisionShape2D
 var opponent: Fighter
 
+var main_camera
+var camera_margin: int = 100
+
 #region State Tracking
 var was_idle: bool = false
 var prejump_timer: int = -1 #Remove Eventually
@@ -86,10 +89,9 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	push_if_overlapping()
 	
-	
 	if Input.is_action_just_pressed("Btn_Exit"):
 		get_tree().quit()
-
+		
 func push_if_overlapping() -> void:
 	var my_rect: Rect2 = Rect2(collision_Box.global_position - collision_Box.shape.extents, collision_Box.shape.extents * 2)
 	var enemy_rect: Rect2 =  Rect2(enm_Collision.global_position - enm_Collision.shape.extents, enm_Collision.shape.extents * 2)
