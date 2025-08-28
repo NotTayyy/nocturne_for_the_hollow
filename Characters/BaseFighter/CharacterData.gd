@@ -26,8 +26,8 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 
 @export_category("Ground Movement")
 #Walking
-@export var fwd_walk_speed: int = 200
-@export var bwd_walk_speed: int = 140
+@export var fwd_walk_speed: int = 400
+@export var bwd_walk_speed: int = 350
 #Dashing
 @export var dashType: DashType = DashType.Run
 @export var dash_Startup: int = 4
@@ -50,6 +50,6 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 @export var super_jump_velocity: int = -1650
 @export var fwd_super_jump_velocity: int = -1650
 @export var bwd_super_jump_velocity: int = -1650
-@export var gravity: int = 3500
+@export var gravity: int = 4500
 @export var air_Jumps: int = 1
 @export var air_Dashes: int = 1

@@ -14,10 +14,22 @@ script = ExtResource("1_thld5")
 Volume = 1
 
 [node name="Camera_Manager" parent="." instance=ExtResource("2_h53vq")]
+max_zoom = null
+min_zoom = null
+min_vertical_offset = null
+max_vertical_offset = null
+zoom_speed = null
+move_speed = null
+min_distance = null
+max_distance = null
+left_limit = null
+right_limit = null
+top_limit = null
+bottom_limit = null
 
 [node name="Character_Manager" parent="." instance=ExtResource("4_3ese2")]
 P1_Select = "Byakuya"
-P2_Select = "Byakuya"
+P2_Select = "Kokonoe"
 
 [node name="LevelManager" parent="." instance=ExtResource("5_3ese2")]
 script = ExtResource("6_uxoyq")

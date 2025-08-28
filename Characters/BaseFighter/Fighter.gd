@@ -12,8 +12,9 @@ var dir_facing: String
 var enm_Collision: CollisionShape2D
 var opponent: Fighter
 
-var main_camera
-var camera_margin: int = 100
+@export var right_limit: int = 2080.0
+@export var left_limit: int = -2080.0
+
 
 #region State Tracking
 var was_idle: bool = false
@@ -96,15 +97,15 @@ func push_if_overlapping() -> void:
 	var my_rect: Rect2 = Rect2(collision_Box.global_position - collision_Box.shape.extents, collision_Box.shape.extents * 2)
 	var enemy_rect: Rect2 =  Rect2(enm_Collision.global_position - enm_Collision.shape.extents, enm_Collision.shape.extents * 2)
 	
-	#If we are overlapping then find how much then move Us
-	##Problem: We can Steal Corner, We need to Fix this
+	##Problem: Bandaid on Stealing corner, Really Fix in the Future.
 	if my_rect.intersects(enemy_rect):
 		var overlap = my_rect.intersection(enemy_rect)
 		if overlap.size.x < overlap.size.y:
+			var push_distance = overlap.size.x / 2
 			if my_rect.position.x < enemy_rect.position.x:
-				global_position.x -= overlap.size.x / 2
+				global_position.x = min(global_position.x - push_distance, right_limit - collision_Box.shape.extents.x)
 			else:
-				global_position.x += overlap.size.x / 2
+				global_position.x = max(global_position.x + push_distance, left_limit + collision_Box.shape.extents.x)
 
 func get_facing_dir() -> String:
 	return "Left" if self.global_position.x > opponent.global_position.x else "Right"
@@ -113,6 +114,7 @@ func get_move_speed(dir: float) -> float:
 	##This Sprinting Stuff is Temportary, Will be removed in place of a State in the Future
 	if is_Sprinting == false:
 		if dir_facing == "Right":
+			print(char_data.bwd_walk_speed if  dir == -1 else char_data.fwd_walk_speed)
 			return char_data.bwd_walk_speed if  dir == -1 else char_data.fwd_walk_speed
 		else: # facing Left
 			return char_data.fwd_walk_speed if dir == -1 else char_data.bwd_walk_speed
@@ -252,8 +254,9 @@ func handle_jump_logic() -> void:
 		elif prejump_timer == 0:
 			velocity.y = char_data.jump_velocity
 
-	elif Input.is_action_just_pressed(move_up) and is_on_floor():
-		prejump_timer = char_data.prejump
+	elif Input.is_action_just_pressed(move_up):
+		velocity.y = char_data.jump_velocity
+		#prejump_timer = char_data.prejump
 
 func handle_horizontal_movement(_delta: float) -> void:
 	move_dir = Input.get_axis(move_left, move_right)

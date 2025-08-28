@@ -60,7 +60,6 @@ func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> F
 	fighter.char_data = data
 	fighter.player_id = player_id
 	fighter.position = spawn_pos
-	fighter.main_camera = game_manager.camera_manager.Foreground_camera
 	add_child(fighter)
 	if G_HitboxTypes.Debug == true:
 		print("✅ Spawned %s as Player %d" % [data.character_name, player_id])

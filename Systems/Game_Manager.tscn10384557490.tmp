@@ -17,7 +17,7 @@ Volume = 1
 
 [node name="Character_Manager" parent="." instance=ExtResource("4_3ese2")]
 P1_Select = "Byakuya"
-P2_Select = "Byakuya"
+P2_Select = "Kokonoe"
 
 [node name="LevelManager" parent="." instance=ExtResource("5_3ese2")]
 script = ExtResource("6_uxoyq")
