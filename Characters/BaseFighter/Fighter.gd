@@ -256,6 +256,7 @@ func handle_jump_logic() -> void:
 
 	elif Input.is_action_just_pressed(move_up):
 		velocity.y = char_data.jump_velocity
+		print(char_data.jump_velocity)
 		#prejump_timer = char_data.prejump
 
 func handle_horizontal_movement(_delta: float) -> void:

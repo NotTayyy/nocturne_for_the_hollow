@@ -74,5 +74,3 @@ func _process(_delta: float) -> void:
 	Foreground_camera.global_position.y = lerpf(Foreground_camera.global_position.y, midpoint.y, move_speed * _delta)
 	Foreground_camera.global_position.x = lerpf(Foreground_camera.global_position.x, midpoint.x, move_speed * _delta)
 	Foreground_camera.zoom = Foreground_camera.zoom.lerp(target_zoom, zoom_speed * _delta)
-	
-	coords_loc.text = "T: " + str(t) + " / Disance: " + str(distance) + " / offset: " + str(target_offset.y) + " / Camera Pos: " + str(Foreground_camera.global_position) + " / midpint t: " + str(midpoint.y)

@@ -37,19 +37,19 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 @export var dash_max: int = 450
 #Backdash
 @export var backdash_type: BackDashType = BackDashType.Step
-@export var backdash: int = 30
+@export var backdash: int = 30 #Based on the State no this
 @export var backdash_invuln: int = 10
 @export var backdash_distance: int = 400
 @export var backdash_duration: int = 30
 
 @export_category("Air Movement")
 @export var prejump: int = 4
-@export var jump_velocity: int = -1350
+@export var jump_velocity: int = -1500 #Base Jump Height 1500, High 1700. Low 1300
 @export var fwd_jump_velocity: int = -800
 @export var bwd_jump_velocity: int = -800
 @export var super_jump_velocity: int = -1650
 @export var fwd_super_jump_velocity: int = -1650
 @export var bwd_super_jump_velocity: int = -1650
-@export var gravity: int = 4500
+@export var gravity: int = 4000
 @export var air_Jumps: int = 1
 @export var air_Dashes: int = 1

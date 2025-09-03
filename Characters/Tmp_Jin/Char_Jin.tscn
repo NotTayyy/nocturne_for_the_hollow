@@ -13,7 +13,7 @@ script = ExtResource("1_wk43p")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_crvpc")
-offset = Vector2(0, -88)
+offset = Vector2(29.87, -88)
 
 [node name="Components" type="Node" parent="."]
 

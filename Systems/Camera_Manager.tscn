@@ -54,10 +54,10 @@ texture = ExtResource("2_n75co")
 
 [node name="Label" type="Label" parent="Forground_Camera/CanvasLayer/Control"]
 layout_mode = 0
-offset_left = -272.0
-offset_top = -293.0
-offset_right = -179.0
-offset_bottom = -270.0
+offset_left = -45.0
+offset_top = -324.0
+offset_right = 48.0
+offset_bottom = -301.0
 text = "Console Log"
 
 [node name="Walls" type="StaticBody2D" parent="."]
