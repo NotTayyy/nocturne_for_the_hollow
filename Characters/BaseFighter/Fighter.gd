@@ -4,6 +4,7 @@ class_name Fighter
 @export_range(0, 2) var player_id: int = 0
 @onready var input_buffer: InputBuffer = %InputBuffer
 @onready var collision_Box: CollisionShape2D = $Collision_Box
+@onready var Anim_Player: AnimationPlayer = $AnimationPlayer
 
 var char_data: CharacterData
 var cmd_data: CommandData
