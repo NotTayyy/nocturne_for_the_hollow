@@ -24,6 +24,7 @@ unique_name_in_owner = true
 zoom = Vector2(1.2, 1.2)
 limit_left = -1685
 limit_top = -800
+limit_right = 1685
 limit_bottom = 600
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Forground_Camera"]
