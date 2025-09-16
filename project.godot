@@ -26,7 +26,7 @@ resources_spreadsheet_view/freeze_first_column=true
 config/name="Nocturne for the Hollow"
 config/version="0.01"
 run/main_scene="uid://btjeex4giaghl"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
 

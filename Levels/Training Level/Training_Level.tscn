@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://btjeex4giaghl"]
+
+[ext_resource type="PackedScene" uid="uid://c56fob4nvar6h" path="res://Levels/stage.tscn" id="2_j1j3e"]
+[ext_resource type="Texture2D" uid="uid://dgnt20ksc3lve" path="res://Levels/Training Level/TheGrid.webp" id="2_nkneg"]
+[ext_resource type="PackedScene" uid="uid://bxrdw0dnmitbh" path="res://Systems/Game_Manager.tscn" id="2_px5jc"]
+
+[node name="Test Level" type="Node2D"]
+
+[node name="TheGrid" type="Sprite2D" parent="."]
+position = Vector2(0, 130)
+scale = Vector2(2.37162, 1.89915)
+texture = ExtResource("2_nkneg")
+
+[node name="Stage" parent="." instance=ExtResource("2_j1j3e")]
+position = Vector2(0, 434)
+
+[node name="GameManager" parent="." instance=ExtResource("2_px5jc")]
