@@ -1,8 +1,8 @@
 extends Node2D
 
 #There has to be a better way to Log all our Characters and Shit
-@export_enum("Kokonoe", "Byakuya", "Jin") var P1_Select: String
-@export_enum("Kokonoe", "Byakuya", "Jin") var P2_Select: String 
+@export var P1_Select: String
+@export var P2_Select: String 
 
 var game_manager: Node
 
@@ -13,11 +13,20 @@ const P2_START_POS := Vector2(250, 400)
 
 func _ready() -> void:
 	await get_tree().process_frame
-	
+		
 	game_manager = get_parent()
+	G_Refrences.character_manager = self
 	
+	if not G_CharacterDB.get_data(P1_Select):
+		push_warning("P1_Select invalid, defaulting to first character")
+		P1_Select = G_CharacterDB.get_char_names()[1]
+		
+	if not G_CharacterDB.get_data(P2_Select):
+		push_warning("P2_Select invalid, defaulting to second character")
+		P2_Select = G_CharacterDB.get_char_names()[0]
+		
 	if P1_Select == P2_Select:
-		print("Mirror Match")
+		print("Mirror Match") #Should Change Shader or skin or something
 	
 	spawn_players()
 
@@ -26,15 +35,14 @@ func spawn_players():
 	player2 = spawn_character(P2_Select, 2, P2_START_POS)
 	
 	if player1 and player2:
-		if G_HitboxTypes.Debug == true:
+		if game_manager.Debug == true:
 			print("Character Manager Loaded!")
 		Opponent_Setup()
 		
 		
 		if game_manager.camera_manager:
-			if G_HitboxTypes.Debug == true:
+			if game_manager.Debug == true:
 				print("Camera Found!")
-			game_manager.camera_manager.set_targets(player1, player2)
 		else:
 			print("Cam Not Found")
 
@@ -61,7 +69,7 @@ func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> F
 	fighter.player_id = player_id
 	fighter.position = spawn_pos
 	add_child(fighter)
-	if G_HitboxTypes.Debug == true:
+	if game_manager.Debug == true:
 		print("✅ Spawned %s as Player %d" % [data.character_name, player_id])
 	
 	return fighter

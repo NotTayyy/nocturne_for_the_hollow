@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://b3kar4u2pymr2"]
+
+[ext_resource type="PackedScene" uid="uid://bxrdw0dnmitbh" path="res://Systems/Game_Manager.tscn" id="1_4pu20"]
+[ext_resource type="PackedScene" uid="uid://c56fob4nvar6h" path="res://Levels/stage.tscn" id="2_tjayn"]
+[ext_resource type="Texture2D" uid="uid://bn8e1w226fpo4" path="res://Levels/Verdant Forest/layer4.png" id="3_g1hrx"]
+[ext_resource type="Texture2D" uid="uid://dg387rhp4ny1q" path="res://Levels/Verdant Forest/layer1.png" id="3_tjayn"]
+[ext_resource type="Texture2D" uid="uid://dsqp6kielf2bm" path="res://Levels/Verdant Forest/layer3.png" id="4_y6y6d"]
+[ext_resource type="Texture2D" uid="uid://dawejippcgpk7" path="res://Levels/Verdant Forest/layer2.png" id="5_g1hrx"]
+
+[node name="BridgetsLevel" type="Node2D"]
+
+[node name="Stage" parent="." instance=ExtResource("2_tjayn")]
+position = Vector2(0, 434)
+
+[node name="Game_Manager" parent="." instance=ExtResource("1_4pu20")]
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Parallax2D" type="Parallax2D" parent="Background"]
+scale = Vector2(4.631964, 3.3065157)
+
+[node name="Layer4" type="Sprite2D" parent="Background/Parallax2D"]
+z_index = -20
+position = Vector2(1.7271299, -88.42052)
+scale = Vector2(0.79457515, 0.6549597)
+texture = ExtResource("3_g1hrx")
+
+[node name="BG" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.97, 1)
+
+[node name="Layer3" type="Sprite2D" parent="Background/BG"]
+z_index = -15
+position = Vector2(15.749903, -125)
+scale = Vector2(3.0532174, 1.2951922)
+texture = ExtResource("4_y6y6d")
+
+[node name="FG" type="Parallax2D" parent="Background"]
+
+[node name="Layer1" type="Sprite2D" parent="Background/FG"]
+z_index = -5
+position = Vector2(-16.000042, -87.95001)
+scale = Vector2(2.3238974, 1.4144676)
+texture = ExtResource("3_tjayn")
+
+[node name="MG1" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(1.02, 1)
+
+[node name="Layer2" type="Sprite2D" parent="Background/MG1"]
+z_index = -10
+position = Vector2(-38, -254)
+scale = Vector2(2.4301002, 1.6755096)
+texture = ExtResource("5_g1hrx")

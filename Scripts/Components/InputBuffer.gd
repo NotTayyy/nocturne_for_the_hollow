@@ -14,6 +14,7 @@ var command_list: Array = []
 #Different States will load their own Commands and this will keep Updating per State.
 var allowed_State_Commands: Array = []
 var player_char #Selects the Current Character
+var game_manager = G_Refrences.game_manager
 
 
 func _ready() -> void:
@@ -241,7 +242,7 @@ func check_Command_list(type, cmd_list: Array):
 func print_buffer():
 	var entry = buffer_history[-1]
 	label.text = parse_emoji(entry["action"])
-	if G_HitboxTypes.Debug == true:
+	if game_manager.Debug == true:
 		print("Action: ", entry["type"], " : ", entry["action"], " at frame ",
 		entry["action_frame"], " by ", entry["Character"])
 

@@ -5,6 +5,7 @@ class_name Fighter
 @onready var input_buffer: InputBuffer = %InputBuffer
 @onready var collision_Box: CollisionShape2D = $Collision_Box
 @onready var Anim_Player: AnimationPlayer = $AnimationPlayer
+@onready var game_manager = G_Refrences.game_manager
 
 var char_data: CharacterData
 var cmd_data: CommandData
@@ -13,8 +14,9 @@ var dir_facing: String
 var enm_Collision: CollisionShape2D
 var opponent: Fighter
 
-@export var right_limit: int = 2080.0
-@export var left_limit: int = -2080.0
+
+@export var right_limit: int = 2080
+@export var left_limit: int = -2080
 
 
 #region State Tracking
@@ -51,6 +53,11 @@ func _ready() -> void:
 		input_buffer.release_command_list = char_data.command_list.relese_cmnd_list
 	
 	setup_input_actions()
+	
+	if player_id == 1:
+		G_Refrences.P1 = self
+	else:
+		G_Refrences.P2 = self
 
 func setup_input_actions() -> void:
 	match player_id:
@@ -115,7 +122,6 @@ func get_move_speed(dir: float) -> float:
 	##This Sprinting Stuff is Temportary, Will be removed in place of a State in the Future
 	if is_Sprinting == false:
 		if dir_facing == "Right":
-			print(char_data.bwd_walk_speed if  dir == -1 else char_data.fwd_walk_speed)
 			return char_data.bwd_walk_speed if  dir == -1 else char_data.fwd_walk_speed
 		else: # facing Left
 			return char_data.fwd_walk_speed if dir == -1 else char_data.bwd_walk_speed
@@ -247,18 +253,16 @@ func handle_gravity(delta: float) -> void:
 func handle_jump_logic() -> void:
 	if prejump_timer > 0:
 		prejump_timer -= 1
-
+		
 		if Input.is_action_just_pressed(move_down):
 			prejump_timer = -1
-			print("⬇️ Jump canceled")
-
+			
+			
 		elif prejump_timer == 0:
 			velocity.y = char_data.jump_velocity
-
+	
 	elif Input.is_action_just_pressed(move_up):
-		velocity.y = char_data.jump_velocity
-		print(char_data.jump_velocity)
-		#prejump_timer = char_data.prejump
+		prejump_timer = char_data.prejump
 
 func handle_horizontal_movement(_delta: float) -> void:
 	move_dir = Input.get_axis(move_left, move_right)

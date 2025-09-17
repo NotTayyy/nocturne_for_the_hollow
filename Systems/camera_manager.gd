@@ -1,7 +1,7 @@
 extends Node2D
 
-var Player_1: Node2D
-var Player_2: Node2D
+var Player_1
+var Player_2 
 var distance: float
 var game_manager: Node
 
@@ -20,22 +20,20 @@ var t: float = 0.0
 @export var move_speed: float = 8
 
 @onready var Foreground_camera: Camera2D = %Forground_Camera
-@onready var coords_loc: Label = $Forground_Camera/CanvasLayer/Control/Label
 @onready var Walls = $Walls
-
-func set_targets(P1: Node2D, P2: Node2D):
-	Player_1 = P1
-	Player_2 = P2
 
 func _ready() -> void:
 	await get_tree().process_frame
 	game_manager = get_parent()
+
 	
-	if game_manager and G_HitboxTypes.Debug == true:
+	if game_manager and game_manager.Debug == true:
 		print("Camera Manager Loaded!")
 
 func _process(_delta: float) -> void:
 	if not Player_1 and not Player_2:
+		Player_1 = G_Refrences.P1
+		Player_2 = G_Refrences.P2
 		return
 	
 	var midpoint = (Player_1.global_position + Player_2.global_position ) * 0.5

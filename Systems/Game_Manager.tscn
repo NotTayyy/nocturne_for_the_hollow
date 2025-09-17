@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dgjyjt0qaano0" path="res://Systems/Level_Manager.tscn" id="5_3ese2"]
 [ext_resource type="Script" uid="uid://bwgfse7t5rqvn" path="res://Systems/level_manager.gd" id="6_uxoyq"]
 
-[node name="Game_Manager" type="Node"]
+[node name="Game_Manager" type="Node2D"]
 script = ExtResource("1_thld5")
 
 [node name="Audio_Manager" parent="." instance=ExtResource("3_gfaia")]
@@ -16,8 +16,6 @@ Volume = 1
 [node name="Camera_Manager" parent="." instance=ExtResource("2_h53vq")]
 
 [node name="Character_Manager" parent="." instance=ExtResource("4_3ese2")]
-P1_Select = "Byakuya"
-P2_Select = "Byakuya"
 
 [node name="LevelManager" parent="." instance=ExtResource("5_3ese2")]
 script = ExtResource("6_uxoyq")

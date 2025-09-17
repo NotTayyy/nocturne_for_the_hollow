@@ -18,7 +18,7 @@ var bgm_list: Dictionary = {
 func _ready() -> void:
 	await get_tree().process_frame
 	game_manager = get_parent()
-	if game_manager and G_HitboxTypes.Debug == true:
+	if game_manager and game_manager.Debug == true:
 		print("Audio Manager Loaded!")
 	randomize()
 	update_volume()
@@ -32,8 +32,8 @@ func play_rndm_bgm():
 	
 	bgm_streamer.stream = stream
 	bgm_streamer.play()
-	
-	print("Now Playing: ", rndm_key)
+	if game_manager.Debug:
+		print("Now Playing: ", rndm_key)
 
 func update_volume():
 	bgm_streamer.volume_db = linear_to_db(Volume / 100.0)

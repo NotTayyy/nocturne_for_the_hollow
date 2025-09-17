@@ -1,6 +1,6 @@
 extends Node2D
 
-@export_enum("Training Level") var Level_Select: String
+@export_enum("Training Level", "Verdant Forest") var Level_Select: String
 
 var game_manager: Node
 
@@ -12,6 +12,6 @@ func _ready() -> void:
 
 	spawn_level(Level_Select)
 
-func spawn_level(Level: String) -> void:
+func spawn_level(_Level: String) -> void:
 	pass
 	#var data = CharacterDB.get_data(char_name)
