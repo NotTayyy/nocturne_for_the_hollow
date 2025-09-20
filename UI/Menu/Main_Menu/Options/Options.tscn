@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwkfyeeiwhya7"]
+
+[ext_resource type="Script" uid="uid://2c2nwmjsikap" path="res://UI/Menu/Main_Menu/Options/options.gd" id="1_nr8t2"]
+
+[node name="Options" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nr8t2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer"]
+offset_left = 450.0
+offset_top = 379.0
+offset_right = 1228.0
+offset_bottom = 701.0
+value = 75.0
+tick_count = 100
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 477.0
+offset_top = 336.0
+offset_right = 1193.0
+offset_bottom = 631.0
+theme_override_font_sizes/font_size = 106
+text = "Music Volume
+"
+
+[node name="Back_Btn" type="Button" parent="CanvasLayer"]
+offset_left = 55.0
+offset_top = 930.0
+offset_right = 333.0
+offset_bottom = 1005.0
+theme_override_font_sizes/font_size = 48
+text = "Back
+"
+
+[connection signal="value_changed" from="CanvasLayer/HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/Back_Btn" to="." method="_on_back_btn_pressed"]

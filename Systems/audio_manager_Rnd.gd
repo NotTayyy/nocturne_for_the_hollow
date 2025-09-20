@@ -1,9 +1,9 @@
 extends Node2D
 
-@onready var bgm_streamer = %AudioStreamPlayer
+@onready var bgm_streamer = %BGM_Music_Player
 
-@export_range(0, 100, 1) var Volume : int = 75
-
+var current_bgm
+var Volume : int = 75
 var game_manager: Node
 
 var bgm_list: Dictionary = {
@@ -12,28 +12,42 @@ var bgm_list: Dictionary = {
 	"Lust Of Sin": preload("res://Assets/Music/Tmp_Lust.mp3"),
 	"Marionette Purple": preload("res://Assets/Music/Tmp_Marionette.mp3"),
 	"Queen Of Roses": preload("res://Assets/Music/Tmp_Queen.mp3"),
-	"The Red Line": preload("res://Assets/Music/Tmp_Red_Line.mp3")
+	"The Red Line": preload("res://Assets/Music/Tmp_Red_Line.mp3"),
+	"Menu Theme": preload("res://Assets/Music/Menu_Tmp_Gather_of_Night.mp3")
 }
 
 func _ready() -> void:
-	await get_tree().process_frame
+	Global.audio_manager = self
 	game_manager = get_parent()
+	await get_tree().process_frame
+	
 	if game_manager and game_manager.Debug == true:
 		print("Audio Manager Loaded!")
 	randomize()
-	update_volume()
-	play_rndm_bgm()
-
+	
+	update_volume(Volume)
 
 func play_rndm_bgm():
 	var keys = bgm_list.keys()
 	var rndm_key = keys[randi() % keys.size()]
 	var stream = bgm_list[rndm_key]
 	
+	bgm_streamer.stop()
 	bgm_streamer.stream = stream
+	current_bgm = stream
 	bgm_streamer.play()
 	if game_manager.Debug:
-		print("Now Playing: ", rndm_key)
+		print("Now Playing: ", stream)
 
-func update_volume():
-	bgm_streamer.volume_db = linear_to_db(Volume / 100.0)
+func update_volume(Vol: int):
+	Volume = Vol
+	bgm_streamer.volume_db = linear_to_db(Vol / 100.0)
+
+func play_bgm(new_bgm) -> void:
+	bgm_streamer.stop()
+	bgm_streamer.stream = bgm_list.get(new_bgm)
+	current_bgm = new_bgm
+	bgm_streamer.play()
+	
+	if game_manager.Debug == true:
+		print("Now Playing: ", current_bgm)

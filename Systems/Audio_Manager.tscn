@@ -5,5 +5,12 @@
 [node name="Audio_Manager" type="Node2D"]
 script = ExtResource("1_b5t3m")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="BGM_Music_Player" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
+bus = &"Music"
+
+[node name="Sfx_Player" type="AudioStreamPlayer" parent="."]
+bus = &"Sfx"
+
+[node name="Voice_Player" type="AudioStreamPlayer" parent="."]
+bus = &"Voices"

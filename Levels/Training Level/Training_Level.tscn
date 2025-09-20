@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://btjeex4giaghl"]
+[gd_scene load_steps=4 format=3 uid="uid://btjeex4giaghl"]
 
 [ext_resource type="Texture2D" uid="uid://dgnt20ksc3lve" path="res://Levels/Training Level/TheGrid.webp" id="1_hfwao"]
-[ext_resource type="PackedScene" uid="uid://c56fob4nvar6h" path="res://Levels/stage.tscn" id="2_sabbx"]
-[ext_resource type="PackedScene" uid="uid://bxrdw0dnmitbh" path="res://Systems/Game_Manager.tscn" id="3_4232i"]
-[ext_resource type="PackedScene" uid="uid://dgiyy2e1xffoy" path="res://UI/ImGui/ImGui.tscn" id="4_sabbx"]
+[ext_resource type="PackedScene" uid="uid://c56fob4nvar6h" path="res://Levels/Components/stage.tscn" id="2_sabbx"]
+[ext_resource type="PackedScene" uid="uid://c0ejqxr2ktkr0" path="res://Levels/Components/Walls.tscn" id="5_4232i"]
 
 [node name="Test Level" type="Node2D"]
 
@@ -15,10 +14,4 @@ texture = ExtResource("1_hfwao")
 [node name="Stage" parent="." instance=ExtResource("2_sabbx")]
 position = Vector2(0, 434)
 
-[node name="GameManager" parent="." instance=ExtResource("3_4232i")]
-P1 = "Byakuya"
-P2 = "Byakuya"
-Debug = true
-
-[node name="ImGui" parent="." instance=ExtResource("4_sabbx")]
-position = Vector2(-307.687, -569.2422)
+[node name="Walls" parent="." instance=ExtResource("5_4232i")]

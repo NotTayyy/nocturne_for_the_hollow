@@ -1,18 +1,16 @@
 [gd_scene load_steps=7 format=3 uid="uid://b3kar4u2pymr2"]
 
-[ext_resource type="PackedScene" uid="uid://bxrdw0dnmitbh" path="res://Systems/Game_Manager.tscn" id="1_4pu20"]
-[ext_resource type="PackedScene" uid="uid://c56fob4nvar6h" path="res://Levels/stage.tscn" id="2_tjayn"]
+[ext_resource type="PackedScene" uid="uid://c56fob4nvar6h" path="res://Levels/Components/stage.tscn" id="2_tjayn"]
 [ext_resource type="Texture2D" uid="uid://bn8e1w226fpo4" path="res://Levels/Verdant Forest/layer4.png" id="3_g1hrx"]
 [ext_resource type="Texture2D" uid="uid://dg387rhp4ny1q" path="res://Levels/Verdant Forest/layer1.png" id="3_tjayn"]
 [ext_resource type="Texture2D" uid="uid://dsqp6kielf2bm" path="res://Levels/Verdant Forest/layer3.png" id="4_y6y6d"]
 [ext_resource type="Texture2D" uid="uid://dawejippcgpk7" path="res://Levels/Verdant Forest/layer2.png" id="5_g1hrx"]
+[ext_resource type="PackedScene" uid="uid://c0ejqxr2ktkr0" path="res://Levels/Components/Walls.tscn" id="7_hrvu1"]
 
 [node name="BridgetsLevel" type="Node2D"]
 
 [node name="Stage" parent="." instance=ExtResource("2_tjayn")]
 position = Vector2(0, 434)
-
-[node name="Game_Manager" parent="." instance=ExtResource("1_4pu20")]
 
 [node name="Background" type="Node2D" parent="."]
 
@@ -50,3 +48,5 @@ z_index = -10
 position = Vector2(-38, -254)
 scale = Vector2(2.4301002, 1.6755096)
 texture = ExtResource("5_g1hrx")
+
+[node name="Walls" parent="." instance=ExtResource("7_hrvu1")]

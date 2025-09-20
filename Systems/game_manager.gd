@@ -1,31 +1,45 @@
 extends Node
 
-#Tmp to be removed
-@export var P1: String = ""
-@export var P2: String = ""
-@export var Level: String = ""
-@export var Debug: bool
+@export var Debug: bool = false
+
 @onready var camera_manager: Node2D = $Camera_Manager
 @onready var audio_manager: Node2D = $Audio_Manager
 @onready var character_manager: Node2D = $Character_Manager
-@onready var level_manager: Node2D = $LevelManager
+@onready var level_manager: Node2D = $Level_Manager
+@onready var ui_manager: Node2D = $Ui_Manager
+
+enum GameState { MAIN_MENU, CHAR_SELECT, LEVEL_SELECT, MID_MATCH, RESULTS, PAUSE }
+var current_state: GameState
 
 func _ready() -> void:
-	G_Refrences.game_manager = self
-	if character_manager and camera_manager and audio_manager and level_manager:
-		if Debug == true:
-			print("Managers Loaded!")
-	else:
-		print("GM Buggered")
+	Global.game_manager = self
 	
-	#Tmp to be removed
-	character_manager.P1_Select = P1
-	character_manager.P2_Select = P2
-	
-	level_manager.Level_Select = Level #Should spawn everything under the Game manager
+	var all_good: bool = true
+	for m in [character_manager, camera_manager, audio_manager, level_manager, ui_manager]:
+		if m == null:
+			push_warning("GameManager: A required manager is missing!")
+			all_good = false
+		
+	if all_good and Debug == true:
+		print("Managers Loaded!")
+	await get_tree().physics_frame
+	change_state(GameState.MAIN_MENU)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("Toggle_Debug"):
+		Debug = not Debug
+	if event.is_action_pressed("Btn_Select"):
+		get_tree().reload_current_scene()
+	if event.is_action_pressed("Btn_Exit"):
+		get_tree().quit()
 
 func _physics_process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Toggle_Debug"):
-		Debug = not Debug
-	if Input.is_action_just_pressed("Btn_Select"):
-		get_tree().reload_current_scene()
+	pass
+
+func change_state(new_state: GameState) -> void:
+	current_state = new_state
+	match new_state:
+		GameState.MAIN_MENU:
+			audio_manager.play_bgm("Menu Theme")
+			ui_manager.Change_Gui_scene("res://UI/Menu/Main_Menu/Menu/Main_menu.tscn")
+		

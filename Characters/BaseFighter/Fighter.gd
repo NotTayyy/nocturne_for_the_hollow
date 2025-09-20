@@ -1,19 +1,20 @@
 extends CharacterBody2D
 class_name Fighter
 
-@export_range(0, 2) var player_id: int = 0
+@export_range(0, 2, 1) var player_id: int = 0
 @onready var input_buffer: InputBuffer = %InputBuffer
 @onready var collision_Box: CollisionShape2D = $Collision_Box
 @onready var Anim_Player: AnimationPlayer = $AnimationPlayer
-@onready var game_manager = G_Refrences.game_manager
+@onready var game_manager: Node = Global.game_manager
+@onready var char_sprite: Node2D = $Char_Sprite
 
 var char_data: CharacterData
 var cmd_data: CommandData
 var dir_facing: String
+var last_facing: String
 
 var enm_Collision: CollisionShape2D
 var opponent: Fighter
-
 
 @export var right_limit: int = 2080
 @export var left_limit: int = -2080
@@ -24,7 +25,6 @@ var was_idle: bool = false
 var prejump_timer: int = -1 #Remove Eventually
 var move_dir: float = 0
 var is_airborn: bool = false
-var is_Sprinting: bool = false
 #endregion
 
 #region Controls
@@ -55,9 +55,9 @@ func _ready() -> void:
 	setup_input_actions()
 	
 	if player_id == 1:
-		G_Refrences.P1 = self
+		Global.P1 = self
 	else:
-		G_Refrences.P2 = self
+		Global.P2 = self
 
 func setup_input_actions() -> void:
 	match player_id:
@@ -106,30 +106,37 @@ func push_if_overlapping() -> void:
 	var enemy_rect: Rect2 =  Rect2(enm_Collision.global_position - enm_Collision.shape.extents, enm_Collision.shape.extents * 2)
 	
 	##Problem: Bandaid on Stealing corner, Really Fix in the Future.
+	##Make the Overlap move the players more, Its too slow walking from one corner to the other
 	if my_rect.intersects(enemy_rect):
 		var overlap = my_rect.intersection(enemy_rect)
 		if overlap.size.x < overlap.size.y:
 			var push_distance = overlap.size.x / 2
 			if my_rect.position.x < enemy_rect.position.x:
-				global_position.x = min(global_position.x - push_distance, right_limit - collision_Box.shape.extents.x)
+				global_position.x = global_position.x - push_distance
 			else:
-				global_position.x = max(global_position.x + push_distance, left_limit + collision_Box.shape.extents.x)
+				global_position.x = global_position.x + push_distance
 
 func get_facing_dir() -> String:
-	return "Left" if self.global_position.x > opponent.global_position.x else "Right"
+	var dir: String
+	
+	dir = "Left" if self.global_position.x > opponent.global_position.x else "Right"
+	if dir != dir_facing:
+		if dir == "Right":
+			char_sprite.scale.x = 1
+		else:
+			char_sprite.scale.x = -1
+	
+	return dir
+
+func flip_sprite(_dir: String) -> void:
+	pass
 
 func get_move_speed(dir: float) -> float:
 	##This Sprinting Stuff is Temportary, Will be removed in place of a State in the Future
-	if is_Sprinting == false:
-		if dir_facing == "Right":
-			return char_data.bwd_walk_speed if  dir == -1 else char_data.fwd_walk_speed
-		else: # facing Left
-			return char_data.fwd_walk_speed if dir == -1 else char_data.bwd_walk_speed
-	else:
-		if dir_facing == "Right":
-			return char_data.bwd_walk_speed if  dir == -1 else char_data.dash_max
-		else: # facing Left
-			return char_data.dash_max if dir == -1 else char_data.bwd_walk_speed
+	if dir_facing == "Right":
+		return char_data.bwd_walk_speed if  dir == -1 else char_data.fwd_walk_speed
+	else: # facing Left
+		return char_data.fwd_walk_speed if dir == -1 else char_data.bwd_walk_speed
 
 func capture_input() -> void:
 	var current_directions := []

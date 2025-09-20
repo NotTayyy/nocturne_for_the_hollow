@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://bh7063hqhtouc"]
+
+[ext_resource type="Script" uid="uid://b7qmqrbmpmyt6" path="res://UI/Menu/Main_Menu/Level_Select/levels.gd" id="1_mlfip"]
+[ext_resource type="Texture2D" uid="uid://kv6ckbiuujx1" path="res://Levels/Training Level/Training_Level_thumb.jpg" id="2_rn734"]
+
+[node name="Level_Selecter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mlfip")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Training" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 376.0
+offset_top = -185.0
+offset_right = 416.0
+offset_bottom = -145.0
+grow_vertical = 2
+size_flags_horizontal = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Training"]
+position = Vector2(64, -69)
+scale = Vector2(0.46837944, 0.46837944)
+texture = ExtResource("2_rn734")
+
+[node name="Label" type="Label" parent="CanvasLayer/Training"]
+layout_mode = 2
+text = "Training Room"

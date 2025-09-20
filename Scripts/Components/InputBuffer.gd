@@ -14,7 +14,7 @@ var command_list: Array = []
 #Different States will load their own Commands and this will keep Updating per State.
 var allowed_State_Commands: Array = []
 var player_char #Selects the Current Character
-var game_manager = G_Refrences.game_manager
+var game_manager = Global.game_manager
 
 
 func _ready() -> void:
@@ -28,7 +28,7 @@ func register_input(action: String, type: String) -> void:
 		"action": action, #Command Name
 		"action_frame": current_frame, #Command Frame
 		"type": type, #Press or Release
-		"Character": player_char.name #Just to make The 
+		"Character": player_char.name 
 	})
 	
 	check_commands()

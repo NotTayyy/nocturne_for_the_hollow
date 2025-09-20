@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://c0ejqxr2ktkr0"]
+
+[ext_resource type="Script" uid="uid://b52ueht7eqobt" path="res://Levels/Components/walls.gd" id="1_kbae4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n75co"]
+size = Vector2(20, 1250)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uc3dp"]
+size = Vector2(100, 1249)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yghuh"]
+size = Vector2(20, 1250)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n7kkl"]
+size = Vector2(100, 1249)
+
+[node name="Walls" type="StaticBody2D"]
+collision_layer = 15
+collision_mask = 15
+script = ExtResource("1_kbae4")
+
+[node name="Right_Wall" type="CollisionShape2D" parent="."]
+position = Vector2(793, 0)
+shape = SubResource("RectangleShape2D_n75co")
+debug_color = Color(0.827569, 0.268625, 0.729829, 0.42)
+
+[node name="S_Right_Wall" type="Area2D" parent="Right_Wall"]
+
+[node name="Sticky_Right" type="CollisionShape2D" parent="Right_Wall/S_Right_Wall"]
+position = Vector2(-40, 0)
+shape = SubResource("RectangleShape2D_uc3dp")
+
+[node name="Left_Wall" type="CollisionShape2D" parent="."]
+position = Vector2(-793, 0)
+shape = SubResource("RectangleShape2D_yghuh")
+debug_color = Color(0.827569, 0.268625, 0.729829, 0.42)
+
+[node name="S_Left_Wall" type="Area2D" parent="Left_Wall"]
+input_pickable = false
+
+[node name="Sticky_Left" type="CollisionShape2D" parent="Left_Wall/S_Left_Wall"]
+position = Vector2(40, 0)
+shape = SubResource("RectangleShape2D_n7kkl")

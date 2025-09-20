@@ -1,23 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://4uaa400vgmam"]
+[gd_scene load_steps=2 format=3 uid="uid://4uaa400vgmam"]
 
 [ext_resource type="Script" uid="uid://c1r80m2etrtfr" path="res://Systems/camera_manager.gd" id="1_5otwh"]
-[ext_resource type="PackedScene" uid="uid://d1842be6dcijx" path="res://UI/Ingame_UI.tscn" id="2_n75co"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_n75co"]
-size = Vector2(20, 1250)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_uc3dp"]
-size = Vector2(100, 1249)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_yghuh"]
-size = Vector2(20, 1250)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_n7kkl"]
-size = Vector2(100, 1249)
 
 [node name="Camera_Manager" type="Node2D"]
 script = ExtResource("1_5otwh")
-wall_speed = 6
 
 [node name="Forground_Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
@@ -27,29 +13,4 @@ limit_top = -800
 limit_right = 1685
 limit_bottom = 600
 
-[node name="Ingame_Ui" parent="Forground_Camera" instance=ExtResource("2_n75co")]
-
-[node name="Walls" type="StaticBody2D" parent="."]
-
-[node name="Right_Wall" type="CollisionShape2D" parent="Walls"]
-position = Vector2(793, 0)
-shape = SubResource("RectangleShape2D_n75co")
-debug_color = Color(0.827569, 0.268625, 0.729829, 0.42)
-
-[node name="S_Right_Wall" type="Area2D" parent="Walls/Right_Wall"]
-
-[node name="Sticky_Right" type="CollisionShape2D" parent="Walls/Right_Wall/S_Right_Wall"]
-position = Vector2(-40, 0)
-shape = SubResource("RectangleShape2D_uc3dp")
-
-[node name="Left_Wall" type="CollisionShape2D" parent="Walls"]
-position = Vector2(-793, 0)
-shape = SubResource("RectangleShape2D_yghuh")
-debug_color = Color(0.827569, 0.268625, 0.729829, 0.42)
-
-[node name="S_Left_Wall" type="Area2D" parent="Walls/Left_Wall"]
-input_pickable = false
-
-[node name="Sticky_Left" type="CollisionShape2D" parent="Walls/Left_Wall/S_Left_Wall"]
-position = Vector2(40, 0)
-shape = SubResource("RectangleShape2D_n7kkl")
+[node name="UI" type="Node" parent="Forground_Camera"]

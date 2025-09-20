@@ -11,20 +11,23 @@ var min_vertical_offset: Vector2 = Vector2(0, -163)
 var max_vertical_offset: Vector2 = Vector2(0, -225)
 var min_distance: float = 850
 var max_distance: float = 1200 
-var jump_limit: float = 70
+var cam_top_move: float = 70
 var cam_floor: float = 330
 var t: float = 0.0
 
-@export var wall_speed: int = 5
-@export var zoom_speed: float = 8
-@export var move_speed: float = 8
+var wall_speed: int = 6
+var zoom_speed: float = 8
+var move_speed: float = 8
+var Walls: StaticBody2D
 
 @onready var Foreground_camera: Camera2D = %Forground_Camera
-@onready var Walls = $Walls
+
 
 func _ready() -> void:
-	await get_tree().process_frame
+	Global.camera_manager = self
+	Global.UI = $Forground_Camera/UI
 	game_manager = get_parent()
+	await get_tree().process_frame
 
 	
 	if game_manager and game_manager.Debug == true:
@@ -32,8 +35,11 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if not Player_1 and not Player_2:
-		Player_1 = G_Refrences.P1
-		Player_2 = G_Refrences.P2
+		Player_1 = Global.P1
+		Player_2 = Global.P2
+		return
+	if not Walls:
+		Walls = Global.Walls 
 		return
 	
 	var midpoint = (Player_1.global_position + Player_2.global_position ) * 0.5
@@ -45,7 +51,7 @@ func _process(_delta: float) -> void:
 	var target_zoom = min_zoom.lerp(max_zoom, t)
 	var target_offset = min_vertical_offset.lerp(max_vertical_offset, t)
 	
-	midpoint.y = highest_y if highest_y < jump_limit else cam_floor + target_offset.y
+	midpoint.y = highest_y if highest_y < cam_top_move else cam_floor + target_offset.y
 
 	Walls.global_position.x = lerpf(Walls.global_position.x, midpoint.x, wall_speed * _delta)
 	Foreground_camera.global_position.y = lerpf(Foreground_camera.global_position.y, midpoint.y, move_speed * _delta)

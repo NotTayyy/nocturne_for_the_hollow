@@ -1,9 +1,9 @@
 extends Node
 
 @onready var char_man = G_Refrences.character_manager
-@onready var P1: Fighter = null
-@onready var P2: Fighter = null
-var fwd_walk_reset
+var P1: Fighter = null
+var P2: Fighter = null
+var fwd_walk_reset_P1
 
 func _ready() -> void:
 	pass
@@ -11,7 +11,7 @@ func _ready() -> void:
 func Collect():
 		P1 = G_Refrences.P1
 		P2 = G_Refrences.P2
-		fwd_walk_reset = P1.char_data.fwd_walk_speed
+		fwd_walk_reset_P1 = P1.char_data.fwd_walk_speed
 		
 
 func _process(_delta: float) -> void:
@@ -28,6 +28,5 @@ func _process(_delta: float) -> void:
 		if ImGui.Button("- Walk Speed"):
 			P1.char_data.fwd_walk_speed -= 25
 		if ImGui.Button("Reset"):
-			P1.char_data.fwd_walk_speed = fwd_walk_reset
-		
-	ImGui.End()
+			P1.char_data.fwd_walk_speed = fwd_walk_reset_P1
+	ImGui.End() 
