@@ -4,6 +4,7 @@ var game_manager: Node
 
 var player1: Fighter
 var player2: Fighter
+
 const P1_START_POS := Vector2(-250, 400)
 const P2_START_POS := Vector2(250, 400)
 
@@ -19,7 +20,10 @@ func _ready() -> void:
 		else:
 			print("Cam Not Found")
 
-func game_start(P1_Select:String, P2_Select:String) -> void: #Call this To Spawn the Characters
+func game_start() -> void: #Call this To Spawn the Characters
+	var P1_Select = Global.P1_Select
+	var P2_Select = Global.P2_Select
+	
 	if not G_CharacterDB.get_data(P1_Select):
 		push_warning("P1_Select invalid, defaulting to first character")
 		P1_Select = G_CharacterDB.get_char_names()[1]
@@ -31,12 +35,8 @@ func game_start(P1_Select:String, P2_Select:String) -> void: #Call this To Spawn
 	if P1_Select == P2_Select:
 		print("Mirror Match") #Should Change Shader or skin or something
 		
-	Global.P1_Select = P1_Select
-	Global.P2_Select = P2_Select
-	
-	spawn_players(P1_Select, P2_Select) 
 
-func spawn_players(P1_Select:String, P2_Select:String) -> void:
+	
 	player1 = spawn_character(P1_Select, 1, P1_START_POS)
 	player2 = spawn_character(P2_Select, 2, P2_START_POS)
 	

@@ -11,7 +11,7 @@ size = Vector2(100, 188)
 collision_layer = 0
 script = ExtResource("1_wk43p")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Char_Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_crvpc")
 offset = Vector2(29.87, -88)
 
@@ -30,3 +30,7 @@ offset_bottom = -296.0
 [node name="Collision_Box" type="CollisionShape2D" parent="."]
 z_index = 1
 shape = SubResource("RectangleShape2D_wk43p")
+
+[node name="Char_Audio_Spawner" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Char_Sprite_Animator" type="AnimationPlayer" parent="."]

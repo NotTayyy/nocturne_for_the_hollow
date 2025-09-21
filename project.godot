@@ -35,10 +35,10 @@ buses/default_bus_layout=""
 
 [autoload]
 
-G_CharacterDB="*res://Scripts/Globals/CharacterDatabase.gd"
-G_HitboxTypes="*res://Scripts/Globals/Hitbox_Types.gd"
-G_LevelDB="*res://Scripts/Globals/LevelDatabase.gd"
 Global="*res://Scripts/Globals/Global_Refrence.gd"
+G_LevelDB="*res://Scripts/Globals/LevelDatabase.gd"
+G_HitboxTypes="*res://Scripts/Globals/Hitbox_Types.gd"
+G_CharacterDB="*res://Scripts/Globals/CharacterDatabase.gd"
 ImGuiRoot="*res://addons/imgui-godot/data/ImGuiRoot.tscn"
 
 [display]

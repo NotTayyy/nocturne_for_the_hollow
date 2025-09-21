@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bh7063hqhtouc"]
+[gd_scene load_steps=4 format=3 uid="uid://bh7063hqhtouc"]
 
 [ext_resource type="Script" uid="uid://b7qmqrbmpmyt6" path="res://UI/Menu/Main_Menu/Level_Select/levels.gd" id="1_mlfip"]
 [ext_resource type="Texture2D" uid="uid://kv6ckbiuujx1" path="res://Levels/Training Level/Training_Level_thumb.jpg" id="2_rn734"]
+[ext_resource type="Texture2D" uid="uid://cwhn7ud17p8yd" path="res://Levels/Verdant Forest/Verdant_Forest_Thumb.jpg" id="3_7xh7i"]
 
 [node name="Level_Selecter" type="Control"]
 layout_mode = 3
@@ -14,22 +15,75 @@ script = ExtResource("1_mlfip")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Training" type="VBoxContainer" parent="CanvasLayer"]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 376.0
-offset_top = -185.0
-offset_right = 416.0
-offset_bottom = -145.0
-grow_vertical = 2
-size_flags_horizontal = 0
+[node name="Back_Btn" type="Button" parent="CanvasLayer"]
+offset_left = 37.0
+offset_top = 943.0
+offset_right = 225.0
+offset_bottom = 1047.0
+theme_override_font_sizes/font_size = 48
+text = "Back
+"
 
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Training"]
-position = Vector2(64, -69)
-scale = Vector2(0.46837944, 0.46837944)
-texture = ExtResource("2_rn734")
+[node name="Begin_Btn" type="Button" parent="CanvasLayer"]
+offset_left = 1613.0
+offset_top = 903.0
+offset_right = 1801.0
+offset_bottom = 1007.0
+theme_override_font_sizes/font_size = 48
+text = "Begin"
 
-[node name="Label" type="Label" parent="CanvasLayer/Training"]
-layout_mode = 2
+[node name="Training_Room" type="TextureButton" parent="CanvasLayer"]
+offset_left = 214.0
+offset_top = 152.0
+offset_right = 942.0
+offset_bottom = 405.0
+texture_normal = ExtResource("2_rn734")
+
+[node name="Training_level_name" type="Label" parent="CanvasLayer/Training_Room"]
+layout_mode = 0
+offset_top = 106.5
+offset_right = 338.0
+offset_bottom = 173.5
+theme_override_font_sizes/font_size = 48
 text = "Training Room"
+
+[node name="Training_desc_name3" type="Label" parent="CanvasLayer/Training_Room"]
+layout_mode = 0
+offset_top = 177.5
+offset_right = 338.0
+offset_bottom = 222.5
+theme_override_font_sizes/font_size = 32
+text = "Training Room"
+
+[node name="Verdant_Room" type="TextureButton" parent="CanvasLayer"]
+offset_left = 1077.0
+offset_top = 120.0
+offset_right = 2357.0
+offset_bottom = 840.0
+scale = Vector2(0.44635397, 0.44635397)
+texture_normal = ExtResource("3_7xh7i")
+
+[node name="Verdant_level_name" type="Label" parent="CanvasLayer/Verdant_Room"]
+layout_mode = 0
+offset_left = 6.7211227
+offset_top = 353.97916
+offset_right = 344.72113
+offset_bottom = 420.97916
+scale = Vector2(2.2418425, 2.2418425)
+theme_override_font_sizes/font_size = 48
+text = "Training Room"
+
+[node name="Verdant_desc_name2" type="Label" parent="CanvasLayer/Verdant_Room"]
+layout_mode = 0
+offset_left = 13.442245
+offset_top = 508.56497
+offset_right = 351.44223
+offset_bottom = 553.56494
+scale = Vector2(2.6039612, 2.6039612)
+theme_override_font_sizes/font_size = 32
+text = "Training Room"
+
+[connection signal="pressed" from="CanvasLayer/Back_Btn" to="." method="_on_back_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/Begin_Btn" to="." method="_on_begin_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/Training_Room" to="." method="_on_training_room_pressed"]
+[connection signal="pressed" from="CanvasLayer/Verdant_Room" to="." method="_on_verdant_room_pressed"]

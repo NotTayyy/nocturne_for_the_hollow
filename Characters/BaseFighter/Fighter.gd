@@ -4,7 +4,7 @@ class_name Fighter
 @export_range(0, 2, 1) var player_id: int = 0
 @onready var input_buffer: InputBuffer = %InputBuffer
 @onready var collision_Box: CollisionShape2D = $Collision_Box
-@onready var Anim_Player: AnimationPlayer = $AnimationPlayer
+@onready var Anim_Player: AnimationPlayer = $Char_Sprite_Animator
 @onready var game_manager: Node = Global.game_manager
 @onready var char_sprite: Node2D = $Char_Sprite
 
@@ -19,15 +19,11 @@ var opponent: Fighter
 @export var right_limit: int = 2080
 @export var left_limit: int = -2080
 
-
-#region State Tracking
 var was_idle: bool = false
 var prejump_timer: int = -1 #Remove Eventually
 var move_dir: float = 0
 var is_airborn: bool = false
-#endregion
 
-#region Controls
 var move_left: String
 var move_right: String
 var move_up: String
@@ -39,7 +35,6 @@ var btn_b: String
 var btn_c: String
 var btn_d: String
 var debug: String
-#endregion
 
 func _ready() -> void:
 	if not char_data:
@@ -83,7 +78,7 @@ func setup_input_actions() -> void:
 			push_warning("Unhandled player_id: %d" % player_id)
 
 func _physics_process(delta: float) -> void:
-	await get_tree().process_frame
+	await get_tree().physics_frame
 	if not char_data:
 		return
 		
@@ -127,9 +122,6 @@ func get_facing_dir() -> String:
 			char_sprite.scale.x = -1
 	
 	return dir
-
-func flip_sprite(_dir: String) -> void:
-	pass
 
 func get_move_speed(dir: float) -> float:
 	##This Sprinting Stuff is Temportary, Will be removed in place of a State in the Future

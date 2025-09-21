@@ -16,3 +16,6 @@ var P1: Fighter
 var P1_Select: String
 var P2: Fighter
 var P2_Select: String
+
+var Level
+var Level_Select

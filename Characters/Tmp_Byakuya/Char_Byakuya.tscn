@@ -78,7 +78,7 @@ tracks/0/keys = {
 tracks/1/type = "audio"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AudioStreamPlayer2D")
+tracks/1/path = NodePath("Char_Audio_Spawner")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -133,7 +133,7 @@ tracks/0/keys = {
 tracks/1/type = "audio"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AudioStreamPlayer2D")
+tracks/1/path = NodePath("Char_Audio_Spawner")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -255,10 +255,10 @@ text = "Placeholder"
 z_index = 1
 shape = SubResource("RectangleShape2D_4lanw")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="Char_Audio_Spawner" type="AudioStreamPlayer2D" parent="."]
 max_polyphony = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="Char_Sprite_Animator" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_e5bsc")
 }

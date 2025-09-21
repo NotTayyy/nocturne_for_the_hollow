@@ -3,7 +3,7 @@ extends Node2D
 @onready var bgm_streamer = %BGM_Music_Player
 
 var current_bgm
-var Volume : int = 75
+var Volume : int = 10
 var game_manager: Node
 
 var bgm_list: Dictionary = {
