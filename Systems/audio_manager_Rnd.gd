@@ -43,7 +43,7 @@ func update_volume(Vol: int):
 	Volume = Vol
 	bgm_streamer.volume_db = linear_to_db(Vol / 100.0)
 
-func play_bgm(new_bgm) -> void:
+func play_bgm(new_bgm: String) -> void:
 	bgm_streamer.stop()
 	bgm_streamer.stream = bgm_list.get(new_bgm)
 	current_bgm = new_bgm
@@ -51,3 +51,6 @@ func play_bgm(new_bgm) -> void:
 	
 	if game_manager.Debug == true:
 		print("Now Playing: ", current_bgm)
+
+func get_bgm_list() -> Array:
+	return bgm_list.keys()

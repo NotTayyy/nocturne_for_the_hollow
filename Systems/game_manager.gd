@@ -42,12 +42,14 @@ func change_Gamemode(new_state: GameState) -> void:
 			audio_manager.play_bgm("Menu Theme")
 			ui_manager.Change_Gui_scene("res://UI/Menu/Main_Menu/Menu/Main_menu.tscn")
 		GameState.MID_MATCH:
+			#Spawn in the Selected Level
 			var level = G_LevelDB.get_level_property(Global.Level_Select, "scene")
 			level_manager.Change_Level_scene(level)
 			#Add Actors
 			character_manager.game_start()
-			
 			#Switch To Mid Match UI
 			ui_manager.Change_Gui_scene("res://UI/Ingame/Ingame_UI.tscn")
+			#Switch To Mid Match Music
+			
 			pass
 		

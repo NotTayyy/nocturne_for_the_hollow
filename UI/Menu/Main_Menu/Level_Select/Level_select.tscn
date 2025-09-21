@@ -9,6 +9,10 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 7.0
+offset_right = 2.0
+offset_bottom = 7.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mlfip")
@@ -82,6 +86,21 @@ offset_bottom = 553.56494
 scale = Vector2(2.6039612, 2.6039612)
 theme_override_font_sizes/font_size = 32
 text = "Training Room"
+
+[node name="BGM_Select_drop" type="OptionButton" parent="CanvasLayer"]
+offset_left = 842.0
+offset_top = 684.0
+offset_right = 1058.0
+offset_bottom = 734.0
+
+[node name="Bgm_Label" type="Label" parent="CanvasLayer/BGM_Select_drop"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = -48.0
+offset_right = 195.0
+offset_bottom = -3.0
+theme_override_font_sizes/font_size = 32
+text = "BGM: Select"
 
 [connection signal="pressed" from="CanvasLayer/Back_Btn" to="." method="_on_back_btn_pressed"]
 [connection signal="pressed" from="CanvasLayer/Begin_Btn" to="." method="_on_begin_btn_pressed"]
