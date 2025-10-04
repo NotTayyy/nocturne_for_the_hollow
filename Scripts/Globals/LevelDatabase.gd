@@ -22,8 +22,9 @@ func load_levels():
 func get_level_names() -> PackedStringArray:
 	return PackedStringArray(levels.keys())
 
-func get_level_property(level: String, prop: String) -> Variant:
+func get_level_property(level, prop: String) -> Variant:
 	if not levels.has(level):
-		push_warning("Level %s not found!" % level)
+		if Global.game_manager.Debug == true:
+			push_warning("Level %s not found!" % level)
 		return null
 	return levels[level].get(prop, null)

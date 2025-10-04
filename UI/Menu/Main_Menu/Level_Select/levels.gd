@@ -29,9 +29,6 @@ func _on_verdant_room_pressed() -> void:
 	tmp_selected_level = "verdant_forest"
 
 func _on_begin_btn_pressed() -> void:
-	if tmp_selected_level == "":
-		return
-	else:
-		Global.Level_Select = tmp_selected_level
-		Global.game_manager.change_Gamemode(game_manager.GameState.MID_MATCH)
-		Global.audio_manager.play_bgm(BGM_Dropdown.get_item_text(BGM_Dropdown.selected))
+	Global.Level_Select = tmp_selected_level
+	Global.game_manager.change_Gamemode(game_manager.GameState.MID_MATCH)
+	Global.audio_manager.play_bgm(BGM_Dropdown.get_item_text(BGM_Dropdown.selected))
