@@ -10,6 +10,7 @@
 
 [node name="Game_Manager" type="Node"]
 script = ExtResource("1_thld5")
+Debug = true
 
 [node name="Camera_Manager" parent="." instance=ExtResource("2_h53vq")]
 
@@ -19,5 +20,7 @@ script = ExtResource("1_thld5")
 script = ExtResource("6_uxoyq")
 
 [node name="Ui_Manager" parent="." instance=ExtResource("7_uxoyq")]
+z_index = -5
 
 [node name="Character_Manager" parent="." instance=ExtResource("4_3ese2")]
+z_index = 1645

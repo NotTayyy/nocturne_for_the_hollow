@@ -1,21 +1,28 @@
 extends Node
 
-var game_manager: Node
-var character_manager: Node2D
-var camera_manager: Node2D
-var level_manager: Node2D
-var audio_manager: Node2D
-var ui_manager: Node2D
+var game_manager: Node = null
+var character_manager: Node2D = null
+var camera_manager: Node2D = null
+var level_manager: Node2D = null
+var audio_manager: Node2D = null
+var ui_manager: Node2D = null
 
-var Volume: int
+var Volume: Dictionary = {
+	"master": 10,
+	"bgm": 10,
+	"sfx": 10,
+	"voice": 10,
+	"bgsfx": 10
+}
 
-var Walls: StaticBody2D
-var UI: Node
+var Walls: StaticBody2D = null
+var UI: Node = null
 
-var P1: Fighter
-var P1_Select: String
-var P2: Fighter
-var P2_Select: String
+var P1: Fighter = null
+var P1_Select: String = ""
 
-var Level
-var Level_Select
+var P2: Fighter = null
+var P2_Select: String = ""
+
+var Level = null
+var Level_Select: String = ""

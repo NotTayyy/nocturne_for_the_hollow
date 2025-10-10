@@ -7,13 +7,12 @@ var current_level: Node
 func _ready() -> void:
 	Global.level_manager = self
 	game_manager = get_parent()
-	await get_tree().process_frame
 
 func spawn_level(Level: String) -> void:
-	if current_level:
+	if current_level: 
 		current_level.queue_free()
 	
-	var scene = G_LevelDB.get_level_property("verdant_forest", "scene")
+	var scene = G_LevelDB.get_level_property(Level, "scene")
 	if scene:
 		current_level = scene.instantiate()
 		add_child(current_level)
@@ -28,9 +27,11 @@ func Change_Level_scene(new_scene, delete: bool = true, keep_running: bool = fal
 			current_level.visible = false
 		else:
 			remove_child(current_level)
-	if not G_LevelDB.get_level_property(new_scene, "scene"): #If level is no selected, 
+	
+	var scene: PackedScene = G_LevelDB.get_level_property(new_scene, "scene")
+	if scene == null: #If level is no selected, 
 		push_warning("Level not selected, defaulting to first Level")# Return the First level
-		new_scene = G_LevelDB.get_level_property(G_LevelDB.get_level_names()[0], "scene")
-	var new = new_scene.instantiate()
-	add_child(new)
-	current_level = new
+		scene = G_LevelDB.get_level_property(G_LevelDB.get_level_names()[0], "scene")
+	
+	current_level = scene.instantiate()
+	add_child(current_level)

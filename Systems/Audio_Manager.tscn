@@ -1,16 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://dsja1ovopp7m3"]
+[gd_scene load_steps=3 format=3 uid="uid://dsja1ovopp7m3"]
 
 [ext_resource type="Script" uid="uid://c13wtiueo46js" path="res://Systems/audio_manager_Rnd.gd" id="1_b5t3m"]
+[ext_resource type="AudioStream" uid="uid://dba8ejcsgw6tn" path="res://Assets/Music/Menus/Menu_Tmp_Gather_of_Night.mp3" id="2_pw8ew"]
 
 [node name="Audio_Manager" type="Node2D"]
 script = ExtResource("1_b5t3m")
 
 [node name="BGM_Music_Player" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
-bus = &"Music"
+stream = ExtResource("2_pw8ew")
+bus = &"BGM"
 
 [node name="Sfx_Player" type="AudioStreamPlayer" parent="."]
-bus = &"Sfx"
+bus = &"SFX"
 
 [node name="Voice_Player" type="AudioStreamPlayer" parent="."]
-bus = &"Voices"
+bus = &"VOICE"
+
+[node name="BgSfx_Player" type="AudioStreamPlayer" parent="."]
+bus = &"BGSFX"

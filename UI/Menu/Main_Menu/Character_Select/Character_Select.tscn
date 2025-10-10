@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://qc740g57332h"]
 
-[ext_resource type="Script" uid="uid://b6xroxj44bof1" path="res://UI/Menu/Main_Menu/Character_Select/character_select.gd" id="1_4ubts"]
+[ext_resource type="Script" uid="uid://b6xroxj44bof1" path="res://UI/Menu/Main_Menu/Character_Select/character_select_ui.gd" id="1_4ubts"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -43,33 +43,25 @@ offset_bottom = 351.0
 theme_override_font_sizes/font_size = 48
 text = "Player 2"
 
-[node name="Quick_Button" type="Button" parent="CanvasLayer"]
-offset_left = 634.0
-offset_top = 778.0
-offset_right = 772.0
-offset_bottom = 853.0
-theme_override_font_sizes/font_size = 48
-text = "Begin
-"
-
 [node name="Level_Select" type="Button" parent="CanvasLayer"]
-offset_left = 1035.0
-offset_top = 771.0
-offset_right = 1313.0
-offset_bottom = 846.0
+offset_left = 1495.0
+offset_top = 903.0
+offset_right = 1824.0
+offset_bottom = 1015.0
 theme_override_font_sizes/font_size = 48
 text = "Level Select
 "
 
 [node name="Back_Btn" type="Button" parent="CanvasLayer"]
-offset_left = 55.0
-offset_top = 930.0
-offset_right = 333.0
-offset_bottom = 1005.0
+offset_left = 66.0
+offset_top = 913.0
+offset_right = 353.0
+offset_bottom = 1020.0
 theme_override_font_sizes/font_size = 48
 text = "Back
 "
 
-[connection signal="pressed" from="CanvasLayer/Quick_Button" to="." method="_on_quick_button_pressed"]
+[connection signal="item_selected" from="CanvasLayer/P2_Char_select" to="." method="_on_p_2_char_select_item_selected"]
+[connection signal="item_selected" from="CanvasLayer/P1_Char_select" to="." method="_on_p_1_char_select_item_selected"]
 [connection signal="pressed" from="CanvasLayer/Level_Select" to="." method="_on_level_select_pressed"]
 [connection signal="pressed" from="CanvasLayer/Back_Btn" to="." method="_on_back_btn_pressed"]

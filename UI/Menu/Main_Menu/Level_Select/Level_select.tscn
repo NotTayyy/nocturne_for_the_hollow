@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bh7063hqhtouc"]
 
-[ext_resource type="Script" uid="uid://b7qmqrbmpmyt6" path="res://UI/Menu/Main_Menu/Level_Select/levels.gd" id="1_mlfip"]
+[ext_resource type="Script" uid="uid://b7qmqrbmpmyt6" path="res://UI/Menu/Main_Menu/Level_Select/levels_ui.gd" id="1_mlfip"]
 [ext_resource type="Texture2D" uid="uid://kv6ckbiuujx1" path="res://Levels/Training Level/Training_Level_thumb.jpg" id="2_rn734"]
 [ext_resource type="Texture2D" uid="uid://cwhn7ud17p8yd" path="res://Levels/Verdant Forest/Verdant_Forest_Thumb.jpg" id="3_7xh7i"]
 
@@ -9,10 +9,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 2.0
-offset_top = 7.0
-offset_right = 2.0
-offset_bottom = 7.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mlfip")
@@ -37,11 +33,12 @@ theme_override_font_sizes/font_size = 48
 text = "Begin"
 
 [node name="Training_Room" type="TextureButton" parent="CanvasLayer"]
-offset_left = 214.0
+offset_left = 211.0
 offset_top = 152.0
-offset_right = 942.0
-offset_bottom = 405.0
+offset_right = 939.0
+offset_bottom = 473.0
 texture_normal = ExtResource("2_rn734")
+stretch_mode = 0
 
 [node name="Training_level_name" type="Label" parent="CanvasLayer/Training_Room"]
 layout_mode = 0
@@ -60,12 +57,13 @@ theme_override_font_sizes/font_size = 32
 text = "Training Room"
 
 [node name="Verdant_Room" type="TextureButton" parent="CanvasLayer"]
-offset_left = 1077.0
-offset_top = 120.0
-offset_right = 2357.0
-offset_bottom = 840.0
+offset_left = 1069.0
+offset_top = 148.99997
+offset_right = 2702.2332
+offset_bottom = 869.0
 scale = Vector2(0.44635397, 0.44635397)
 texture_normal = ExtResource("3_7xh7i")
+stretch_mode = 0
 
 [node name="Verdant_level_name" type="Label" parent="CanvasLayer/Verdant_Room"]
 layout_mode = 0
@@ -87,20 +85,45 @@ scale = Vector2(2.6039612, 2.6039612)
 theme_override_font_sizes/font_size = 32
 text = "Training Room"
 
-[node name="BGM_Select_drop" type="OptionButton" parent="CanvasLayer"]
-offset_left = 842.0
-offset_top = 684.0
-offset_right = 1058.0
-offset_bottom = 734.0
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -81.0
+offset_top = 124.0
+offset_right = 170.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Bgm_Label" type="Label" parent="CanvasLayer/BGM_Select_drop"]
-layout_mode = 0
-offset_left = 12.0
-offset_top = -48.0
-offset_right = 195.0
-offset_bottom = -3.0
+[node name="Bgm_Label" type="Label" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 text = "BGM: Select"
+
+[node name="BGM_Select_drop" type="OptionButton" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = -374.0
+offset_top = 2.0
+offset_right = -334.0
+offset_bottom = 42.0
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Current Selected Level: "
+
+[node name="Sel_Level_Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "gsdgfdssfsdf"
 
 [connection signal="pressed" from="CanvasLayer/Back_Btn" to="." method="_on_back_btn_pressed"]
 [connection signal="pressed" from="CanvasLayer/Begin_Btn" to="." method="_on_begin_btn_pressed"]

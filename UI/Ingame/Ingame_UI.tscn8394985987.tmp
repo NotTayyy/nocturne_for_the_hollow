@@ -3,7 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://cieet12mpwjwb" path="res://Assets/UI/Untitled-1.png" id="1_gsg2s"]
 [ext_resource type="Script" uid="uid://byjtvox1tct1l" path="res://UI/Ingame/ingame_ui.gd" id="1_qqp84"]
 
-[node name="Control" type="Control"]
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -15,19 +17,23 @@ grow_vertical = 2
 size_flags_horizontal = 6
 script = ExtResource("1_qqp84")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 569.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_gsg2s")
 
-[node name="Label" type="Label" parent="CanvasLayer"]
-offset_left = 915.0
-offset_top = 216.0
-offset_right = 1008.0
-offset_bottom = 239.0
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -45.0
+offset_top = -324.0
+offset_right = 48.0
+offset_bottom = -301.0
 text = "DEBUG"
