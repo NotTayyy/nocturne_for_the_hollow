@@ -26,7 +26,7 @@ func _physics_process(_delta: float) -> void:
 	pass
 
 func _on_back_btn_pressed() -> void:
-	Global.ui_manager.Change_Gui_scene("res://UI/Menu/Main_Menu/Character_Select/Character_Select.tscn")
+	Global.ui_manager.Change_Gui_scene("Character_Select")
 
 func _on_training_room_pressed() -> void:
 	Global.Level_Select = "training"

@@ -51,7 +51,7 @@ func change_Gamemode(new_state: GameState) -> void:
 				print("Managers Loading")
 		GameState.MAIN_MENU:
 			audio_manager.play_bgm("Menu", "Menu Theme")
-			ui_manager.Change_Gui_scene("res://UI/Menu/Main_Menu/Menu/Main_menu.tscn")
+			ui_manager.Change_Gui_scene("Main_menu")
 		GameState.CHAR_SELECT:
 			audio_manager.play_bgm("Menu", "Character Select Theme")
 			if Debug == true:
@@ -65,7 +65,7 @@ func change_Gamemode(new_state: GameState) -> void:
 			#Add Actors
 			character_manager.game_start()
 			#Switch To Mid Match UI
-			ui_manager.Change_Gui_scene("res://UI/Ingame/Ingame_UI.tscn")
+			ui_manager.Change_Gui_scene("Ingame_UI")
 			#Switch To Mid Match Music
 			
 			pass

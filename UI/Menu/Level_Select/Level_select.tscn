@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bh7063hqhtouc"]
 
-[ext_resource type="Script" uid="uid://b7qmqrbmpmyt6" path="res://UI/Menu/Main_Menu/Level_Select/levels_ui.gd" id="1_mlfip"]
+[ext_resource type="Script" uid="uid://b7qmqrbmpmyt6" path="res://UI/Menu/Level_Select/levels_ui.gd" id="1_mlfip"]
 [ext_resource type="Texture2D" uid="uid://kv6ckbiuujx1" path="res://Levels/Training Level/Training_Level_thumb.jpg" id="2_rn734"]
 [ext_resource type="Texture2D" uid="uid://cwhn7ud17p8yd" path="res://Levels/Verdant Forest/Verdant_Forest_Thumb.jpg" id="3_7xh7i"]
 
