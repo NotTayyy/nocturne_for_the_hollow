@@ -5,11 +5,9 @@ class_name Fighter
 @onready var input_buffer: InputBuffer = %InputBuffer
 @onready var collision_Box: CollisionShape2D = $Collision_Box
 @onready var Anim_Player: AnimationPlayer = $Char_Sprite_Animator
-@onready var game_manager: Node = Global.game_manager
 @onready var char_sprite: Node2D = $Char_Sprite
 
 var char_data: CharacterData
-var cmd_data: CommandData
 var dir_facing: String
 var last_facing: String
 
@@ -34,7 +32,6 @@ var btn_a: String
 var btn_b: String
 var btn_c: String
 var btn_d: String
-var debug: String
 
 func _ready() -> void:
 	if not char_data:
@@ -45,7 +42,7 @@ func _ready() -> void:
 	input_buffer.command_list = char_data.command_list.command_list
 	
 	if char_data.neg_edge != false:
-		input_buffer.release_command_list = char_data.command_list.relese_cmnd_list
+		input_buffer.release_command_list = char_data.command_list.release_cmnd_list
 	
 	setup_input_actions()
 	
@@ -78,7 +75,9 @@ func setup_input_actions() -> void:
 			push_warning("Unhandled player_id: %d" % player_id)
 
 func _physics_process(delta: float) -> void:
-	await get_tree().physics_frame
+	if char_data.character_name == "Byakuya":
+		print(is_airborn, char_data.character_name)
+		
 	if not char_data:
 		return
 		
@@ -100,7 +99,7 @@ func push_if_overlapping() -> void:
 	var my_rect: Rect2 = Rect2(collision_Box.global_position - collision_Box.shape.extents, collision_Box.shape.extents * 2)
 	var enemy_rect: Rect2 =  Rect2(enm_Collision.global_position - enm_Collision.shape.extents, enm_Collision.shape.extents * 2)
 	
-	##Problem: Bandaid on Stealing corner, Really Fix in the Future.
+	##Problem: Band aid on Stealing corner, Really Fix in the Future.
 	##Make the Overlap move the players more, Its too slow walking from one corner to the other
 	if my_rect.intersects(enemy_rect):
 		var overlap = my_rect.intersection(enemy_rect)
@@ -115,16 +114,19 @@ func get_facing_dir() -> String:
 	var dir: String
 	
 	dir = "Left" if self.global_position.x > opponent.global_position.x else "Right"
-	if dir != dir_facing:
-		if dir == "Right":
-			char_sprite.scale.x = 1
-		else:
-			char_sprite.scale.x = -1
+	if is_airborn == true:
+		return dir_facing
+	else:
+		if dir != dir_facing:
+			if dir == "Right":
+				char_sprite.scale.x = 1
+			else:
+				char_sprite.scale.x = -1
 	
 	return dir
 
 func get_move_speed(dir: float) -> float:
-	##This Sprinting Stuff is Temportary, Will be removed in place of a State in the Future
+	##This Sprinting Stuff is temporary, Will be removed in place of a State in the Future
 	if dir_facing == "Right":
 		return char_data.bwd_walk_speed if  dir == -1 else char_data.fwd_walk_speed
 	else: # facing Left
@@ -248,6 +250,9 @@ func parse_direction(held: Array) -> String:
 func handle_gravity(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += char_data.gravity * delta
+		is_airborn = true
+	else:
+		is_airborn = false
 
 func handle_jump_logic() -> void:
 	if prejump_timer > 0:
@@ -256,9 +261,9 @@ func handle_jump_logic() -> void:
 		if Input.is_action_just_pressed(move_down):
 			prejump_timer = -1
 			
-			
 		elif prejump_timer == 0:
 			velocity.y = char_data.jump_velocity
+			print("Fuck Me")
 	
 	elif Input.is_action_just_pressed(move_up):
 		prejump_timer = char_data.prejump

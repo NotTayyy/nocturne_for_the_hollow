@@ -1,21 +1,21 @@
 extends Node2D
 
-var game_manager: Node
-
 var player1: Fighter
 var player2: Fighter
+var game_manager
 
-const P1_START_POS := Vector2(-250, 400)
-const P2_START_POS := Vector2(250, 400)
+const P1_START_POS : Vector2 = Vector2(-250, 400)
+const P2_START_POS : Vector2 = Vector2(250, 400)
 
 func _ready() -> void:
-	Global.character_manager = self
-	game_manager = get_parent()
 	await get_tree().process_frame
+	game_manager = get_parent()
 	
-	if game_manager.Debug == true:
+	Global.character_manager = self
+	
+	if Global.game_manager.Debug == true:
 		print("Character Manager Loaded!")
-		if game_manager.camera_manager:
+		if Global.camera_manager:
 			print("Camera Found!")
 		else:
 			print("Cam Not Found")
@@ -57,7 +57,7 @@ func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> F
 	fighter.player_id = player_id
 	fighter.position = spawn_pos
 	add_child(fighter)
-	if game_manager.Debug == true:
+	if Global.game_manager.Debug == true:
 		print("✅ Spawned %s as Player %d" % [data.character_name, player_id])
 	
 	return fighter

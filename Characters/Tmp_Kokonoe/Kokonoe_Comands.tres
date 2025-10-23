@@ -44,7 +44,7 @@ command_list = [{
 "Priority": 2,
 "Sequence": ["2", "5", "2", "A"]
 }, {
-"Command": "Quater-Circle Fwd A",
+"Command": "Quarter-Circle Fwd A",
 "Priority": 3,
 "Sequence": ["2", "3", "6", "A"]
 }, {
@@ -56,5 +56,5 @@ command_list = [{
 "Priority": 8,
 "Sequence": ["4", "1", "2", "3", "6", "9", "8", "7", "4", "A"]
 }]
-relese_cmnd_list = []
+release_cmnd_list = []
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

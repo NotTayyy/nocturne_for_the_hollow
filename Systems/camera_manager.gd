@@ -3,7 +3,6 @@ extends Node2D
 var Player_1
 var Player_2 
 var distance: float
-var game_manager: Node
 
 var max_zoom: Vector2 = Vector2(1.2, 1.2)
 var min_zoom: Vector2 = Vector2(1.5, 1.5)
@@ -21,15 +20,14 @@ var move_speed: float = 8
 var Walls: StaticBody2D
 
 @onready var Foreground_camera: Camera2D = %Forground_Camera
+var game_manager
 
 
 func _ready() -> void:
+	game_manager = get_parent()
 	Global.camera_manager = self
 	Global.UI = $Forground_Camera/UI
-	game_manager = get_parent()
-	await get_tree().process_frame
 
-	
 	if game_manager and game_manager.Debug == true:
 		print("Camera Manager Loaded!")
 

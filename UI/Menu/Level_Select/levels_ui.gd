@@ -3,27 +3,19 @@ extends Control
 @onready var BGM_Dropdown: OptionButton = $CanvasLayer/VBoxContainer/BGM_Select_drop
 @onready var Bgm_List = Global.audio_manager.get_bgm_list("Match")
 @onready var Cur_lev_lbl: Label = $HBoxContainer/Sel_Level_Label
-
-var levels_data
-var game_manager
-
+@onready var game_manager = Global.game_manager
+@onready var levels_data = G_LevelDB.get_level_names()
+	
 func _ready() -> void:
-	game_manager = Global.game_manager
 	game_manager.change_Gamemode(game_manager.GameState.LEVEL_SELECT)
-	levels_data = G_LevelDB.get_level_names()
 	
 	if Global.Level_Select == "":
 		Cur_lev_lbl.text = "None"
 	else:
 		Cur_lev_lbl.text = Global.Level_Select
 	
-	print(levels_data)
-	
 	for Bgm in Bgm_List:
 		BGM_Dropdown.add_item(Bgm)
-
-func _physics_process(_delta: float) -> void:
-	pass
 
 func _on_back_btn_pressed() -> void:
 	Global.ui_manager.Change_Gui_scene("Character_Select")

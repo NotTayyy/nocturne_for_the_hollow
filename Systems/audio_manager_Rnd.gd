@@ -2,15 +2,16 @@ extends Node2D
 
 @onready var bgm_streamer = %BGM_Music_Player
 
+var game_manager
 var current_bgm
-var game_manager: Node
 
-#Lists
+#List of Music Only Played in Menu's
 var Menu_list: Dictionary = {
 	"Menu Theme": preload("res://Assets/Music/Menus/Menu_Tmp_Gather_of_Night.mp3"),
 	"Character Select Theme": preload("res://Assets/Music/Menus/CICADA DAYS.mp3")
 }
 
+#List of Ingame Music
 var bgm_list: Dictionary = {
 	"Beat Eat Nest": preload("res://Assets/Music/BGM/Tmp_Beat_Eat_Nest.mp3"),
 	"Holy Orders": preload("res://Assets/Music/BGM/Tmp_Holy.mp3"),
@@ -21,13 +22,15 @@ var bgm_list: Dictionary = {
 }
 
 func _ready() -> void:
-	Global.audio_manager = self
 	await get_tree().process_frame
+	game_manager = get_parent()
 	
-	if Global.game_manager.Debug == true:
+	Global.audio_manager = self
+	
+	if game_manager.Debug == true:
 		print("Audio Manager Loaded!")
 	
-	update_volume("master", 10)
+	update_volume("master", Global.Volume["master"])
 
 #Match Lists
 func get_Lists(List: String) -> Dictionary:
@@ -39,22 +42,6 @@ func get_Lists(List: String) -> Dictionary:
 		_:
 			push_error("List Not Found, Defaulting to Match List")
 			return bgm_list
-
-func get_Sources(Source: String) -> int:
-	match Source:
-		"Master":
-			return Global.Volume["master"]
-		"BGM":
-			return Global.Volume["bgm"]
-		"SFX":
-			return Global.Volume["sfx"]
-		"Voices":
-			return Global.Volume["voice"]
-		"BgSfx":
-			return Global.Volume["bgsfx"]
-		_:
-			push_error("Source Not Found, Defaulting to Match List")
-			return Global.Volume["master"]
 
 #region All Audio Sorces
 func update_volume(Source: String, Vol: int) -> void:
@@ -75,7 +62,7 @@ func play_rndm_bgm(List: String) -> void:
 	bgm_streamer.stream = stream
 	current_bgm = stream
 	bgm_streamer.play()
-	if Global.game_manager.Debug:
+	if game_manager.Debug:
 		print("Now Playing: ", stream)
 
 func play_bgm(List: String, new_bgm: String, ) -> void:
@@ -87,7 +74,7 @@ func play_bgm(List: String, new_bgm: String, ) -> void:
 	current_bgm = new_bgm
 	bgm_streamer.play()
 	
-	if Global.game_manager.Debug == true:
+	if game_manager.Debug == true:
 		print("Now Playing: ", current_bgm)
 
 func get_bgm_list(List: String) -> Array:

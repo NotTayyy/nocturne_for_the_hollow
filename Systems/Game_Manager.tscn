@@ -10,7 +10,6 @@
 
 [node name="Game_Manager" type="Node"]
 script = ExtResource("1_thld5")
-Debug = true
 
 [node name="Camera_Manager" parent="." instance=ExtResource("2_h53vq")]
 z_index = 4096

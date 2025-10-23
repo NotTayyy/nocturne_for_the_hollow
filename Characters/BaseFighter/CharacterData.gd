@@ -15,8 +15,8 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 @export var charge_moves: bool = false
 
 @export_category("Basics Data")
-@export var max_health: int = 12000 
-#If the player moves back to much or isnt attacking we will give them a neg Debuff
+@export var max_health: int = 12500 
+#If the player moves back to much or isn't attacking we will give them a neg Debuff
 @export_range(1, 5, 1) var negative_Penalty_Res: int = 3
 #This is like Defense? Take less damage the tougher they are
 @export_range(0, 5, 1) var toughness: int = 3 #Base Defense for characters
@@ -38,7 +38,7 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 #Backdash
 @export var backdash_type: BackDashType = BackDashType.Step
 @export var backdash: int = 30 #Might move to State
-@export var backdash_invuln: int = 10 #Might move to State
+@export var backdash_invul: int = 10 #Might move to State
 @export var backdash_distance: int = 400 #
 @export var backdash_duration: int = 30 #Might move to State
 
@@ -53,3 +53,19 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 @export var gravity: int = 4000
 @export var air_Jumps: int = 1
 @export var air_Dashes: int = 1
+
+signal health_depleted
+
+@export var health: int = 0: set = _on_health_set
+
+func _init() -> void:
+	setup_stats.call_deferred()
+
+func setup_stats() -> void:
+	health = max_health
+	print(health, " ", character_name)
+
+func _on_health_set(new_value: int) -> void:
+	health = new_value
+	if health <= 0:
+		health_depleted.emit()

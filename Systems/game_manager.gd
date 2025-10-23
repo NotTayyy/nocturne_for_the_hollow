@@ -66,7 +66,5 @@ func change_Gamemode(new_state: GameState) -> void:
 			character_manager.game_start()
 			#Switch To Mid Match UI
 			ui_manager.Change_Gui_scene("Ingame_UI")
-			#Switch To Mid Match Music
-			
-			pass
-		
+		_:
+			print("You fucked Up ", new_state, " Is not a Real State")

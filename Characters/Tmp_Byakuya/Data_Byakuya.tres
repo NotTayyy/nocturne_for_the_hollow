@@ -10,4 +10,5 @@ character_name = "Byakuya"
 fighter_scene = ExtResource("1_68hxm")
 command_list = ExtResource("1_hrxsb")
 charge_moves = true
+max_health = 13500
 metadata/_custom_type_script = "uid://cpq072udwjvmf"

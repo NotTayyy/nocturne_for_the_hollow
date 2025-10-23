@@ -9,13 +9,12 @@ var buffer_history: Array = []
 var charged_inputs
 var has_neg_edge: bool = false
 var release_command_list: Array #Only turns on if neg_edge is true
-#The Entire Command list, A Seperate allowed commands for each state is needed in each state
+#The Entire Command list, A separate allowed commands for each state is needed in each state
 var command_list: Array = [] 
 #Different States will load their own Commands and this will keep Updating per State.
 var allowed_State_Commands: Array = []
 var player_char #Selects the Current Character
 var game_manager = Global.game_manager
-
 
 func _ready() -> void:
 	await get_tree().process_frame #pause a Frame
@@ -52,7 +51,7 @@ func match_priority(command_type) -> int:
 			return 7
 		"Throw":
 			return 6
-		"Gaurd Crush":
+		"Guard Crush":
 			return 5
 		"Command Normal":
 			return 4
@@ -119,7 +118,8 @@ func check_held_inputs() -> Array:
 func check_Command_list(type, cmd_list: Array):
 	var held_inputs = check_held_inputs()
 	var matched_commands: Array = []
-	print(held_inputs)
+	if Global.game_manager.Debug == true:
+		print(held_inputs)
 	
 	for command in cmd_list:
 		var sequence: Array = command["Sequence"]

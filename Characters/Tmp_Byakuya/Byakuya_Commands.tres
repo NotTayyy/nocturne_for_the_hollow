@@ -70,7 +70,7 @@ command_list = [{
 "Priority": "Special",
 "Sequence": ["2", "5", "2", "A"]
 }, {
-"Command": "Quater-Circle Fwd A",
+"Command": "Quarter-Circle Fwd A",
 "Priority": "Special",
 "Sequence": ["2", "3", "6", "A"]
 }, {
@@ -78,7 +78,7 @@ command_list = [{
 "Priority": "EX Special",
 "Sequence": ["4", "1", "2", "3", "6", "B"]
 }, {
-"Command": "Quater-Circle back Half-Circle Forwards C",
+"Command": "Quarter-Circle back Half-Circle Forwards C",
 "Priority": "EX Special",
 "Sequence": ["2", "1", "4", "1", "2", "3", "6", "C"]
 }, {
@@ -112,5 +112,5 @@ command_list = [{
 "Priority": "Special",
 "Sequence": ["4", "2", "1"]
 }]
-relese_cmnd_list = []
+release_cmnd_list = []
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

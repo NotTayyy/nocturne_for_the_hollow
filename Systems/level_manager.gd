@@ -1,12 +1,10 @@
 extends Node2D
 
-var game_manager: Node
 var Levels = G_LevelDB.get_level_names()
 var current_level: Node
 
 func _ready() -> void:
 	Global.level_manager = self
-	game_manager = get_parent()
 
 func spawn_level(Level: String) -> void:
 	if current_level: 

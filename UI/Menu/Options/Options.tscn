@@ -38,7 +38,7 @@ grow_vertical = 2
 [node name="Label" type="Label" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 106
-text = "Music Volume"
+text = "Music Volume: "
 
 [node name="HSlider" type="HSlider" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2

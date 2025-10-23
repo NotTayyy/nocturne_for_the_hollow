@@ -9,13 +9,9 @@ script = ExtResource("1_b5t3m")
 [node name="BGM_Music_Player" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("2_pw8ew")
-bus = &"BGM"
 
 [node name="Sfx_Player" type="AudioStreamPlayer" parent="."]
-bus = &"SFX"
 
 [node name="Voice_Player" type="AudioStreamPlayer" parent="."]
-bus = &"VOICE"
 
 [node name="BgSfx_Player" type="AudioStreamPlayer" parent="."]
-bus = &"BGSFX"

@@ -8,11 +8,11 @@ var audio_manager: Node2D = null
 var ui_manager: Node2D = null
 
 var Volume: Dictionary = {
-	"master": 10,
-	"bgm": 10,
-	"sfx": 10,
-	"voice": 10,
-	"bgsfx": 10
+	"master": 1,
+	"bgm": 1,
+	"sfx": 1,
+	"voice": 1,
+	"bgsfx": 1
 }
 
 var Walls: StaticBody2D = null
