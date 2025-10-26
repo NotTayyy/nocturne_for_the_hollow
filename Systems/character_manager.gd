@@ -52,6 +52,12 @@ func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> F
 	if fighter == null:
 		push_error("Failed to instantiate fighter scene for '%s'" % char_name)
 		return
+		
+	if player_id == 1:
+		Global.P1 = fighter
+	else:
+		Global.P2 = fighter
+
 
 	fighter.char_data = data
 	fighter.player_id = player_id

@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Fighter
 
-@export_range(0, 2, 1) var player_id: int = 0
+var player_id: int = 0
 @onready var input_buffer: InputBuffer = %InputBuffer
 @onready var collision_Box: CollisionShape2D = $Collision_Box
 @onready var Anim_Player: AnimationPlayer = $Char_Sprite_Animator
@@ -9,13 +9,9 @@ class_name Fighter
 
 var char_data: CharacterData
 var dir_facing: String
-var last_facing: String
 
 var enm_Collision: CollisionShape2D
 var opponent: Fighter
-
-@export var right_limit: int = 2080
-@export var left_limit: int = -2080
 
 var was_idle: bool = false
 var prejump_timer: int = -1 #Remove Eventually
@@ -38,6 +34,7 @@ func _ready() -> void:
 		push_error("Missing CharacterData!")
 		return
 	
+	input_buffer.player_char = self
 	input_buffer.has_neg_edge = char_data.neg_edge
 	input_buffer.command_list = char_data.command_list.command_list
 	
@@ -46,10 +43,7 @@ func _ready() -> void:
 	
 	setup_input_actions()
 	
-	if player_id == 1:
-		Global.P1 = self
-	else:
-		Global.P2 = self
+	print(Global.P2)
 
 func setup_input_actions() -> void:
 	match player_id:
@@ -75,9 +69,6 @@ func setup_input_actions() -> void:
 			push_warning("Unhandled player_id: %d" % player_id)
 
 func _physics_process(delta: float) -> void:
-	if char_data.character_name == "Byakuya":
-		print(is_airborn, char_data.character_name)
-		
 	if not char_data:
 		return
 		
@@ -263,7 +254,6 @@ func handle_jump_logic() -> void:
 			
 		elif prejump_timer == 0:
 			velocity.y = char_data.jump_velocity
-			print("Fuck Me")
 	
 	elif Input.is_action_just_pressed(move_up):
 		prejump_timer = char_data.prejump

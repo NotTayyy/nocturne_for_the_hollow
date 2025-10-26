@@ -5,6 +5,10 @@
 [resource]
 script = ExtResource("1_q63nq")
 command_list = [{
+"Command": "Crouch",
+"Priority": "Movement",
+"Sequence": ["2"]
+}, {
 "Command": "Forward Dash",
 "Priority": "Movement",
 "Sequence": ["6", "5", "6"]
@@ -112,5 +116,4 @@ command_list = [{
 "Priority": "Special",
 "Sequence": ["4", "2", "1"]
 }]
-release_cmnd_list = []
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

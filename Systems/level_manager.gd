@@ -28,7 +28,8 @@ func Change_Level_scene(new_scene, delete: bool = true, keep_running: bool = fal
 	
 	var scene: PackedScene = G_LevelDB.get_level_property(new_scene, "scene")
 	if scene == null: #If level is no selected, 
-		push_warning("Level not selected, defaulting to first Level")# Return the First level
+		if Global.game_manager.Debug == true:
+			push_warning("Level not selected, defaulting to first Level")# Return the First level
 		scene = G_LevelDB.get_level_property(G_LevelDB.get_level_names()[0], "scene")
 	
 	current_level = scene.instantiate()

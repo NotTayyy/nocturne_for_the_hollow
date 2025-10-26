@@ -6,8 +6,7 @@ class_name InputBuffer
 
 var current_frame: int = 0 
 var buffer_history: Array = []
-var charged_inputs
-var has_neg_edge: bool = false
+var has_neg_edge: bool
 var release_command_list: Array #Only turns on if neg_edge is true
 #The Entire Command list, A separate allowed commands for each state is needed in each state
 var command_list: Array = [] 
@@ -16,9 +15,13 @@ var allowed_State_Commands: Array = []
 var player_char #Selects the Current Character
 var game_manager = Global.game_manager
 
+#Just Setting up some stuff for now
+var can_Jump: bool
+var can_Move: bool
+var can_Attack: bool
+
 func _ready() -> void:
-	await get_tree().process_frame #pause a Frame
-	player_char = get_parent().get_parent() #Searches up for Main node
+	pass
 
 func register_input(action: String, type: String) -> void:
 	current_frame = Engine.get_physics_frames()
@@ -70,9 +73,6 @@ func set_queue(command: String) -> void:
 	print(command)
 
 func check_commands():
-	if buffer_history.is_empty():
-		print("Buffer Empty")
-		return
 	print_buffer()
 
 	var last_entry = buffer_history[-1]
@@ -118,7 +118,7 @@ func check_held_inputs() -> Array:
 func check_Command_list(type, cmd_list: Array):
 	var held_inputs = check_held_inputs()
 	var matched_commands: Array = []
-	if Global.game_manager.Debug == true:
+	if game_manager.Debug == true:
 		print(held_inputs)
 	
 	for command in cmd_list:
