@@ -66,7 +66,6 @@ func _init() -> void:
 
 func setup_stats() -> void:
 	health = base_max_health
-	print(health, " ", character_name)
 
 func _on_health_set(new_value: int) -> void:
 	health = clampi(new_value, 0, current_max_health)

@@ -2,22 +2,27 @@ extends CharacterBody2D
 class_name Fighter
 
 var player_id: int = 0
+var char_data: CharacterData
+
 @onready var input_buffer: InputBuffer = %InputBuffer
-@onready var collision_Box: CollisionShape2D = $Collision_Box
-@onready var Anim_Player: AnimationPlayer = $Char_Sprite_Animator
+@onready var collision_Box: CollisionShape2D = $Components/Pushbox/CollisionShape2D
+@onready var pushbox: Area2D = $Components/Pushbox
+@onready var anim_Player: AnimationPlayer = $Char_Sprite_Animator
 @onready var char_sprite: Node2D = $Char_Sprite
 
-var char_data: CharacterData
-var dir_facing: String
-
-var enm_Collision: CollisionShape2D
+var c: CollisionShape2D
 var opponent: Fighter
 
+var dir_facing: String
 var was_idle: bool = false
 var prejump_timer: int = -1 #Remove Eventually
 var move_dir: float = 0
-var is_airborn: bool = false
+var is_airborn: bool 
+var is_on_Wall_Left: bool
+var is_on_Wall_Right: bool
 
+
+#region Control Setup
 var move_left: String
 var move_right: String
 var move_up: String
@@ -28,6 +33,7 @@ var btn_a: String
 var btn_b: String
 var btn_c: String
 var btn_d: String
+#endregion
 
 func _ready() -> void:
 	if not char_data:
@@ -72,6 +78,8 @@ func _physics_process(delta: float) -> void:
 	if not char_data:
 		return
 		
+	is_airborn = not is_on_floor()
+		
 	#This is Fine For the most part, Might make it cleaner
 	dir_facing = get_facing_dir() 
 	handle_horizontal_movement(delta)
@@ -81,25 +89,9 @@ func _physics_process(delta: float) -> void:
 	handle_gravity(delta)
 	capture_input()
 	move_and_slide()
-	push_if_overlapping()
 	
 	if Input.is_action_just_pressed("Btn_Exit"):
 		get_tree().quit()
-		
-func push_if_overlapping() -> void:
-	var my_rect: Rect2 = Rect2(collision_Box.global_position - collision_Box.shape.extents, collision_Box.shape.extents * 2)
-	var enemy_rect: Rect2 =  Rect2(enm_Collision.global_position - enm_Collision.shape.extents, enm_Collision.shape.extents * 2)
-	
-	##Problem: Band aid on Stealing corner, Really Fix in the Future.
-	##Make the Overlap move the players more, Its too slow walking from one corner to the other
-	if my_rect.intersects(enemy_rect):
-		var overlap = my_rect.intersection(enemy_rect)
-		if overlap.size.x < overlap.size.y:
-			var push_distance = overlap.size.x / 2
-			if my_rect.position.x < enemy_rect.position.x:
-				global_position.x = global_position.x - push_distance
-			else:
-				global_position.x = global_position.x + push_distance
 
 func get_facing_dir() -> String:
 	var dir: String
@@ -239,11 +231,8 @@ func parse_direction(held: Array) -> String:
 	return "5"
 
 func handle_gravity(delta: float) -> void:
-	if not is_on_floor():
+	if is_airborn:
 		velocity.y += char_data.gravity * delta
-		is_airborn = true
-	else:
-		is_airborn = false
 
 func handle_jump_logic() -> void:
 	if prejump_timer > 0:

@@ -72,5 +72,5 @@ func Opponent_Setup() -> void:
 	#Easiest way to pass Opponent Data at the same time
 		player1.opponent = player2
 		player2.opponent = player1
-		player1.enm_Collision = player2.collision_Box
-		player2.enm_Collision = player1.collision_Box
+		player1.pushbox.enemy_collision = player2.collision_Box
+		player2.pushbox.enemy_collision = player1.collision_Box

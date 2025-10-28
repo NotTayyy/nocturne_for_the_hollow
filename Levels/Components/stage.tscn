@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://c56fob4nvar6h"]
+[gd_scene load_steps=6 format=3 uid="uid://c56fob4nvar6h"]
+
+[ext_resource type="Script" uid="uid://b4tqutbbd06hv" path="res://Levels/Components/stage.gd" id="1_o1hr4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nkneg"]
 size = Vector2(3506.725, 159)
@@ -6,23 +8,51 @@ size = Vector2(3506.725, 159)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1j3e"]
 size = Vector2(1934, 159)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aahh3"]
+size = Vector2(1717, 10.999617)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cwiqm"]
 size = Vector2(1934, 159)
 
 [node name="Stage" type="StaticBody2D"]
-collision_layer = 65535
-collision_mask = 65535
+collision_layer = 256
+collision_mask = 0
+script = ExtResource("1_o1hr4")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Floor" type="CollisionShape2D" parent="."]
 position = Vector2(0, 72)
 shape = SubResource("RectangleShape2D_nkneg")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+[node name="Wall Right" type="CollisionShape2D" parent="."]
 position = Vector2(1750, -750)
 rotation = -1.5708
 shape = SubResource("RectangleShape2D_j1j3e")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+[node name="Wall Right Sticky" type="Area2D" parent="Wall Right"]
+collision_layer = 0
+collision_mask = 4096
+
+[node name="Sticky Stage Right" type="CollisionShape2D" parent="Wall Right/Wall Right Sticky"]
+position = Vector2(110.50043, -84.499146)
+shape = SubResource("RectangleShape2D_aahh3")
+debug_color = Color(0.78366107, 0.37176856, 0.6009707, 0.41960785)
+
+[node name="Wall Left" type="CollisionShape2D" parent="."]
 position = Vector2(-1750, -750)
 rotation = 1.57079
 shape = SubResource("RectangleShape2D_cwiqm")
+
+[node name="Wall Left Sticky" type="Area2D" parent="Wall Left"]
+position = Vector2(0.022, 0)
+collision_layer = 0
+collision_mask = 4096
+
+[node name="Sticky Stage Left" type="CollisionShape2D" parent="Wall Left/Wall Left Sticky"]
+position = Vector2(-110.02142, -84.00065)
+shape = SubResource("RectangleShape2D_aahh3")
+debug_color = Color(0.78366107, 0.37176856, 0.6009707, 0.41960785)
+
+[connection signal="area_entered" from="Wall Right/Wall Right Sticky" to="." method="_on_wall_right_sticky_area_entered"]
+[connection signal="area_exited" from="Wall Right/Wall Right Sticky" to="." method="_on_wall_right_sticky_area_exited"]
+[connection signal="area_entered" from="Wall Left/Wall Left Sticky" to="." method="_on_wall_left_sticky_area_entered"]
+[connection signal="area_exited" from="Wall Left/Wall Left Sticky" to="." method="_on_wall_left_sticky_area_exited"]

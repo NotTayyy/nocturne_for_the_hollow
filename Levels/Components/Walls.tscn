@@ -15,8 +15,8 @@ size = Vector2(20, 1250)
 size = Vector2(100, 1249)
 
 [node name="Walls" type="StaticBody2D"]
-collision_layer = 15
-collision_mask = 15
+collision_layer = 256
+collision_mask = 0
 script = ExtResource("1_kbae4")
 
 [node name="Right_Wall" type="CollisionShape2D" parent="."]

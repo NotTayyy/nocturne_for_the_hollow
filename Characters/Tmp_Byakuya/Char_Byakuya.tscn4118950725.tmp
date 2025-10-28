@@ -1,8 +1,8 @@
-[gd_scene load_steps=68 format=3 uid="uid://dg33asvi0qgfr"]
+[gd_scene load_steps=66 format=3 uid="uid://dg33asvi0qgfr"]
 
 [ext_resource type="Script" uid="uid://d2ruw43pyssh8" path="res://Characters/Tmp_Byakuya/char_byakuya.gd" id="1_tqmcm"]
 [ext_resource type="Texture2D" uid="uid://c7swkhogcpkmh" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/000.png" id="2_t652o"]
-[ext_resource type="Script" uid="uid://mxicbdqelndt" path="res://Scripts/Components/InputBuffer.gd" id="3_g4p22"]
+[ext_resource type="PackedScene" uid="uid://5ucjfk86rrqd" path="res://Scripts/Components/InputBuffer.tscn" id="3_txuk2"]
 [ext_resource type="Texture2D" uid="uid://cjfp0c5ajfhyq" path="res://Characters/Tmp_Byakuya/Byakuya/314.png" id="4_frr2s"]
 [ext_resource type="Texture2D" uid="uid://qjvvpufy41p7" path="res://Characters/Tmp_Byakuya/Byakuya/315.png" id="5_fgqie"]
 [ext_resource type="Texture2D" uid="uid://bwp3g27mx7tq6" path="res://Characters/Tmp_Byakuya/Byakuya/316.png" id="6_h8k8q"]
@@ -55,13 +55,6 @@
 [ext_resource type="Texture2D" uid="uid://bxw05qplxntx8" path="res://Characters/Tmp_Byakuya/Byakuya/136.png" id="52_0nxco"]
 [ext_resource type="Texture2D" uid="uid://c2535kviyt7y7" path="res://Characters/Tmp_Byakuya/Byakuya/137.png" id="53_auw0f"]
 [ext_resource type="Script" uid="uid://u6lkkiwrap7c" path="res://Scripts/Components/Hurtbox.gd" id="55_g4p22"]
-[ext_resource type="Script" uid="uid://vdot3es4dinw" path="res://Scripts/Components/Pushbox.gd" id="56_16c4u"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_16c4u"]
-size = Vector2(114, 348)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8xdls"]
-size = Vector2(100, 187)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4lanw"]
 size = Vector2(100, 188)
@@ -235,8 +228,11 @@ _data = {
 &"Stand_IDLE": SubResource("Animation_nxjh0")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_16c4u"]
+size = Vector2(114, 348)
+
 [node name="CharByakuya" type="CharacterBody2D"]
-collision_layer = 4096
+collision_layer = 0
 collision_mask = 256
 script = ExtResource("1_tqmcm")
 
@@ -246,29 +242,10 @@ offset = Vector2(0, -78)
 region_enabled = true
 region_rect = Rect2(557.208, 325.96, 163.979, 370.417)
 
-[node name="Components" type="Node2D" parent="."]
+[node name="Components" type="Node" parent="."]
 
-[node name="InputBuffer" type="Node" parent="Components"]
+[node name="InputBuffer" parent="Components" instance=ExtResource("3_txuk2")]
 unique_name_in_owner = true
-script = ExtResource("3_g4p22")
-metadata/_custom_type_script = "uid://mxicbdqelndt"
-
-[node name="Hurtbox" type="Area2D" parent="Components"]
-script = ExtResource("55_g4p22")
-metadata/_custom_type_script = "uid://u6lkkiwrap7c"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Hurtbox"]
-position = Vector2(1, -79)
-shape = SubResource("RectangleShape2D_16c4u")
-debug_color = Color(0, 0.28627452, 0.8862745, 0.41960785)
-
-[node name="Pushbox" type="Area2D" parent="Components"]
-script = ExtResource("56_16c4u")
-metadata/_custom_type_script = "uid://vdot3es4dinw"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Pushbox"]
-position = Vector2(0, -0.5)
-shape = SubResource("RectangleShape2D_8xdls")
 
 [node name="Label" type="Label" parent="."]
 unique_name_in_owner = true
@@ -290,3 +267,12 @@ max_polyphony = 2
 libraries = {
 &"": SubResource("AnimationLibrary_e5bsc")
 }
+
+[node name="Hurtbox" type="Area2D" parent="."]
+script = ExtResource("55_g4p22")
+metadata/_custom_type_script = "uid://u6lkkiwrap7c"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(1, -79)
+shape = SubResource("RectangleShape2D_16c4u")
+debug_color = Color(0, 0.28627452, 0.8862745, 0.41960785)

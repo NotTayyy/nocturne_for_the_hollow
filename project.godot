@@ -23,11 +23,14 @@ resources_spreadsheet_view/freeze_first_column=true
 
 [application]
 
-config/name="Nocturne for the Hollow"
-config/version="0.01"
+config/name="Grave//Circuit"
+config/description="a closed loop of death — or a system built on endless struggle."
+config/version="0.1.10"
 run/main_scene="uid://bxrdw0dnmitbh"
+config/use_custom_user_dir=true
 config/features=PackedStringArray("4.5", "Forward Plus")
 run/max_fps=60
+config/icon="uid://c5j1ousdm1x7n"
 
 [audio]
 
@@ -37,7 +40,6 @@ buses/default_bus_layout=""
 
 Global="*res://Scripts/Globals/Global_Reference.gd"
 G_LevelDB="*res://Scripts/Globals/LevelDatabase.gd"
-G_HitboxTypes="*res://Scripts/Globals/Hitbox_Types.gd"
 G_CharacterDB="*res://Scripts/Globals/CharacterDatabase.gd"
 ImGuiRoot="*res://addons/imgui-godot/data/ImGuiRoot.tscn"
 
@@ -171,9 +173,12 @@ Btn_Select={
 
 [layer_names]
 
-2d_physics/layer_1="Player"
-2d_physics/layer_2="Walls"
-2d_physics/layer_3="Ground"
+2d_physics/layer_1="Players"
+2d_physics/layer_2="Projectiles"
+2d_physics/layer_3="Summons"
+2d_physics/layer_9="Ground"
+2d_physics/layer_10="Walls"
+2d_physics/layer_13="PushBox"
 
 [rendering]
 
