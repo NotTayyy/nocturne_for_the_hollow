@@ -1,7 +1,8 @@
 extends Node2D
 
 var Player_1
-var Player_2 
+var Player_2
+var game_manager 
 var distance: float
 
 var max_zoom: Vector2 = Vector2(1.2, 1.2)
@@ -20,7 +21,6 @@ var move_speed: float = 8
 var Walls: StaticBody2D
 
 @onready var Foreground_camera: Camera2D = %Forground_Camera
-var game_manager
 
 
 func _ready() -> void:
@@ -36,6 +36,7 @@ func _process(_delta: float) -> void:
 		Player_1 = Global.P1
 		Player_2 = Global.P2
 		return
+		
 	if not Walls:
 		Walls = Global.Walls 
 		return

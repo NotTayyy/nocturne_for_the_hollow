@@ -20,7 +20,7 @@ var move_dir: float = 0
 var is_airborn: bool 
 var is_on_Wall_Left: bool
 var is_on_Wall_Right: bool
-
+var dir
 
 #region Control Setup
 var move_left: String
@@ -46,10 +46,10 @@ func _ready() -> void:
 	
 	if char_data.neg_edge != false:
 		input_buffer.release_command_list = char_data.command_list.release_cmnd_list
+		
+	
 	
 	setup_input_actions()
-	
-	print(Global.P2)
 
 func setup_input_actions() -> void:
 	match player_id:
@@ -81,7 +81,7 @@ func _physics_process(delta: float) -> void:
 	is_airborn = not is_on_floor()
 		
 	#This is Fine For the most part, Might make it cleaner
-	dir_facing = get_facing_dir() 
+	get_facing_dir() 
 	handle_horizontal_movement(delta)
 	##This should be Under Input Buffer in the Future, Its own State
 	handle_jump_logic()
@@ -93,27 +93,27 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Btn_Exit"):
 		get_tree().quit()
 
-func get_facing_dir() -> String:
-	var dir: String
+func get_facing_dir() -> void:
+	dir = "Left" if global_position.x > opponent.global_position.x else "Right"
 	
-	dir = "Left" if self.global_position.x > opponent.global_position.x else "Right"
-	if is_airborn == true:
-		return dir_facing
-	else:
-		if dir != dir_facing:
-			if dir == "Right":
-				char_sprite.scale.x = 1
-			else:
-				char_sprite.scale.x = -1
+	# If the char is airborn, don't facing.
+	if is_airborn:
+		return
 	
-	return dir
+	# If char is on wall, don't flip
+	if is_on_Wall_Left == true or is_on_Wall_Right == true:
+		return
+	
+	if dir != dir_facing:
+		dir_facing = dir
+		char_sprite.scale.x = 1 if dir == "Right" else -1
 
-func get_move_speed(dir: float) -> float:
+func get_move_speed(dirr: float) -> float:
 	##This Sprinting Stuff is temporary, Will be removed in place of a State in the Future
 	if dir_facing == "Right":
-		return char_data.bwd_walk_speed if  dir == -1 else char_data.fwd_walk_speed
+		return char_data.bwd_walk_speed if  dirr == -1 else char_data.fwd_walk_speed
 	else: # facing Left
-		return char_data.fwd_walk_speed if dir == -1 else char_data.bwd_walk_speed
+		return char_data.fwd_walk_speed if dirr == -1 else char_data.bwd_walk_speed
 
 func capture_input() -> void:
 	var current_directions := []

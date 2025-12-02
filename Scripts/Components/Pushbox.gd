@@ -40,6 +40,6 @@ func push_if_overlapping() -> void:
 					owner.global_position.x -= push_distance
 				else:
 					owner.global_position.x += push_distance
-					
+
 func is_on_wall(checker: Node) -> bool:
 	return checker.is_on_Wall_Left or checker.is_on_Wall_Right

@@ -4,7 +4,10 @@ var damage: int
 var lifetime: float
 var hitbox_size: Vector2
 var hitbox_pos: Vector2
+var hitbox_type: HitboxType
 var Player: int #The owning player ID
+var dir_facing: String
+var dir_offset: int
 var hit_log: HitLog
 
 
@@ -17,13 +20,14 @@ enum HitboxType {
 	Burst
 }
 
-
-func _init(_damage: int, _lifetime: float, _hitbox_size: Vector2, _hitbox_pos: Vector2, _player: int, _hitlog: HitLog = null) -> void:
+func _init(_damage: int, _hitbox_type: HitboxType, _lifetime: float, _hitbox_size: Vector2, _hitbox_pos: Vector2, _player: int, _dir_facing: String, _hitlog: HitLog = null,) -> void:
 	damage = _damage
 	lifetime = _lifetime
 	hitbox_size = _hitbox_size
+	hitbox_type = _hitbox_type
 	Player = _player
 	hit_log = _hitlog
+	dir_facing = _dir_facing
 	hitbox_pos = _hitbox_pos
 
 func _ready() -> void:
@@ -32,11 +36,15 @@ func _ready() -> void:
 	
 	area_entered.connect(_on_area_entered)
 	
+	#Set the Direction Offset
+	dir_offset = -1 if dir_facing == "Left" else 1
+	
 	#Lifetime Making
 	var new_time = Timer.new()
 	add_child(new_time)
-	new_time.timeout.connect(queue_free)
-	new_time.call_deferred("start", lifetime)
+	var frames = lifetime / 60
+	new_time.timeout.connect(self.queue_free)
+	new_time.call_deferred("start", frames)
 
 	#Collision Making
 	var collision = CollisionShape2D.new()
@@ -45,7 +53,7 @@ func _ready() -> void:
 	collision.shape = hitbox_shape
 	add_child(collision)
 	
-	self.position = hitbox_pos
+	self.position = Vector2(hitbox_pos.x * dir_offset, hitbox_pos.y) 
 	
 	
 
@@ -62,4 +70,4 @@ func _on_area_entered(area: Area2D) -> void:
 		else:
 			hit_log.log_hit(hurtbox_owner)
 	
-	area.recieve_hit(damage)
+	area.recieve_hit(damage, hitbox_type)

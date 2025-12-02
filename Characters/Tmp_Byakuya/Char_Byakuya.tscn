@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://dg33asvi0qgfr"]
+[gd_scene load_steps=74 format=3 uid="uid://dg33asvi0qgfr"]
 
 [ext_resource type="Script" uid="uid://d2ruw43pyssh8" path="res://Characters/Tmp_Byakuya/char_byakuya.gd" id="1_tqmcm"]
 [ext_resource type="Texture2D" uid="uid://c7swkhogcpkmh" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/000.png" id="2_t652o"]
@@ -56,6 +56,11 @@
 [ext_resource type="Texture2D" uid="uid://c2535kviyt7y7" path="res://Characters/Tmp_Byakuya/Byakuya/137.png" id="53_auw0f"]
 [ext_resource type="Script" uid="uid://u6lkkiwrap7c" path="res://Scripts/Components/Hurtbox.gd" id="55_g4p22"]
 [ext_resource type="Script" uid="uid://vdot3es4dinw" path="res://Scripts/Components/Pushbox.gd" id="56_16c4u"]
+[ext_resource type="Texture2D" uid="uid://b0cidav7b7i6p" path="res://Characters/Tmp_Byakuya/Byakuya/019.png" id="57_8xdls"]
+[ext_resource type="Texture2D" uid="uid://binh1nyvbrka1" path="res://Characters/Tmp_Byakuya/Byakuya/020.png" id="58_v0jc5"]
+[ext_resource type="Texture2D" uid="uid://cyhjimb44231q" path="res://Characters/Tmp_Byakuya/Byakuya/021.png" id="59_im3f6"]
+[ext_resource type="Texture2D" uid="uid://bub5emhvq2x8q" path="res://Characters/Tmp_Byakuya/Byakuya/022.png" id="60_jp7oo"]
+[ext_resource type="Texture2D" uid="uid://dxpiyrmj1uwgu" path="res://Characters/Tmp_Byakuya/Byakuya/023.png" id="61_cy0jj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_16c4u"]
 size = Vector2(114, 348)
@@ -65,6 +70,23 @@ size = Vector2(100, 187)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4lanw"]
 size = Vector2(100, 188)
+
+[sub_resource type="Animation" id="Animation_16c4u"]
+resource_name = "Atck_A"
+length = 0.46666923
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Char_Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.26666668, 0.33333334, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("57_8xdls"), ExtResource("58_v0jc5"), ExtResource("59_im3f6"), ExtResource("60_jp7oo"), ExtResource("61_cy0jj")]
+}
 
 [sub_resource type="Animation" id="Animation_xf2iu"]
 resource_name = "Bwd_Walk"
@@ -226,6 +248,7 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e5bsc"]
 _data = {
+&"Atck_A": SubResource("Animation_16c4u"),
 &"Bwd_Walk": SubResource("Animation_xf2iu"),
 &"Falling": SubResource("Animation_g4p22"),
 &"Fwd_Walk": SubResource("Animation_txuk2"),

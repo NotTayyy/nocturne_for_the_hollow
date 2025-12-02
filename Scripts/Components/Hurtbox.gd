@@ -11,6 +11,6 @@ func _ready() -> void:
 	set_collision_mask_value(1, false)
 
 #Signal
-func recieve_hit(damage: int) -> void:
-	print(owner.char_data.character_name, " took ", damage, " Damage!")
+func recieve_hit(damage: int, type:) -> void:
+	print(owner.char_data.character_name, " took ", damage, " Damage of Type - ", Hitbox.HitboxType.find_key(type))
 	owner.char_data.health -= damage
