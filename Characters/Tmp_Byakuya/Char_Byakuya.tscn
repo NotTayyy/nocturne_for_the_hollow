@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://dg33asvi0qgfr"]
+[gd_scene load_steps=75 format=3 uid="uid://dg33asvi0qgfr"]
 
 [ext_resource type="Script" uid="uid://d2ruw43pyssh8" path="res://Characters/Tmp_Byakuya/char_byakuya.gd" id="1_tqmcm"]
 [ext_resource type="Texture2D" uid="uid://c7swkhogcpkmh" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/000.png" id="2_t652o"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cjfp0c5ajfhyq" path="res://Characters/Tmp_Byakuya/Byakuya/314.png" id="4_frr2s"]
 [ext_resource type="Texture2D" uid="uid://qjvvpufy41p7" path="res://Characters/Tmp_Byakuya/Byakuya/315.png" id="5_fgqie"]
 [ext_resource type="Texture2D" uid="uid://bwp3g27mx7tq6" path="res://Characters/Tmp_Byakuya/Byakuya/316.png" id="6_h8k8q"]
+[ext_resource type="Script" path="res://Scripts/Components/state_manager.gd" id="6_im3f6"]
 [ext_resource type="Texture2D" uid="uid://byxkw1n7i6610" path="res://Characters/Tmp_Byakuya/Byakuya/317.png" id="7_vurmo"]
 [ext_resource type="Texture2D" uid="uid://d4eqdw20xhh7q" path="res://Characters/Tmp_Byakuya/Byakuya/318.png" id="8_xiya8"]
 [ext_resource type="Texture2D" uid="uid://d2r8al7365fj2" path="res://Characters/Tmp_Byakuya/Byakuya/319.png" id="9_gryy1"]
@@ -292,6 +293,11 @@ metadata/_custom_type_script = "uid://vdot3es4dinw"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Pushbox"]
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_8xdls")
+
+[node name="State_Manager" type="Node" parent="Components"]
+unique_name_in_owner = true
+script = ExtResource("6_im3f6")
+metadata/_custom_type_script = "uid://i6qlsp6nkldi"
 
 [node name="Label" type="Label" parent="."]
 unique_name_in_owner = true

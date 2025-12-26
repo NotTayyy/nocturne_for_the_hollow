@@ -1,4 +1,10 @@
-extends State
+extends Node
+class_name FighterState
+
+signal state_transition
+
+var fighter
+var state_name: String = "Base State"
 
 func Enter() -> void:
 	pass
@@ -6,8 +12,8 @@ func Enter() -> void:
 func Update(_delta:float) -> void:
 	pass
 
-func _physics_process(delta: float) -> void:
+func Physics_Update(_delta: float) -> void:
 	pass
 
 func Exit() -> void:
-	pass
+	pass 

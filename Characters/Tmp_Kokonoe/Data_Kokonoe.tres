@@ -9,4 +9,5 @@ script = ExtResource("1_yiyej")
 character_name = "Kokonoe"
 fighter_scene = ExtResource("1_6exky")
 command_list = ExtResource("1_xxw3f")
+base_max_health = 90
 metadata/_custom_type_script = "uid://cpq072udwjvmf"

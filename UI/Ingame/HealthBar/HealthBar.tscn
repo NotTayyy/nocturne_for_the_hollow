@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://lxcbq02j2sga"]
+
+[ext_resource type="Texture2D" uid="uid://b56wqkm72vvae" path="res://UI/Ingame/HealthBar/Empty Bar.png" id="1_c7yof"]
+[ext_resource type="Script" uid="uid://d1qlu5wifvkfa" path="res://UI/Ingame/HealthBar/health_bar.gd" id="1_yoj67"]
+[ext_resource type="Texture2D" uid="uid://dpeyg2mho76jv" path="res://UI/Ingame/HealthBar/Border.png" id="2_yoj67"]
+[ext_resource type="Texture2D" uid="uid://8ytxydf1jk1h" path="res://UI/Ingame/HealthBar/Lost_HP.png" id="3_6dydr"]
+[ext_resource type="Texture2D" uid="uid://d0wnfrfv68tk8" path="res://UI/Ingame/HealthBar/Current_HP.png" id="4_wtlsd"]
+
+[node name="HealthBar" type="Control" node_paths=PackedStringArray("bar_back", "bar_front")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_yoj67")
+bar_back = NodePath("Back_HP")
+bar_front = NodePath("Front_HP")
+
+[node name="Back_HP" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+value = 100.0
+texture_under = ExtResource("1_c7yof")
+texture_over = ExtResource("2_yoj67")
+texture_progress = ExtResource("3_6dydr")
+
+[node name="Front_HP" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+value = 100.0
+texture_progress = ExtResource("4_wtlsd")

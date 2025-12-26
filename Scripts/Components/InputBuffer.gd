@@ -1,7 +1,7 @@
 extends Node
 class_name InputBuffer
 
-@export var max_buffer_frames: int = 12 #Max Frames Between
+@export var max_buffer_frames: int = 12 ## Max Frames Between Inputs
 @onready var label: Label = %Label
 
 var current_frame: int = 0 

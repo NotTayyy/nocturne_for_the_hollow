@@ -1,4 +1,5 @@
 extends Fighter
+class_name Char_Byakuya
 
 func _ready() -> void:
 	super._ready()

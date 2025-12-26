@@ -12,7 +12,6 @@ offset_left = 35.0
 offset_top = 65.0
 offset_right = 35.0
 offset_bottom = 65.0
-is_P1 = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false

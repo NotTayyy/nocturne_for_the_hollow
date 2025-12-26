@@ -15,8 +15,20 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 @export var charge_moves: bool = false
 
 @export_category("Basics Data")
+# Basic Important Stats
+## The Base Max Hp of the Characters.[br]
+##[br]
+## 12500 Should be the median HP, With Thicker Characters being around 1500,
+## and thinner characters to be down at 1100
 @export var base_max_health: int = 12500 
-@export var current_max_health:int = 12500
+
+##The Characters Base Limit
+@export var base_max_Limit: int = 100 
+
+## The Characters Break Buildup, Functionally the same thing as Burst.
+@export var base_Max_Break: int = 100
+
+
 #If the player moves back to much or isn't attacking we will give them a neg Debuff
 @export_range(1, 5, 1) var negative_Penalty_Res: int = 3
 #This is like Defense? Take less damage the tougher they are
@@ -38,14 +50,14 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 @export var dash_max: int = 450 #
 #Backdash
 @export var backdash_type: BackDashType = BackDashType.Step
-@export var backdash: int = 30 #Might move to State
-@export var backdash_invul: int = 10 #Might move to State
+@export var backdash: int = 30 ##Might move to State
+@export var backdash_invul: int = 10 ##Might move to State
 @export var backdash_distance: int = 400 #
-@export var backdash_duration: int = 30 #Might move to State
+@export var backdash_duration: int = 30 ##Might move to State
 
 @export_category("Air Movement")
-@export var prejump: int = 4 #
-@export var jump_velocity: int = -1500 #Base Jump Height 1500, High 1700. Low 1300
+@export var prejump: int = 4 
+@export var jump_velocity: int = -1500 ##Base Jump Height 1500, High 1700. Low 1300
 @export var fwd_jump_velocity: int = -800
 @export var bwd_jump_velocity: int = -800
 @export var super_jump_velocity: int = -1650
@@ -55,20 +67,37 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 @export var air_Jumps: int = 1
 @export var air_Dashes: int = 1
 
+#Signals
 signal health_depleted
+signal break_full
 signal health_changed(cur_health: int, max_health: int)
+signal limit_changed(cur_limit: int, max_Limit: int)
+signal break_changed(cur_break: int, max_break: int)
 
-##Testing Out InResource Stats Instead Of Health Component
-var health: int = 0: set = _on_health_set
+var curr_health: int = base_max_health : set = _on_health_set ## Characters Current Health Value
+var curr_Limit: int = 0: set = _on_limit_set ## Characters Current Limit Value
+var curr_break: int = 0: set = _on_break_set ## The Characters Break Gauge
 
 func _init() -> void:
-	setup_stats.call_deferred()
+	pass
 
-func setup_stats() -> void:
-	health = base_max_health
+func setup_char() -> void:
+	curr_health = base_max_health
 
 func _on_health_set(new_value: int) -> void:
-	health = clampi(new_value, 0, current_max_health)
-	health_changed.emit(health, current_max_health)
-	if health <= 0:
+	curr_health = clampi(new_value, 0, base_max_health)
+	print(curr_health)
+	health_changed.emit(curr_health, base_max_health)
+	if curr_health <= 0:
 		health_depleted.emit()
+
+func _on_limit_set(new_value: int) -> void:
+	curr_Limit = clampi(new_value, 0, base_max_Limit)
+	limit_changed.emit(curr_Limit, base_max_Limit)
+
+func _on_break_set(new_value: int) -> void:
+	curr_break = clampi(new_value, 0, base_Max_Break)
+	break_changed.emit(curr_break, base_Max_Break)
+	if curr_break == 100:
+		break_full.emit()
+	

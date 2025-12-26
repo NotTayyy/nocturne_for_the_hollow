@@ -34,8 +34,6 @@ func game_start() -> void: #Call this To Spawn the Characters
 	
 	if P1_Select == P2_Select:
 		print("Mirror Match") #Should Change Shader or skin or something
-		
-
 	
 	player1 = spawn_character(P1_Select, 1, P1_START_POS)
 	player2 = spawn_character(P2_Select, 2, P2_START_POS)
@@ -52,13 +50,12 @@ func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> F
 	if fighter == null:
 		push_error("Failed to instantiate fighter scene for '%s'" % char_name)
 		return
-		
+	
 	if player_id == 1:
 		Global.P1 = fighter
 	else:
 		Global.P2 = fighter
-
-
+	
 	fighter.char_data = data
 	fighter.player_id = player_id
 	fighter.position = spawn_pos

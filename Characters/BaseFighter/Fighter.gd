@@ -5,6 +5,7 @@ var player_id: int = 0
 var char_data: CharacterData
 
 @onready var input_buffer: InputBuffer = %InputBuffer
+@onready var state_manager: State_Manager = %State_Manager
 @onready var collision_Box: CollisionShape2D = $Components/Pushbox/CollisionShape2D
 @onready var pushbox: Area2D = $Components/Pushbox
 @onready var anim_Player: AnimationPlayer = $Char_Sprite_Animator
@@ -39,6 +40,8 @@ func _ready() -> void:
 	if not char_data:
 		push_error("Missing CharacterData!")
 		return
+		
+	char_data.setup_char()
 	
 	input_buffer.player_char = self
 	input_buffer.has_neg_edge = char_data.neg_edge
@@ -46,10 +49,13 @@ func _ready() -> void:
 	
 	if char_data.neg_edge != false:
 		input_buffer.release_command_list = char_data.command_list.release_cmnd_list
-		
-	
 	
 	setup_input_actions()
+	
+	char_data.health_depleted.connect(Knocked_Out)
+
+func Knocked_Out():
+	queue_free()
 
 func setup_input_actions() -> void:
 	match player_id:
@@ -75,8 +81,6 @@ func setup_input_actions() -> void:
 			push_warning("Unhandled player_id: %d" % player_id)
 
 func _physics_process(delta: float) -> void:
-	if not char_data:
-		return
 		
 	is_airborn = not is_on_floor()
 		

@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkycgk2cgyyy4"]
+[gd_scene load_steps=10 format=3 uid="uid://dkycgk2cgyyy4"]
 
 [ext_resource type="Script" uid="uid://b2mbt1fgs1aks" path="res://Characters/Tmp_Kokonoe/char_kokonoe.gd" id="1_rskdy"]
 [ext_resource type="Texture2D" uid="uid://d3112jh4qthyl" path="res://Characters/Tmp_Kokonoe/Kokonoe/kk001_02.png" id="2_tyfk6"]
-[ext_resource type="PackedScene" uid="uid://5ucjfk86rrqd" path="res://Scripts/Components/InputBuffer.tscn" id="3_7vgrp"]
 [ext_resource type="Script" uid="uid://u6lkkiwrap7c" path="res://Scripts/Components/Hurtbox.gd" id="4_7ln3g"]
+[ext_resource type="Script" uid="uid://i6qlsp6nkldi" path="res://Scripts/Components/state_manager.gd" id="5_3m5cc"]
 [ext_resource type="Script" uid="uid://vdot3es4dinw" path="res://Scripts/Components/Pushbox.gd" id="5_sgtre"]
+[ext_resource type="Script" uid="uid://mxicbdqelndt" path="res://Scripts/Components/InputBuffer.gd" id="6_1r6bk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sgtre"]
 size = Vector2(124, 328)
@@ -27,9 +28,6 @@ offset = Vector2(0, -83)
 
 [node name="Components" type="Node2D" parent="."]
 
-[node name="InputBuffer" parent="Components" instance=ExtResource("3_7vgrp")]
-unique_name_in_owner = true
-
 [node name="Hurtbox" type="Area2D" parent="Components"]
 script = ExtResource("4_7ln3g")
 metadata/_custom_type_script = "uid://u6lkkiwrap7c"
@@ -45,6 +43,16 @@ metadata/_custom_type_script = "uid://vdot3es4dinw"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Pushbox"]
 shape = SubResource("RectangleShape2D_3m5cc")
+
+[node name="State_Manager" type="Node" parent="Components"]
+unique_name_in_owner = true
+script = ExtResource("5_3m5cc")
+metadata/_custom_type_script = "uid://i6qlsp6nkldi"
+
+[node name="InputBuffer" type="Node" parent="Components"]
+unique_name_in_owner = true
+script = ExtResource("6_1r6bk")
+metadata/_custom_type_script = "uid://mxicbdqelndt"
 
 [node name="Label" type="Label" parent="."]
 unique_name_in_owner = true
