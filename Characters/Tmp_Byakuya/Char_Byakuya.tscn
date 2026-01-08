@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cjfp0c5ajfhyq" path="res://Characters/Tmp_Byakuya/Byakuya/314.png" id="4_frr2s"]
 [ext_resource type="Texture2D" uid="uid://qjvvpufy41p7" path="res://Characters/Tmp_Byakuya/Byakuya/315.png" id="5_fgqie"]
 [ext_resource type="Texture2D" uid="uid://bwp3g27mx7tq6" path="res://Characters/Tmp_Byakuya/Byakuya/316.png" id="6_h8k8q"]
-[ext_resource type="Script" path="res://Scripts/Components/state_manager.gd" id="6_im3f6"]
+[ext_resource type="Script" uid="uid://i6qlsp6nkldi" path="res://Scripts/Components/state_manager.gd" id="6_im3f6"]
 [ext_resource type="Texture2D" uid="uid://byxkw1n7i6610" path="res://Characters/Tmp_Byakuya/Byakuya/317.png" id="7_vurmo"]
 [ext_resource type="Texture2D" uid="uid://d4eqdw20xhh7q" path="res://Characters/Tmp_Byakuya/Byakuya/318.png" id="8_xiya8"]
 [ext_resource type="Texture2D" uid="uid://d2r8al7365fj2" path="res://Characters/Tmp_Byakuya/Byakuya/319.png" id="9_gryy1"]
@@ -272,11 +272,6 @@ region_rect = Rect2(557.208, 325.96, 163.979, 370.417)
 
 [node name="Components" type="Node2D" parent="."]
 
-[node name="InputBuffer" type="Node" parent="Components"]
-unique_name_in_owner = true
-script = ExtResource("3_g4p22")
-metadata/_custom_type_script = "uid://mxicbdqelndt"
-
 [node name="Hurtbox" type="Area2D" parent="Components"]
 script = ExtResource("55_g4p22")
 metadata/_custom_type_script = "uid://u6lkkiwrap7c"
@@ -298,6 +293,11 @@ shape = SubResource("RectangleShape2D_8xdls")
 unique_name_in_owner = true
 script = ExtResource("6_im3f6")
 metadata/_custom_type_script = "uid://i6qlsp6nkldi"
+
+[node name="InputBuffer" type="Node" parent="Components"]
+unique_name_in_owner = true
+script = ExtResource("3_g4p22")
+metadata/_custom_type_script = "uid://mxicbdqelndt"
 
 [node name="Label" type="Label" parent="."]
 unique_name_in_owner = true

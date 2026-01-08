@@ -1,19 +1,21 @@
 extends Node
 class_name FighterState
 
-signal state_transition
+var state_name: String = "Base State" ## Name for Debuging purpouses
+var fighter ## The Main Fighter
+var state_machine ## The State Machine
 
-var fighter
-var state_name: String = "Base State"
-
-func Enter() -> void:
+func Enter() -> void: ## Runs when The State is Initially Entered
 	pass
 
-func Update(_delta:float) -> void:
+func physics_update(_delta): ## Runs Per-frame Physics Logic
 	pass
 
-func Physics_Update(_delta: float) -> void:
+func update(_delta): ## Runs Per-frame Non Physics Logic
 	pass
 
-func Exit() -> void:
-	pass 
+func handle_input(_event): ## Handles Player Inputs and what it does for our States
+	pass
+
+func exit(): ## Runs when we Exit the State
+	pass
