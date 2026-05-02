@@ -1,0 +1,312 @@
+extends Node
+class_name InputBuffer_depreciated
+
+@export var max_buffer_frames: int = 12 ## Max Frames Between Inputs
+@onready var label: Label = %Label
+
+var current_frame: int = 0 
+var buffer_history: Array = []
+var has_neg_edge: bool
+var release_command_list: Array #Only turns on if neg_edge is true
+#The Entire Command list, A separate allowed commands for each state is needed in each state
+var command_list: Array = [] 
+#Different States will load their own Commands and this will keep Updating per State.
+var allowed_State_Commands: Array = []
+var player_char #Selects the Current Character
+var game_manager = Global.game_manager
+
+#Just Setting up some stuff for now
+var can_Jump: bool
+var can_Move: bool
+var can_Attack: bool
+
+func _ready() -> void:
+	pass
+
+func register_input(action: String, type: String) -> void:
+	current_frame = Engine.get_physics_frames()
+
+	buffer_history.append({
+		"action": action, #Command Name
+		"action_frame": current_frame, #Command Frame
+		"type": type, #Press or Release
+		"Character": player_char.name 
+	})
+	print(buffer_history[-1])
+	
+	check_commands()
+
+func clear():
+	buffer_history.clear()
+
+func match_priority(command_type) -> int:
+	match command_type:
+		"Barrier":
+			return 12
+		"Redline/Burst": #Also tossing Around "Overclock" or "Awakening" or "Gear Shift" or "Turbo"
+			return 11
+		"Counter Attack":
+			return 10
+		"Gear Shift": #I Think I Want a CS Like ability, 50 Meter to Freeze Time and Cancel Stuff
+			return 9
+		"EX Special":
+			return 8
+		"Special":
+			return 7
+		"Throw":
+			return 6
+		"Guard Crush":
+			return 5
+		"Command Normal":
+			return 4
+		"Normal":
+			return 3
+		"Super Jump":
+			return 2
+		"Jump":
+			return 1 
+		"Movement":
+			return 0
+		_:
+			return -1
+
+func set_queue(command: String) -> void:
+	print(command)
+
+func check_commands():
+	print_buffer()
+
+	var last_entry = buffer_history[-1]
+	
+	if last_entry["type"] == "press":
+		check_Command_list("press", command_list)
+	elif last_entry["type"] == "release" and release_command_list != null:
+		check_Command_list("release", release_command_list)
+
+func check_held_inputs() -> Array:
+	var held_inputs:= {}
+	var directions := ["2", "4", "6", "8", "1", "3", "7", "9"]
+	var buttons:= ["A", "B", "C", "D"]
+	var direction_map:= {
+		"1": ["1", "2", "4"],
+		"3": ["3", "2", "6"],
+		"7": ["7", "8", "4"],
+		"9": ["9", "8", "6"],
+	}
+	var release_map:= {
+		"2": ["1", "2", "3"],
+		"4": ["1", "4", "7"],
+		"8": ["7", "8", "9"],
+		"6": ["9", "6", "3"],
+	}
+
+	for entry in buffer_history:
+		var Inputs = direction_map.get(entry.action, [entry.action])
+		var release = release_map.get(entry.action, [entry.action])
+		for key in Inputs:
+			if key == "5" and entry["type"] == "press":
+				for dir in directions:
+					held_inputs.erase(dir)
+			if key in directions or key in buttons:
+				if entry["type"] == "press":
+					held_inputs[key] = true
+				if entry["type"] == "release":
+					for btn in release:
+						held_inputs.erase(btn)
+	
+	return held_inputs.keys()
+
+func check_Command_list(type, cmd_list: Array):
+	var held_inputs = check_held_inputs()
+	var matched_commands: Array = []
+	if game_manager.Debug == true:
+		print(held_inputs)
+	
+	for command in cmd_list:
+		var sequence: Array = command["Sequence"]
+		var seq_index: int = sequence.size() - 1
+		var prev_frame: int = -1
+		var starter: Dictionary = buffer_history[-1]
+		
+		#Checks Only The Command Normals
+		if buffer_history.size() == 0:
+			return
+		if "Held" in command:
+			for i in range(buffer_history.size() - 1, -1, -1):
+				if seq_index < 0:
+					break
+				
+				var entry = buffer_history[i]
+				if starter["action"] == sequence[-1]:
+					if current_frame - starter["action_frame"] < max_buffer_frames: 
+						if entry["action"] == sequence[seq_index] and entry["type"] == type:
+							seq_index -= 1
+							if seq_index == -1:
+								for held_input in command["Held"]:
+									#Fixed Bug(Diagonals Would make this run)
+									if held_inputs.has(held_input):
+										matched_commands.append(command)
+								break
+		
+		#Checks only the Charge Based Commands
+		elif "Charge" in command:
+			var charge_btn: String  = command["Button"][0]
+			var charge_frames: int = command["Charge"]
+			var charge_met: bool = false
+					
+			for i in range(buffer_history.size() - 1, -1, -1):
+				var release_entry = buffer_history[i]
+				if release_entry["action"] == charge_btn and release_entry["type"] == "release":
+					# Step 2: Find matching press before that release
+					for j in range(i - 1, -1, -1):
+						var press_entry = buffer_history[j]
+						if press_entry["action"] == charge_btn and press_entry["type"] == "press":
+							var held_frames = release_entry["action_frame"] - press_entry["action_frame"]
+							if held_frames >= charge_frames:
+								charge_met = true
+							break
+					break
+				
+			if not charge_met:
+				continue
+				
+			for i in range(buffer_history.size() -1, -1, -1):
+				if seq_index < 0:
+					break
+				
+				var entry = buffer_history[i]
+				if entry["action"] == sequence[seq_index]:
+					# If this is the charge button, expect a RELEASE
+					if sequence[seq_index] == charge_btn:
+						if entry["type"] != "release":
+							continue
+						if prev_frame - entry["action_frame"] > max_buffer_frames:
+							break
+					else:
+						if entry["type"] != type:
+							continue
+						if prev_frame == -1:
+							if current_frame - entry["action_frame"] > max_buffer_frames:
+								break
+						else:
+							if prev_frame - entry["action_frame"] > max_buffer_frames:
+								break
+						prev_frame = entry["action_frame"]
+						
+					seq_index -= 1
+				if seq_index == -1:
+					matched_commands.append(command)
+					
+		
+		#Checks only the leftover Commands.
+		else: 
+			for i in range(buffer_history.size() - 1, -1, -1):
+				if seq_index < 0:
+					break
+					
+				var entry = buffer_history[i]
+				if starter["action"] == sequence[-1]:
+					if entry["action"] == sequence[seq_index] and entry["type"] == type:
+						if prev_frame == -1:
+							if current_frame - entry["action_frame"] > max_buffer_frames:
+								break
+							prev_frame = entry["action_frame"]
+						else:
+							if prev_frame - entry["action_frame"] > max_buffer_frames:
+								break
+							else:
+								prev_frame = entry["action_frame"]
+						
+						seq_index -= 1
+					if seq_index == -1:
+						matched_commands.append(command)
+						break
+	
+	if matched_commands.size() == 1:
+		print(matched_commands[0]["Command"]) #The Chosen Highest Priority
+		return
+	
+	elif matched_commands.size() > 1:
+		var curr_priority: int = -1
+		var curr_command = null
+		
+		for entry in matched_commands:
+			var entry_prio = match_priority(entry["Priority"])
+			if entry_prio > curr_priority:
+				curr_command = entry
+				curr_priority = entry_prio
+		
+		print(matched_commands) #All commands that Could have passed
+		print(curr_command["Command"]) #The Chosen Highest Priority
+		return
+
+func print_buffer():
+	var entry = buffer_history[-1]
+	label.text = parse_emoji(entry["action"])
+	if game_manager.Debug == true:
+		print("Action: ", entry["type"], " : ", entry["action"], " at frame ",
+		entry["action_frame"], " by ", entry["Character"])
+
+#This just writes out the latest pressed button
+func parse_emoji(button: String) -> String:
+	if player_char.dir_facing == "Right":
+		match button:
+			"1":
+				return "🢇"
+			"2":
+				return "🢃"
+			"3":
+				return "🢆"
+			"4":
+				return "🢀"
+			"5":
+				return "⚤"
+			"6":
+				return "🢂"
+			"7":
+				return "🢄"
+			"8":
+				return "🢁"
+			"9":
+				return "🢅"
+			"A":
+				return "🅰️"
+			"B":
+				return "🅱️"
+			"C":
+				return "𝓒"
+			"D":
+				return "Ɗ"
+			_:
+				return ""
+	
+	else:
+		match button:
+			"1":
+				return "🢆"
+			"2":
+				return "🢃"
+			"3":
+				return "🢇"
+			"4":
+				return "🢂"
+			"5":
+				return "⚤"
+			"6":
+				return "🢀"
+			"7":
+				return "🢅"
+			"8":
+				return "🢁"
+			"9":
+				return "🢄"
+			"A":
+				return "🅰️"
+			"B":
+				return "🅱️"
+			"C":
+				return "𝓒"
+			"D":
+				return "Ɗ"
+			_:
+				return ""

@@ -1,15 +1,19 @@
-[gd_resource type="Resource" script_class="CharacterData" load_steps=4 format=3 uid="uid://cgwrwt6tm5svo"]
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://s2nj1pv574q5"]
 
-[ext_resource type="PackedScene" uid="uid://dg33asvi0qgfr" path="res://Characters/Tmp_Byakuya/Char_Byakuya.tscn" id="1_68hxm"]
-[ext_resource type="Resource" uid="uid://d4jdugmro3xbp" path="res://Characters/Tmp_Byakuya/Byakuya_Commands.tres" id="1_hrxsb"]
-[ext_resource type="Script" uid="uid://cpq072udwjvmf" path="res://Characters/BaseFighter/CharacterData.gd" id="1_kowt0"]
+[ext_resource type="Resource" uid="uid://cb3kyjp1r7j2i" path="res://Characters/Tmp_Byakuya/Byakuya_Commands.tres" id="1_qb6vo"]
+[ext_resource type="PackedScene" uid="uid://c1ic52a33kkaw" path="res://Characters/Tmp_Byakuya/Char_Byakuya.tscn" id="2_x6wmt"]
+[ext_resource type="Script" uid="uid://cpq072udwjvmf" path="res://Characters/BaseFighter/CharacterData.gd" id="3_f7in1"]
 
 [resource]
-script = ExtResource("1_kowt0")
+script = ExtResource("3_f7in1")
 character_name = "Byakuya"
-fighter_scene = ExtResource("1_68hxm")
-command_list = ExtResource("1_hrxsb")
+fighter_scene = ExtResource("2_x6wmt")
+command_list = ExtResource("1_qb6vo")
 charge_moves = true
-base_max_health = 15000
-current_max_health = 15000
+dash_Startup = 2
+dash_int = 800
+dash_acc = 100
+dash_max = 1200
+jump_fwd_velocity = 500
+jump_bwd_velocity = 500
 metadata/_custom_type_script = "uid://cpq072udwjvmf"

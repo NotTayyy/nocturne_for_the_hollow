@@ -1,5 +1,5 @@
 extends Node
-class_name State_Manager 
+class_name State_Manager_null
 
 @export var Initial_State: FighterState ## The State the player Starts in, Idle
 

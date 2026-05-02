@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://csk51locimns6"]
+
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Characters/BaseFighter/Move_Data.gd" id="1_a2irj"]
+
+[resource]
+script = ExtResource("1_a2irj")
+move_name = "Byak_5A"
+move_id = "Byak_5A"
+startup = 6
+active = Array[int]([3])
+recovery = 2
+damage = Array[int]([100])
+metadata/_custom_type_script = "uid://c1ie505730ew"

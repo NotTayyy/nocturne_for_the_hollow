@@ -2,6 +2,8 @@ extends Node2D
 
 var P1
 var P2
+var p1_max_y: float = 0.0
+var p2_max_y: float = 0.0
 
 func _ready() -> void:
 	pass
@@ -13,6 +15,16 @@ func _process(_delta: float) -> void:
 
 	if P1 == null or P2 == null:
 		set_vars()
+	
+	if P1:
+		var y1 = P1.velocity.y
+		if y1 < p1_max_y:
+			p1_max_y = y1
+
+	if P2:
+		var y2 = P2.velocity.y
+		if y2 < p2_max_y:
+			p2_max_y = y2
 
 	ImGui.Begin("Players")
 
@@ -41,7 +53,7 @@ func imgui_player_root(label: String, player) -> void:
 	if ImGui.CollapsingHeader(label):
 		imgui_core_info(player)
 		imgui_health_info(player)
-		imgui_movement_info(player)
+		imgui_movement_info(player, p1_max_y if player == P1 else p2_max_y)
 		imgui_state_info(player)
 		imgui_transform_info(player)
 		imgui_input_info(player)
@@ -77,11 +89,20 @@ func imgui_health_info(player) -> void:
 # =========================
 # Movement / Facing
 # =========================
-func imgui_movement_info(player) -> void:
+func imgui_movement_info(player, max_y: float) -> void:
 	if ImGui.TreeNode("Movement"):
 		ImGui.Text("Facing Dir: " + str(player.dir_facing))
-		ImGui.Text("Move Dir: " + str(player.dir))
-		ImGui.Text("Airborne: " + str(player.is_airborn))
+		ImGui.Text("Airborne: " + str(player.is_airborne))
+		ImGui.Text("Y_Velocity: " + str(player.velocity.y))
+		ImGui.Text("Y_Peak: " + str(max_y))
+		ImGui.Text("X_Velocity: " + str(player.velocity.x))
+		
+		if ImGui.Button("Reset Y Peak"):
+			if player == P1:
+				p1_max_y = 0.0
+			else:
+				p2_max_y = 0.0
+				
 		ImGui.TreePop()
 
 

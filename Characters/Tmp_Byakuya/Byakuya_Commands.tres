@@ -1,37 +1,45 @@
-[gd_resource type="Resource" script_class="CommandData" load_steps=2 format=3 uid="uid://d4jdugmro3xbp"]
+[gd_resource type="Resource" script_class="CommandData" format=3 uid="uid://cb3kyjp1r7j2i"]
 
-[ext_resource type="Script" uid="uid://bhoay45i4tsn" path="res://Characters/BaseFighter/CommandData.gd" id="1_q63nq"]
+[ext_resource type="Script" uid="uid://bhoay45i4tsn" path="res://Characters/BaseFighter/CommandData.gd" id="1_p15au"]
 
 [resource]
-script = ExtResource("1_q63nq")
+script = ExtResource("1_p15au")
 command_list = [{
 "Command": "Crouch",
-"Priority": "Movement",
+"Priority": "Crouching",
 "Sequence": ["2"]
 }, {
-"Command": "Forward Dash",
-"Priority": "Movement",
+"Command": "Dash",
+"Priority": "Dash",
 "Sequence": ["6", "5", "6"]
 }, {
-"Command": "Backwards Dash",
-"Priority": "Movement",
+"Command": "BackDash",
+"Priority": "Dash",
 "Sequence": ["4", "5", "4"]
 }, {
 "Command": "Jump",
-"Priority": "Movement",
+"Priority": "Jump",
 "Sequence": ["8"]
 }, {
-"Command": "Super Jump",
-"Priority": "Movement",
+"Command": "SuperJump",
+"Priority": "Super Jump",
 "Sequence": ["2", "8"]
 }, {
-"Command": "Fwd-Jump",
-"Priority": "Movement",
+"Command": "JumpFwd",
+"Priority": "Jump",
 "Sequence": ["9"]
 }, {
-"Command": "Bwd-Jump",
-"Priority": "Movement",
+"Command": "JumpBack",
+"Priority": "Jump",
 "Sequence": ["7"]
+}, {
+"Command": "SuperJumpFwd",
+"Priority": "Super Jump",
+"Sequence": ["2", "9"]
+}, {
+"Command": "SuperJumpBack",
+"Priority": "Super Jump",
+"Sequence": ["2", "7"]
 }, {
 "Command": "6A",
 "Held": ["6"],
@@ -84,13 +92,13 @@ command_list = [{
 }, {
 "Command": "Quarter-Circle back Half-Circle Forwards C",
 "Priority": "EX Special",
-"Sequence": ["2", "1", "4", "1", "2", "3", "6", "C"]
+"Sequence": ["2", "4", "2", "6", "C"]
 }, {
 "Button": ["4"],
 "Charge": 30,
 "Command": "Charge Back Half Circle Forwards A",
 "Priority": "EX Special",
-"Sequence": ["4", "1", "2", "3", "6", "A"]
+"Sequence": ["4", "2", "6", "A"]
 }, {
 "Command": "Button A",
 "Priority": "Normal",
@@ -115,5 +123,9 @@ command_list = [{
 "Command": "Reverse Tiger Knee",
 "Priority": "Special",
 "Sequence": ["4", "2", "1"]
+}, {
+"Command": "Throw",
+"Priority": "Throw",
+"Sequence": ["B", "C"]
 }]
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

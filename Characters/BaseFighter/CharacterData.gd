@@ -1,8 +1,8 @@
 extends Resource
 class_name CharacterData
 
-enum DashType { Step, Run, Teleport, Hover, None }
-enum BackDashType { Step, Run, Teleport, Hover, None }
+enum DashType { Step, Dash, Teleport, None }
+enum BackDashType { Step, Dash, Teleport}
 
 @export_category("Lore Data")
 @export var character_name: String = "Default Fighter"
@@ -25,58 +25,94 @@ enum BackDashType { Step, Run, Teleport, Hover, None }
 ##The Characters Base Limit
 @export var base_max_Limit: int = 100 
 
-## The Characters Break Buildup, Functionally the same thing as Burst.
-@export var base_Max_Break: int = 100
+## The Characters Burst Buildup, Functionally the same thing as Burst.
+@export var base_max_burst: int = 100
 
+## This will be the Barrier, It will go down when the player takes attacks [br]
+## or when the Player uses their Barrier Most of the time this isnt that important [br]
+## and it regenerates over time But with certain moves and it reaches 0, [br]
+## it will cause the character to lose Access the the Barrier Gauge [br]
+@export var base_max_barrier: int = 100
 
-#If the player moves back to much or isn't attacking we will give them a neg Debuff
-@export_range(1, 5, 1) var negative_Penalty_Res: int = 3
-#This is like Defense? Take less damage the tougher they are
-@export_range(0, 5, 1) var toughness: int = 3 #Base Defense for characters
-@export_range(0, 5, 1) var willpower: int = 3 #More Defense and maybe More Meter gain lower the HP
+## The Secret Hidden Meter called Flow state[br]
+## [br]
+## When entering the flow state, 2x burst and meter gain, 2x damage, [br]
+## shorten recovery and startups and make new combos possible [br]
+## [br]
+## There will be a List of actions that Make the Character Gain Flow, there will [br]
+## also be Specific actions that Proc the Flow state.
+@export var base_max_flow: int = 1000
+
+## If the player moves back to much or isn't attacking we will give them a neg Debuff[br]
+## Some characters need to backup more than others so they get more resistance to the Debuff [br]
+@export_range(1, 5, 1) var negative_Penalty_Resistance: int = 3
+## This is like Defense? Take less damage the tougher they are
+@export_range(0, 5, 1) var toughness: int = 3 
+@export_range(0, 5, 1) var willpower: int = 3 ## More Defense and maybe More Meter gain lower the HP
 @export var ground_throw_range: int = 70 #99% of peeps will be The default
 @export var air_throw_range: int = 120 #99% of peeps will be The default
 
-@export_category("Ground Movement")
+@export_category("Walking")
 #Walking
-@export var fwd_walk_speed: int = 400 # 400 Avg; 550 Fast; 250 Slow;
-@export var bwd_walk_speed: int = 300 # 300 Avg; 350 Fast ; 200 Slow
-#Dashing
-@export var dashType: DashType = DashType.Run
-@export var dash_Startup: int = 4 #4 Is Default
-@export var dash_int: int = 300 #
-@export var dash_skid: int = 60 #
-@export var dash_acc: int = 150 #
-@export var dash_max: int = 450 #
-#Backdash
+@export var fwd_walk_speed: int = 400 ## 400 Avg; 550 Fast; 250 Slow;
+@export var bwd_walk_speed: int = 300 ## 300 Avg; 350 Fast ; 200 Slow
+
+@export_category("Dashes")
+@export var dashType: DashType = DashType.Dash
+@export_subgroup("Dash")
+@export var dash_Startup: int = 4 ##4 Is Default
+@export var dash_int: int = 300 ## The initial Speed of the character Movement on dash start
+@export var dash_acc: int = 20 ## The Speed added per second of running
+@export var dash_max: int = 450 ## The max Speed the character will reach after running for awhile
+## Take the Current speed of the Character and Multiply it by this for the Skid
+@export var dash_skid: float = 0.8 
+
+@export_subgroup("Step")
+@export var step_Duration: int = 18 ## 18 Frames of Step Startup is default for now
+@export var step_distance: int = 350 ## Need to test the Distance's
+
+@export_subgroup("Backdash")
 @export var backdash_type: BackDashType = BackDashType.Step
-@export var backdash: int = 30 ##Might move to State
-@export var backdash_invul: int = 10 ##Might move to State
-@export var backdash_distance: int = 400 #
-@export var backdash_duration: int = 30 ##Might move to State
+@export var backdash_invul: int = 10  ##Invul frames
+@export var backdash_distance: int = 400 ## Distance
+@export var backdash_duration: int = 30 ## Duriation
 
 @export_category("Air Movement")
-@export var prejump: int = 4 
-@export var jump_velocity: int = -1500 ##Base Jump Height 1500, High 1700. Low 1300
-@export var fwd_jump_velocity: int = -800
-@export var bwd_jump_velocity: int = -800
-@export var super_jump_velocity: int = -1650
-@export var fwd_super_jump_velocity: int = -1650
-@export var bwd_super_jump_velocity: int = -1650
+@export var prejump: int = 4
 @export var gravity: int = 4000
 @export var air_Jumps: int = 1
 @export var air_Dashes: int = 1
+@export var airjump_lockout: int = 2
+
+@export_subgroup("Jump/Normal", "jump_")
+@export var jump_velocity: int = -1450 ##Base Jump Height 1450, High 1700. Low 1300
+@export var jump_fwd_velocity: int = 400
+@export var jump_bwd_velocity: int = 400
+
+@export_subgroup("Jump/Super ", "superjump_")
+@export var superjump_velocity: int = -1650
+@export var superjump_fwd_velocity: int = 400
+@export var superjump_bwd_velocity: int = 400
+
+@export_subgroup("Airdashes", "airdash_")
+@export var airdash_fwd_velocity: int = 1000
+@export var airdash_bwd_velocity: int = -1000
+
+
 
 #Signals
 signal health_depleted
-signal break_full
+signal burst_full
+signal flow_state_entered
 signal health_changed(cur_health: int, max_health: int)
 signal limit_changed(cur_limit: int, max_Limit: int)
-signal break_changed(cur_break: int, max_break: int)
+signal burst_changed(cur_burst: int, max_burst: int)
+signal flow_changed(curr_flow: int, max_flow: int)
 
 var curr_health: int = base_max_health : set = _on_health_set ## Characters Current Health Value
 var curr_Limit: int = 0: set = _on_limit_set ## Characters Current Limit Value
-var curr_break: int = 0: set = _on_break_set ## The Characters Break Gauge
+var curr_burst: int = 0: set = _on_burst_set ## The Characters Burst Gauge
+var curr_flow: int = 0: set = _on_flow_set ## The characters Hidden Flow Gauge
 
 func _init() -> void:
 	pass
@@ -93,11 +129,20 @@ func _on_health_set(new_value: int) -> void:
 
 func _on_limit_set(new_value: int) -> void:
 	curr_Limit = clampi(new_value, 0, base_max_Limit)
-	limit_changed.emit(curr_Limit, base_max_Limit)
+	limit_changed.emit(curr_Limit, base_max_Limit) 
 
-func _on_break_set(new_value: int) -> void:
-	curr_break = clampi(new_value, 0, base_Max_Break)
-	break_changed.emit(curr_break, base_Max_Break)
-	if curr_break == 100:
-		break_full.emit()
+func _on_burst_set(new_value: int) -> void:
+	curr_burst = clampi(new_value, 0, base_max_burst)
+	burst_changed.emit(curr_burst, base_max_burst)
+	if curr_burst == base_max_burst:
+		burst_full.emit()
+
+func _on_flow_set(new_value: int) -> void:
+	curr_flow = clampi(new_value, 0, base_max_flow)
+	flow_changed.emit(curr_flow, base_max_flow)
+	if curr_flow == base_max_flow:
+		flow_state_entered.emit()
+	
+	
+	
 	

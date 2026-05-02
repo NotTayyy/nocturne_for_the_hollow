@@ -8,7 +8,7 @@ extends Node
 @onready var level_manager: Node2D = $Level_Manager
 @onready var ui_manager: Node2D = $Ui_Manager
 
-enum GameState { LOADING, MAIN_MENU, CHAR_SELECT, LEVEL_SELECT, MID_MATCH, PAUSE, OPTION_SELECT }
+enum GameState { INVALID, LOADING, MAIN_MENU, CHAR_SELECT, LEVEL_SELECT, MID_MATCH, PAUSE, OPTION_SELECT }
 var current_state: GameState
 
 func _ready() -> void:
@@ -40,7 +40,6 @@ func _physics_process(_delta: float) -> void:
 	pass
 
 func change_Gamemode(new_state: GameState) -> void:
-	await get_tree().process_frame
 	if new_state == current_state:
 		return
 	
@@ -66,5 +65,7 @@ func change_Gamemode(new_state: GameState) -> void:
 			character_manager.game_start()
 			#Switch To Mid Match UI
 			ui_manager.Change_Gui_scene("Ingame_UI")
+		GameState.OPTION_SELECT:
+			print("We Optioning")
 		_:
 			print("You fucked Up ", new_state, " Is not a Real State")

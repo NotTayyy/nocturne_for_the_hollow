@@ -21,6 +21,10 @@ resources_spreadsheet_view/fold_docks=true
 resources_spreadsheet_view/resource_cell_label_mode=1
 resources_spreadsheet_view/freeze_first_column=true
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Grave//Circuit"
@@ -28,7 +32,7 @@ config/description="a closed loop of death — or a system built on endless stru
 config/version="0.1.10"
 run/main_scene="uid://bxrdw0dnmitbh"
 config/use_custom_user_dir=true
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 run/max_fps=60
 config/icon="uid://c5j1ousdm1x7n"
 
@@ -41,14 +45,15 @@ buses/default_bus_layout=""
 Global="*res://Scripts/Globals/Global_Reference.gd"
 G_LevelDB="*res://Scripts/Globals/LevelDatabase.gd"
 G_CharacterDB="*res://Scripts/Globals/CharacterDatabase.gd"
-ImGuiRoot="*res://addons/imgui-godot/data/ImGuiRoot.tscn"
+ImGuiRoot="*uid://dugmpnsxaagba"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=2
-window/stretch/mode="viewport"
+window/size/initial_position_type=3
+window/stretch/mode="canvas_items"
 
 [dotnet]
 

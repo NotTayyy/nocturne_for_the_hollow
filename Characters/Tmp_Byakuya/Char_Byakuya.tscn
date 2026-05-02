@@ -1,67 +1,76 @@
-[gd_scene load_steps=75 format=3 uid="uid://dg33asvi0qgfr"]
+[gd_scene format=3 uid="uid://c1ic52a33kkaw"]
 
-[ext_resource type="Script" uid="uid://d2ruw43pyssh8" path="res://Characters/Tmp_Byakuya/char_byakuya.gd" id="1_tqmcm"]
-[ext_resource type="Texture2D" uid="uid://c7swkhogcpkmh" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/000.png" id="2_t652o"]
-[ext_resource type="Script" uid="uid://mxicbdqelndt" path="res://Scripts/Components/InputBuffer.gd" id="3_g4p22"]
-[ext_resource type="Texture2D" uid="uid://cjfp0c5ajfhyq" path="res://Characters/Tmp_Byakuya/Byakuya/314.png" id="4_frr2s"]
-[ext_resource type="Texture2D" uid="uid://qjvvpufy41p7" path="res://Characters/Tmp_Byakuya/Byakuya/315.png" id="5_fgqie"]
-[ext_resource type="Texture2D" uid="uid://bwp3g27mx7tq6" path="res://Characters/Tmp_Byakuya/Byakuya/316.png" id="6_h8k8q"]
-[ext_resource type="Script" uid="uid://i6qlsp6nkldi" path="res://Scripts/Components/state_manager.gd" id="6_im3f6"]
-[ext_resource type="Texture2D" uid="uid://byxkw1n7i6610" path="res://Characters/Tmp_Byakuya/Byakuya/317.png" id="7_vurmo"]
-[ext_resource type="Texture2D" uid="uid://d4eqdw20xhh7q" path="res://Characters/Tmp_Byakuya/Byakuya/318.png" id="8_xiya8"]
-[ext_resource type="Texture2D" uid="uid://d2r8al7365fj2" path="res://Characters/Tmp_Byakuya/Byakuya/319.png" id="9_gryy1"]
-[ext_resource type="Texture2D" uid="uid://b66xvbswsva51" path="res://Characters/Tmp_Byakuya/Byakuya/320.png" id="10_bxwo6"]
-[ext_resource type="Texture2D" uid="uid://ch5jmxeg7aylk" path="res://Characters/Tmp_Byakuya/Byakuya/321.png" id="11_y2isg"]
-[ext_resource type="Texture2D" uid="uid://duojxir242e27" path="res://Characters/Tmp_Byakuya/Byakuya/322.png" id="12_2vk3q"]
-[ext_resource type="Texture2D" uid="uid://cm6j7po1em8wj" path="res://Characters/Tmp_Byakuya/Byakuya/323.png" id="13_dpq63"]
-[ext_resource type="Texture2D" uid="uid://327osigl4utv" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/325.png" id="14_6x0gb"]
+[ext_resource type="Script" uid="uid://dea4xsyi1lwvl" path="res://Characters/Tmp_Byakuya/char_byakuya.gd" id="1_tqmcm"]
+[ext_resource type="Texture2D" uid="uid://cfmr83squd7de" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/000.png" id="2_t652o"]
+[ext_resource type="Texture2D" uid="uid://b56wqkm72vvae" path="res://UI/Ingame/HealthBar/Empty Bar.png" id="3_kdqph"]
+[ext_resource type="Texture2D" uid="uid://lxm7mrxgy7us" path="res://Characters/Tmp_Byakuya/Byakuya/314.png" id="4_frr2s"]
+[ext_resource type="Texture2D" uid="uid://doqtcugg05in" path="res://Characters/Tmp_Byakuya/Byakuya/315.png" id="5_fgqie"]
+[ext_resource type="Script" uid="uid://spdxybg7602" path="res://Scripts/Components/InputBuffer.gd" id="6_gsps2"]
+[ext_resource type="Texture2D" uid="uid://crrx1a2rt8j12" path="res://Characters/Tmp_Byakuya/Byakuya/316.png" id="6_h8k8q"]
+[ext_resource type="Script" uid="uid://b8tx1i4237rpu" path="res://Scripts/Components/StateManager.gd" id="7_axaxl"]
+[ext_resource type="Texture2D" uid="uid://c48gb7pspd165" path="res://Characters/Tmp_Byakuya/Byakuya/317.png" id="7_vurmo"]
+[ext_resource type="Script" uid="uid://cpt0knhmkxjmy" path="res://Characters/Tmp_Byakuya/States/ST_Idle.gd" id="8_iqoht"]
+[ext_resource type="Texture2D" uid="uid://d3otjfiqc3pdh" path="res://Characters/Tmp_Byakuya/Byakuya/318.png" id="8_xiya8"]
+[ext_resource type="Script" uid="uid://brulrf40wr2u0" path="res://Characters/Tmp_Byakuya/States/ST_Walk.gd" id="9_eqt23"]
+[ext_resource type="Texture2D" uid="uid://bb2q3fmf5yitb" path="res://Characters/Tmp_Byakuya/Byakuya/319.png" id="9_gryy1"]
+[ext_resource type="Texture2D" uid="uid://gg7id7ab3hgy" path="res://Characters/Tmp_Byakuya/Byakuya/320.png" id="10_bxwo6"]
+[ext_resource type="Script" uid="uid://btvp5u5ycdbhg" path="res://Characters/Tmp_Byakuya/States/ST_Airborn.gd" id="10_c21m3"]
+[ext_resource type="Script" uid="uid://cimobha5jl7t8" path="res://Characters/Tmp_Byakuya/States/ST_Crouch.gd" id="11_s7xik"]
+[ext_resource type="Texture2D" uid="uid://ca2vag0rn7gjw" path="res://Characters/Tmp_Byakuya/Byakuya/321.png" id="11_y2isg"]
+[ext_resource type="Texture2D" uid="uid://bsossdsngimpv" path="res://Characters/Tmp_Byakuya/Byakuya/322.png" id="12_2vk3q"]
+[ext_resource type="Script" uid="uid://crglqrks0ed54" path="res://Characters/Tmp_Byakuya/States/ST_PreJump.gd" id="12_swhwj"]
+[ext_resource type="Texture2D" uid="uid://cud7kuit7ml33" path="res://Characters/Tmp_Byakuya/Byakuya/323.png" id="13_dpq63"]
+[ext_resource type="Script" uid="uid://cojsgkhcoyfdv" path="res://Characters/Tmp_Byakuya/States/ST_Dash.gd" id="13_o6vrj"]
+[ext_resource type="Script" uid="uid://dgyd6ebqk0ql0" path="res://Characters/Tmp_Byakuya/States/ST_BackDash.gd" id="14_6bbqm"]
+[ext_resource type="Texture2D" uid="uid://ci0ccl12olh24" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/325.png" id="14_6x0gb"]
 [ext_resource type="AudioStream" uid="uid://dih6g532jruv4" path="res://Assets/SFX/Footsteps/Conc_Footstep_1.wav" id="14_d276y"]
-[ext_resource type="Texture2D" uid="uid://jrouav1brv1d" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/001.png" id="14_t6673"]
-[ext_resource type="Texture2D" uid="uid://c4xvaetoefyqt" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/326.png" id="15_5jgs1"]
+[ext_resource type="Texture2D" uid="uid://bg7jgiqklcrj5" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/001.png" id="14_t6673"]
+[ext_resource type="Texture2D" uid="uid://c2clwcg0l7gm0" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/326.png" id="15_5jgs1"]
 [ext_resource type="AudioStream" uid="uid://dbb4gerehbeic" path="res://Assets/SFX/Footsteps/Conc_Footstep_2.wav" id="15_52k8c"]
-[ext_resource type="Texture2D" uid="uid://dc54t3fw5kse6" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/002.png" id="15_nxjh0"]
-[ext_resource type="Texture2D" uid="uid://c6og25hmsvhqt" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/327.png" id="16_6m4n5"]
-[ext_resource type="Texture2D" uid="uid://cfkdex68llds3" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/003.png" id="16_xf2iu"]
-[ext_resource type="Texture2D" uid="uid://byd6fbs6nbamb" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/004.png" id="17_0ed4b"]
-[ext_resource type="Texture2D" uid="uid://c52m6h0hvnyq3" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/328.png" id="17_hg2as"]
-[ext_resource type="Texture2D" uid="uid://o33fyp82df4c" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/005.png" id="18_teq7o"]
-[ext_resource type="Texture2D" uid="uid://c5ne0ugk4jc0w" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/329.png" id="18_ui6wa"]
-[ext_resource type="Texture2D" uid="uid://do26dd0c727xv" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/330.png" id="19_a1lwm"]
-[ext_resource type="Texture2D" uid="uid://ept6d605sjba" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/006.png" id="19_tdj60"]
-[ext_resource type="Texture2D" uid="uid://b0al1pt7tpau" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/331.png" id="20_27gms"]
-[ext_resource type="Texture2D" uid="uid://cex5tjrlapfnm" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/007.png" id="20_fc40w"]
-[ext_resource type="Texture2D" uid="uid://braqj66wwkqn7" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/008.png" id="21_gxiib"]
-[ext_resource type="Texture2D" uid="uid://beb4seutipm2j" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/332.png" id="21_oyxl5"]
-[ext_resource type="Texture2D" uid="uid://1c37cw1228el" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/009.png" id="22_juiru"]
-[ext_resource type="Texture2D" uid="uid://cplh6j3atyrcq" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/333.png" id="22_po24e"]
-[ext_resource type="Texture2D" uid="uid://dllvr5ds5kib6" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/010.png" id="23_juiru"]
-[ext_resource type="Texture2D" uid="uid://bedo7xpbve08j" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/334.png" id="23_t6673"]
-[ext_resource type="Texture2D" uid="uid://csagl5hr4uk13" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/011.png" id="24_udc5y"]
-[ext_resource type="Texture2D" uid="uid://dcg0hl6gchwss" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/012.png" id="25_d276y"]
-[ext_resource type="Texture2D" uid="uid://dfrqngwvo4pep" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/013.png" id="26_52k8c"]
-[ext_resource type="Texture2D" uid="uid://wtqa4nwrvh13" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/014.png" id="27_e6lsm"]
-[ext_resource type="Texture2D" uid="uid://cdffyc4ciq5om" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/016.png" id="28_w8x4r"]
-[ext_resource type="Texture2D" uid="uid://bvrtaa2uy4ryq" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/017.png" id="29_xffon"]
-[ext_resource type="Texture2D" uid="uid://woyb2hx7vk6b" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/018.png" id="30_lsob5"]
-[ext_resource type="Texture2D" uid="uid://duxa420glplni" path="res://Characters/Tmp_Byakuya/Byakuya/130.png" id="43_52k8c"]
-[ext_resource type="Texture2D" uid="uid://b41d7d0pn8nit" path="res://Characters/Tmp_Byakuya/Byakuya/131.png" id="44_0w0ht"]
-[ext_resource type="Texture2D" uid="uid://b7pki7yxv7upy" path="res://Characters/Tmp_Byakuya/Byakuya/132.png" id="45_vhems"]
-[ext_resource type="Texture2D" uid="uid://d3nflly1q8akr" path="res://Characters/Tmp_Byakuya/Byakuya/133.png" id="46_0nxco"]
-[ext_resource type="Texture2D" uid="uid://x0auuslpq1gj" path="res://Characters/Tmp_Byakuya/Byakuya/134.png" id="47_auw0f"]
-[ext_resource type="Texture2D" uid="uid://bit6x6446rpf8" path="res://Characters/Tmp_Byakuya/Byakuya/135.png" id="48_auw0f"]
-[ext_resource type="Texture2D" uid="uid://bvpm8huiohh6s" path="res://Characters/Tmp_Byakuya/Byakuya/138.png" id="48_g4p22"]
-[ext_resource type="Texture2D" uid="uid://cqid7apllo1q5" path="res://Characters/Tmp_Byakuya/Byakuya/065.png" id="49_16c4u"]
-[ext_resource type="Texture2D" uid="uid://cx3obkbe8x465" path="res://Characters/Tmp_Byakuya/Byakuya/066.png" id="50_8xdls"]
-[ext_resource type="Texture2D" uid="uid://ckuysh1bfgndx" path="res://Characters/Tmp_Byakuya/Byakuya/067.png" id="51_qx7ff"]
-[ext_resource type="Texture2D" uid="uid://bxw05qplxntx8" path="res://Characters/Tmp_Byakuya/Byakuya/136.png" id="52_0nxco"]
-[ext_resource type="Texture2D" uid="uid://c2535kviyt7y7" path="res://Characters/Tmp_Byakuya/Byakuya/137.png" id="53_auw0f"]
+[ext_resource type="Script" uid="uid://blm750vbmsiwl" path="res://Characters/Tmp_Byakuya/States/ST_AirDash.gd" id="15_f1vd1"]
+[ext_resource type="Texture2D" uid="uid://dlngj0auxdsol" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/002.png" id="15_nxjh0"]
+[ext_resource type="Texture2D" uid="uid://daef6u57t0wcp" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/327.png" id="16_6m4n5"]
+[ext_resource type="Texture2D" uid="uid://drt4ox5fegrgd" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/003.png" id="16_xf2iu"]
+[ext_resource type="Texture2D" uid="uid://bevwn1oq4xxy1" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/004.png" id="17_0ed4b"]
+[ext_resource type="Texture2D" uid="uid://dcte4i6lhwvlu" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/328.png" id="17_hg2as"]
+[ext_resource type="Texture2D" uid="uid://cb3xjdbfd1kx3" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/005.png" id="18_teq7o"]
+[ext_resource type="Texture2D" uid="uid://di54qjpq7lwtc" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/329.png" id="18_ui6wa"]
+[ext_resource type="Texture2D" uid="uid://d00m0rbyn2uxk" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/330.png" id="19_a1lwm"]
+[ext_resource type="Texture2D" uid="uid://cfqiapwj6obcj" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/006.png" id="19_tdj60"]
+[ext_resource type="Texture2D" uid="uid://b62kri704fmfa" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/331.png" id="20_27gms"]
+[ext_resource type="Texture2D" uid="uid://wxrpmmvnomsn" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/007.png" id="20_fc40w"]
+[ext_resource type="Texture2D" uid="uid://cbmt6fbketyv3" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/008.png" id="21_gxiib"]
+[ext_resource type="Texture2D" uid="uid://42r53s36d15k" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/332.png" id="21_oyxl5"]
+[ext_resource type="Texture2D" uid="uid://cfggql73hp56w" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/009.png" id="22_juiru"]
+[ext_resource type="Texture2D" uid="uid://bs2wa8822bgja" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/333.png" id="22_po24e"]
+[ext_resource type="Texture2D" uid="uid://dxos15lcr30nb" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/010.png" id="23_juiru"]
+[ext_resource type="Texture2D" uid="uid://bpeg72513fv4x" path="res://Characters/Tmp_Byakuya/Byakuya/Bwd_Walk/334.png" id="23_t6673"]
+[ext_resource type="Texture2D" uid="uid://do0twbh3vpsod" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/011.png" id="24_udc5y"]
+[ext_resource type="Texture2D" uid="uid://6wc176y6ox2p" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/012.png" id="25_d276y"]
+[ext_resource type="Texture2D" uid="uid://c4t46j8qivsg0" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/013.png" id="26_52k8c"]
+[ext_resource type="Texture2D" uid="uid://bqgjx7qwtdcse" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/014.png" id="27_e6lsm"]
+[ext_resource type="Texture2D" uid="uid://cwsdqm3wdxyu1" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/016.png" id="28_w8x4r"]
+[ext_resource type="Texture2D" uid="uid://bsnvmai63nud6" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/017.png" id="29_xffon"]
+[ext_resource type="Texture2D" uid="uid://bw6nv3lpuo5ja" path="res://Characters/Tmp_Byakuya/Byakuya/Idle/018.png" id="30_lsob5"]
+[ext_resource type="Texture2D" uid="uid://blgjvehjn5jda" path="res://Characters/Tmp_Byakuya/Byakuya/130.png" id="43_52k8c"]
+[ext_resource type="Texture2D" uid="uid://dyp1glnid40ui" path="res://Characters/Tmp_Byakuya/Byakuya/131.png" id="44_0w0ht"]
+[ext_resource type="Texture2D" uid="uid://dmfdqgov558bp" path="res://Characters/Tmp_Byakuya/Byakuya/132.png" id="45_vhems"]
+[ext_resource type="Texture2D" uid="uid://b2eearcsyu12" path="res://Characters/Tmp_Byakuya/Byakuya/133.png" id="46_0nxco"]
+[ext_resource type="Texture2D" uid="uid://bvrkxhkklhin7" path="res://Characters/Tmp_Byakuya/Byakuya/134.png" id="47_auw0f"]
+[ext_resource type="Texture2D" uid="uid://6r1jyn77335p" path="res://Characters/Tmp_Byakuya/Byakuya/135.png" id="48_auw0f"]
+[ext_resource type="Texture2D" uid="uid://n26kp7gfrpiq" path="res://Characters/Tmp_Byakuya/Byakuya/138.png" id="48_g4p22"]
+[ext_resource type="Texture2D" uid="uid://ri7ma63sngaa" path="res://Characters/Tmp_Byakuya/Byakuya/065.png" id="49_16c4u"]
+[ext_resource type="Texture2D" uid="uid://dcpfx5cfheda7" path="res://Characters/Tmp_Byakuya/Byakuya/066.png" id="50_8xdls"]
+[ext_resource type="Texture2D" uid="uid://b8v06fr03ni3i" path="res://Characters/Tmp_Byakuya/Byakuya/067.png" id="51_qx7ff"]
+[ext_resource type="Texture2D" uid="uid://cimhxl5r50e4d" path="res://Characters/Tmp_Byakuya/Byakuya/136.png" id="52_0nxco"]
+[ext_resource type="Texture2D" uid="uid://bvxkx1aueqb2b" path="res://Characters/Tmp_Byakuya/Byakuya/137.png" id="53_auw0f"]
 [ext_resource type="Script" uid="uid://u6lkkiwrap7c" path="res://Scripts/Components/Hurtbox.gd" id="55_g4p22"]
 [ext_resource type="Script" uid="uid://vdot3es4dinw" path="res://Scripts/Components/Pushbox.gd" id="56_16c4u"]
-[ext_resource type="Texture2D" uid="uid://b0cidav7b7i6p" path="res://Characters/Tmp_Byakuya/Byakuya/019.png" id="57_8xdls"]
-[ext_resource type="Texture2D" uid="uid://binh1nyvbrka1" path="res://Characters/Tmp_Byakuya/Byakuya/020.png" id="58_v0jc5"]
-[ext_resource type="Texture2D" uid="uid://cyhjimb44231q" path="res://Characters/Tmp_Byakuya/Byakuya/021.png" id="59_im3f6"]
-[ext_resource type="Texture2D" uid="uid://bub5emhvq2x8q" path="res://Characters/Tmp_Byakuya/Byakuya/022.png" id="60_jp7oo"]
-[ext_resource type="Texture2D" uid="uid://dxpiyrmj1uwgu" path="res://Characters/Tmp_Byakuya/Byakuya/023.png" id="61_cy0jj"]
+[ext_resource type="Texture2D" uid="uid://sp0hrpt8mc6e" path="res://Characters/Tmp_Byakuya/Byakuya/019.png" id="57_8xdls"]
+[ext_resource type="Texture2D" uid="uid://gbivvrww6gb2" path="res://Characters/Tmp_Byakuya/Byakuya/020.png" id="58_v0jc5"]
+[ext_resource type="Texture2D" uid="uid://djkex5q6rer4s" path="res://Characters/Tmp_Byakuya/Byakuya/021.png" id="59_im3f6"]
+[ext_resource type="Texture2D" uid="uid://bew2fbblph0mf" path="res://Characters/Tmp_Byakuya/Byakuya/022.png" id="60_jp7oo"]
+[ext_resource type="Texture2D" uid="uid://crr6eywexy31k" path="res://Characters/Tmp_Byakuya/Byakuya/023.png" id="61_cy0jj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_16c4u"]
 size = Vector2(114, 348)
@@ -259,63 +268,105 @@ _data = {
 &"Stand_IDLE": SubResource("Animation_nxjh0")
 }
 
-[node name="CharByakuya" type="CharacterBody2D"]
+[node name="CharByakuya" type="CharacterBody2D" unique_id=556211113]
 collision_layer = 4096
 collision_mask = 256
 script = ExtResource("1_tqmcm")
 
-[node name="Char_Sprite" type="Sprite2D" parent="."]
+[node name="State_Label" type="Label" parent="." unique_id=988549970]
+unique_name_in_owner = true
+offset_left = -28.0
+offset_top = -321.0
+offset_right = 64.0
+offset_bottom = -298.0
+text = "Placeholder"
+
+[node name="Button_Label" type="Label" parent="." unique_id=136364295]
+unique_name_in_owner = true
+offset_left = -26.0
+offset_top = -290.0
+offset_right = 66.0
+offset_bottom = -267.0
+text = "Placeholder"
+
+[node name="Char_Sprite" type="Sprite2D" parent="." unique_id=468393152]
 texture = ExtResource("2_t652o")
 offset = Vector2(0, -78)
 region_enabled = true
 region_rect = Rect2(557.208, 325.96, 163.979, 370.417)
 
-[node name="Components" type="Node2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="Char_Sprite" unique_id=1236984417]
+position = Vector2(-6.999878, 78)
+scale = Vector2(0.04622871, 0.1910569)
+texture = ExtResource("3_kdqph")
 
-[node name="Hurtbox" type="Area2D" parent="Components"]
+[node name="Components" type="Node2D" parent="." unique_id=1019909741]
+
+[node name="Hurtbox" type="Area2D" parent="Components" unique_id=1722624470]
 script = ExtResource("55_g4p22")
 metadata/_custom_type_script = "uid://u6lkkiwrap7c"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Hurtbox" unique_id=176718547]
 position = Vector2(1, -79)
 shape = SubResource("RectangleShape2D_16c4u")
 debug_color = Color(0, 0.28627452, 0.8862745, 0.41960785)
 
-[node name="Pushbox" type="Area2D" parent="Components"]
+[node name="Pushbox" type="Area2D" parent="Components" unique_id=1159210761]
 script = ExtResource("56_16c4u")
 metadata/_custom_type_script = "uid://vdot3es4dinw"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Pushbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Pushbox" unique_id=462159755]
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_8xdls")
 
-[node name="State_Manager" type="Node" parent="Components"]
-unique_name_in_owner = true
-script = ExtResource("6_im3f6")
-metadata/_custom_type_script = "uid://i6qlsp6nkldi"
+[node name="InputBuffer" type="Node" parent="Components" unique_id=1928958511]
+script = ExtResource("6_gsps2")
+metadata/_custom_type_script = "uid://spdxybg7602"
 
-[node name="InputBuffer" type="Node" parent="Components"]
-unique_name_in_owner = true
-script = ExtResource("3_g4p22")
-metadata/_custom_type_script = "uid://mxicbdqelndt"
+[node name="State_Manager" type="Node" parent="Components" unique_id=210058349 node_paths=PackedStringArray("State_Label")]
+script = ExtResource("7_axaxl")
+State_Label = NodePath("../../State_Label")
+metadata/_custom_type_script = "uid://b8tx1i4237rpu"
 
-[node name="Label" type="Label" parent="."]
-unique_name_in_owner = true
-offset_left = -26.0
-offset_top = -290.0
-offset_right = 14.0
-offset_bottom = -267.0
-text = "Placeholder"
+[node name="ST_Idle" type="Node" parent="Components/State_Manager" unique_id=1073646377]
+script = ExtResource("8_iqoht")
+metadata/_custom_type_script = "uid://cpt0knhmkxjmy"
 
-[node name="Collision_Box" type="CollisionShape2D" parent="."]
+[node name="ST_Walk" type="Node" parent="Components/State_Manager" unique_id=1434633669]
+script = ExtResource("9_eqt23")
+metadata/_custom_type_script = "uid://brulrf40wr2u0"
+
+[node name="ST_Airborne" type="Node" parent="Components/State_Manager" unique_id=1656521483]
+script = ExtResource("10_c21m3")
+metadata/_custom_type_script = "uid://btvp5u5ycdbhg"
+
+[node name="ST_Crouch" type="Node" parent="Components/State_Manager" unique_id=124391427]
+script = ExtResource("11_s7xik")
+metadata/_custom_type_script = "uid://cimobha5jl7t8"
+
+[node name="ST_Prejump" type="Node" parent="Components/State_Manager" unique_id=96942006]
+script = ExtResource("12_swhwj")
+metadata/_custom_type_script = "uid://crglqrks0ed54"
+
+[node name="ST_Dash" type="Node" parent="Components/State_Manager" unique_id=1605287485]
+script = ExtResource("13_o6vrj")
+metadata/_custom_type_script = "uid://cojsgkhcoyfdv"
+
+[node name="ST_BackDash" type="Node" parent="Components/State_Manager" unique_id=772750353]
+script = ExtResource("14_6bbqm")
+metadata/_custom_type_script = "uid://dgyd6ebqk0ql0"
+
+[node name="ST_AirDash" type="Node" parent="Components/State_Manager" unique_id=1246831133]
+script = ExtResource("15_f1vd1")
+metadata/_custom_type_script = "uid://blm750vbmsiwl"
+
+[node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=1501707410]
 z_index = 1
 shape = SubResource("RectangleShape2D_4lanw")
 debug_color = Color(0.7049782, 0.6326187, 0, 0.41960785)
 
-[node name="Char_Audio_Spawner" type="AudioStreamPlayer2D" parent="."]
+[node name="Char_Audio_Spawner" type="AudioStreamPlayer2D" parent="." unique_id=1397700055]
 max_polyphony = 2
 
-[node name="Char_Sprite_Animator" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_e5bsc")
-}
+[node name="Char_Sprite_Animator" type="AnimationPlayer" parent="." unique_id=1086866326]
+libraries/ = SubResource("AnimationLibrary_e5bsc")

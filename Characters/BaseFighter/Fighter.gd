@@ -1,259 +1,185 @@
 extends CharacterBody2D
 class_name Fighter
 
-var player_id: int = 0
-var char_data: CharacterData
+signal knocked_out
 
-@onready var input_buffer: InputBuffer = %InputBuffer
-@onready var state_manager: State_Manager = %State_Manager
-@onready var collision_Box: CollisionShape2D = $Components/Pushbox/CollisionShape2D
-@onready var pushbox: Area2D = $Components/Pushbox
-@onready var anim_Player: AnimationPlayer = $Char_Sprite_Animator
-@onready var char_sprite: Node2D = $Char_Sprite
+@export var player_id : int           = 0
+@export var char_data : CharacterData
 
-var c: CollisionShape2D
-var opponent: Fighter
+@onready var state_manager : State_Manager   = $Components/State_Manager
+@onready var input_buffer  : InputBuffer     = $Components/InputBuffer
+@onready var anim_player   : AnimationPlayer = $Char_Sprite_Animator
+@onready var char_sprite   : Node2D          = $Char_Sprite
+@onready var pushbox       : Area2D          = $Components/Pushbox
+@onready var collision_Box : CollisionShape2D = $Components/Pushbox/CollisionShape2D
 
-var dir_facing: String
-var was_idle: bool = false
-var prejump_timer: int = -1 #Remove Eventually
-var move_dir: float = 0
-var is_airborn: bool 
-var is_on_Wall_Left: bool
-var is_on_Wall_Right: bool
-var dir
+var opponent         : Fighter
+var dir_facing       : String = "Right"
+var is_airborne      : bool   = false
+var is_on_Wall_Left  : bool   = false
+var is_on_Wall_Right : bool   = false
 
-#region Control Setup
-var move_left: String
-var move_right: String
-var move_up: String
-var move_down: String
-var exit: String
-var menu: String
-var btn_a: String
-var btn_b: String
-var btn_c: String
-var btn_d: String
-#endregion
+var move_left  : String
+var move_right : String
+var move_up    : String
+var move_down  : String
+var btn_a      : String
+var btn_b      : String
+var btn_c      : String
+var btn_d      : String
+
+const BUTTON_MAP : Dictionary = {
+	"btn_a": "A", "btn_b": "B", "btn_c": "C", "btn_d": "D"
+}
 
 func _ready() -> void:
-	if not char_data:
-		push_error("Missing CharacterData!")
-		return
-		
 	char_data.setup_char()
-	
-	input_buffer.player_char = self
-	input_buffer.has_neg_edge = char_data.neg_edge
-	input_buffer.command_list = char_data.command_list.command_list
-	
-	if char_data.neg_edge != false:
-		input_buffer.release_command_list = char_data.command_list.release_cmnd_list
-	
-	setup_input_actions()
-	
-	char_data.health_depleted.connect(Knocked_Out)
+	_setup_input_actions()
+	_setup_input_buffer()
+	state_manager.initialise(self)
+	char_data.health_depleted.connect(_on_health_depleted)
 
-func Knocked_Out():
-	queue_free()
-
-func setup_input_actions() -> void:
-	match player_id:
-		1:
-			move_left = "P1_Left"
-			move_right = "P1_Right"
-			move_up = "P1_Up"
-			move_down = "P1_Down"
-			btn_a = "P1_Btn_A"
-			btn_b = "P1_Btn_B"
-			btn_c = "P1_Btn_C"
-			btn_d = "P1_Btn_D"
-		2:
-			move_left = "P2_Left"
-			move_right = "P2_Right"
-			move_up = "P2_Up"
-			move_down = "P2_Down"
-			btn_a = "P2_Btn_A"
-			btn_b = "P2_Btn_B"
-			btn_c = "P2_Btn_C"
-			btn_d = "P2_Btn_D"
-		_:
-			push_warning("Unhandled player_id: %d" % player_id)
-
+# -----------------------------------------------------------------------------
+# Main loop
+# -----------------------------------------------------------------------------
 func _physics_process(delta: float) -> void:
-		
-	is_airborn = not is_on_floor()
-		
-	#This is Fine For the most part, Might make it cleaner
-	get_facing_dir() 
-	handle_horizontal_movement(delta)
-	##This should be Under Input Buffer in the Future, Its own State
-	handle_jump_logic()
-	## This Should be controlled by States, is_Airborn turned on and off in the state exit and enter Thus making gravity turn on and Off
-	handle_gravity(delta)
-	capture_input()
+	_update_facing()
+	_capture_input()
+	state_manager.tick(delta)
 	move_and_slide()
-	
-	if Input.is_action_just_pressed("Btn_Exit"):
-		get_tree().quit()
+	_update_post_slide_flags()
 
-func get_facing_dir() -> void:
-	dir = "Left" if global_position.x > opponent.global_position.x else "Right"
-	
-	# If the char is airborn, don't facing.
-	if is_airborn:
+# -----------------------------------------------------------------------------
+# Facing
+# -----------------------------------------------------------------------------
+func update_facing() -> void:
+	if is_airborne or is_on_Wall_Left or is_on_Wall_Right:
 		return
-	
-	# If char is on wall, don't flip
-	if is_on_Wall_Left == true or is_on_Wall_Right == true:
+	_update_facing()
+
+func _update_facing() -> void:
+	var target := "Right" if global_position.x <= opponent.global_position.x else "Left"
+	if target == dir_facing:
 		return
-	
-	if dir != dir_facing:
-		dir_facing = dir
-		char_sprite.scale.x = 1 if dir == "Right" else -1
+	dir_facing = target
+	char_sprite.scale.x = 1.0 if dir_facing == "Right" else -1.0
+	input_buffer.facing_right = (dir_facing == "Right")
+	input_buffer.flip_held_directions()
 
-func get_move_speed(dirr: float) -> float:
-	##This Sprinting Stuff is temporary, Will be removed in place of a State in the Future
-	if dir_facing == "Right":
-		return char_data.bwd_walk_speed if  dirr == -1 else char_data.fwd_walk_speed
-	else: # facing Left
-		return char_data.fwd_walk_speed if dirr == -1 else char_data.bwd_walk_speed
+# -----------------------------------------------------------------------------
+# Input capture
+# -----------------------------------------------------------------------------
+func _capture_input() -> void:
+	var current_directions : Array = []
 
-func capture_input() -> void:
-	var current_directions := []
-	var released_directions := []
-	
-	# Re Collect current held directions
 	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_pressed(action):
 			current_directions.append(action)
-	
-	# Add Direction Just Pressed
+
+	# Direction just pressed — register previous direction as release, new as press
 	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_just_pressed(action):
-			var prev_direction = parse_direction(current_directions.filter(func(a): return a != action))
-			var new_direction = parse_direction(current_directions)
-			
-			if was_idle:
-				was_idle = false
-			
-			if prev_direction != "" and prev_direction != new_direction:
-				input_buffer.register_input(prev_direction, "release")
-			
-			if new_direction != "":
-				input_buffer.register_input(new_direction, "press")
-			break  # One press is enough
-	
-	# Collect Direction Just Released
+			var prev := _held_to_numpad(current_directions.filter(func(a): return a != action))
+			var curr := _held_to_numpad(current_directions)
+			if prev != curr:
+				input_buffer.register_input(prev, "release")
+			input_buffer.register_input(curr, "press")
+			break  # one directional press per frame
+
+	# Direction just released — register release, then re-register what remains
 	for action in [move_left, move_right, move_up, move_down]:
 		if Input.is_action_just_released(action):
-			released_directions.append(action)
-	
-	#Delete Released Directions
-	if released_directions.size() > 0:
-		var release_dir = parse_direction(released_directions)
-		if release_dir != "":
-			input_buffer.register_input(release_dir, "release")
-	
-		# Re-evaluate what's currently being held
-		current_directions.clear()
-		for action in [move_left, move_right, move_up, move_down]:
-			if Input.is_action_pressed(action):
-				current_directions.append(action)
-		var new_direction = parse_direction(current_directions)
-		if new_direction != "":
-			input_buffer.register_input(new_direction, "press")
-	
-	# Detect return to neutral (idle)
-	if current_directions.size() == 0 and not was_idle:
-		was_idle = true
-	
-	# Button inputs
-	for action in [btn_a, btn_b, btn_c, btn_d]:
-		var btn = parse_buttons(action)
-		if Input.is_action_just_pressed(action):
-			input_buffer.register_input(btn, "press")
-		elif Input.is_action_just_released(action):
-			input_buffer.register_input(btn, "release")
+			var released_dir := _held_to_numpad([action])
+			if released_dir != "":
+				input_buffer.register_input(released_dir, "release")
 
-func parse_buttons(button: String) -> String:
-	match button:
-		btn_a:
-			return "A"
-		btn_b:
-			return "B"
-		btn_c:
-			return "C"
-		btn_d:
-			return "D"
-		_:
-			return ""
+			current_directions = []
+			for a in [move_left, move_right, move_up, move_down]:
+				if Input.is_action_pressed(a):
+					current_directions.append(a)
 
-func parse_direction(held: Array) -> String:
-	var vertical : String = ""
-	var horizontal : String = ""
+			var remaining := _held_to_numpad(current_directions)
+			input_buffer.register_input(remaining, "press")
+			break  # one release per frame
 
-	# Cancel opposing vertical inputs
+	# Buttons
+	for pair in [[btn_a,"A"],[btn_b,"B"],[btn_c,"C"],[btn_d,"D"]]:
+		if   Input.is_action_just_pressed(pair[0]):
+			input_buffer.register_input(pair[1], "press")
+		elif Input.is_action_just_released(pair[0]):
+			input_buffer.register_input(pair[1], "release")
+
+func _held_to_numpad(held: Array) -> String:
+	var v := ""
+	var h := ""
+
 	if move_up in held and move_down in held:
-		vertical = ""
+		v = ""
 	elif move_up in held:
-		vertical = "8"
+		v = "8"
 	elif move_down in held:
-		vertical = "2"
+		v = "2"
 
-	# Cancel opposing horizontal inputs
-	if dir_facing == "Left":
-		if move_left in held and move_right in held:
-			horizontal = ""
-		elif move_left in held:
-			horizontal = "6"
-		elif move_right in held:
-			horizontal = "4"
+	if move_left in held and move_right in held:
+		h = ""
+	elif dir_facing == "Right":
+		if move_left  in held: h = "4"
+		elif move_right in held: h = "6"
 	else:
-		if move_left in held and move_right in held:
-			horizontal = ""
-		elif move_left in held:
-			horizontal = "4"
-		elif move_right in held:
-			horizontal = "6"
+		if move_left  in held: h = "6"
+		elif move_right in held: h = "4"
 
-	# Combine if both are valid
-	if vertical != "" and horizontal != "":
-		if vertical == "8" and horizontal == "4":
-			return "7"
-		elif vertical == "8" and horizontal == "6":
-			return "9"
-		elif vertical == "2" and horizontal == "4":
-			return "1"
-		elif vertical == "2" and horizontal == "6":
-			return "3"
-	elif vertical != "":
-		return vertical
-	elif horizontal != "":
-		return horizontal
-		
+	if   v == "8" and h == "4": return "7"
+	elif v == "8" and h == "6": return "9"
+	elif v == "2" and h == "4": return "1"
+	elif v == "2" and h == "6": return "3"
+	elif v != "":                return v
+	elif h != "":                return h
 	return "5"
 
-func handle_gravity(delta: float) -> void:
-	if is_airborn:
-		velocity.y += char_data.gravity * delta
+# -----------------------------------------------------------------------------
+# Post-slide flags
+# -----------------------------------------------------------------------------
+func _update_post_slide_flags() -> void:
+	is_airborne      = not is_on_floor()
+	is_on_Wall_Left  = false
+	is_on_Wall_Right = false
+	for i in get_slide_collision_count():
+		var n := get_slide_collision(i).get_normal()
+		if   n.x >  0.5: is_on_Wall_Left  = true
+		elif n.x < -0.5: is_on_Wall_Right = true
 
-func handle_jump_logic() -> void:
-	if prejump_timer > 0:
-		prejump_timer -= 1
-		
-		if Input.is_action_just_pressed(move_down):
-			prejump_timer = -1
-			
-		elif prejump_timer == 0:
-			velocity.y = char_data.jump_velocity
-	
-	elif Input.is_action_just_pressed(move_up):
-		prejump_timer = char_data.prejump
+# -----------------------------------------------------------------------------
+# Helpers for states
+# -----------------------------------------------------------------------------
+func get_walk_speed(forward: bool) -> float:
+	return char_data.fwd_walk_speed if forward else char_data.bwd_walk_speed
 
-func handle_horizontal_movement(_delta: float) -> void:
-	move_dir = Input.get_axis(move_left, move_right)
-	if move_dir != 0:
-		velocity.x = move_dir * get_move_speed(move_dir)
-	else:
-		velocity.x = 0
+# -----------------------------------------------------------------------------
+# Setup
+# -----------------------------------------------------------------------------
+func _setup_input_actions() -> void:
+	var p      := "P%d_" % player_id
+	move_left  = p + "Left"
+	move_right = p + "Right"
+	move_up    = p + "Up"
+	move_down  = p + "Down"
+	btn_a      = p + "Btn_A"
+	btn_b      = p + "Btn_B"
+	btn_c      = p + "Btn_C"
+	btn_d      = p + "Btn_D"
+
+func _setup_input_buffer() -> void:
+	input_buffer.character        = self
+	input_buffer.facing_right     = (dir_facing == "Right")
+	input_buffer.neg_edge_enabled = char_data.neg_edge
+	input_buffer.set_commands(
+		char_data.command_list.command_list,
+		char_data.command_list.release_cmnd_list if char_data.neg_edge else []
+	)
+
+# -----------------------------------------------------------------------------
+# Callbacks
+# -----------------------------------------------------------------------------
+func _on_health_depleted() -> void:
+	knocked_out.emit()

@@ -22,7 +22,6 @@ var bgm_list: Dictionary = {
 }
 
 func _ready() -> void:
-	await get_tree().process_frame
 	game_manager = get_parent()
 	
 	Global.audio_manager = self

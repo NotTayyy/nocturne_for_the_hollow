@@ -23,7 +23,8 @@ func Change_Gui_scene(new_scene: String, delete: bool = true, keep_running: bool
 	var scene = Ui_Scenes[new_scene]
 	
 	if current_Gui != null:
-		if delete:
+		if delete == true:
+			current_Gui.queue_free()
 			current_Gui.queue_free()
 		elif keep_running:
 			current_Gui.visible = false

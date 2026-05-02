@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d0f8basnbdeqk"]
+
+[ext_resource type="Script" uid="uid://cpt0knhmkxjmy" path="res://Characters/Tmp_Byakuya/States/ST_Idle.gd" id="1_284km"]
+
+[node name="ST_Idle" type="Node" unique_id=1351840936]
+script = ExtResource("1_284km")

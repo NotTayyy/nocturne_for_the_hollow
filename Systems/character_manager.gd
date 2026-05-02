@@ -1,7 +1,7 @@
 extends Node2D
 
-var player1: Fighter
-var player2: Fighter
+var player1
+var player2
 var game_manager
 
 const P1_START_POS : Vector2 = Vector2(-250, 400)
@@ -40,7 +40,7 @@ func game_start() -> void: #Call this To Spawn the Characters
 	
 	Opponent_Setup()
 
-func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2) -> Fighter:
+func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2):
 	var data: CharacterData = G_CharacterDB.get_data(char_name)
 	if data == null:
 		push_warning("Character data for '%s' not found!" % char_name)

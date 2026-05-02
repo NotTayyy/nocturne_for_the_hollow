@@ -1,311 +1,314 @@
+
 extends Node
 class_name InputBuffer
 
-@export var max_buffer_frames: int = 12 ## Max Frames Between Inputs
-@onready var label: Label = %Label
+signal command_matched(command: Dictionary)
 
-var current_frame: int = 0 
-var buffer_history: Array = []
-var has_neg_edge: bool
-var release_command_list: Array #Only turns on if neg_edge is true
-#The Entire Command list, A separate allowed commands for each state is needed in each state
-var command_list: Array = [] 
-#Different States will load their own Commands and this will keep Updating per State.
-var allowed_State_Commands: Array = []
-var player_char #Selects the Current Character
-var game_manager = Global.game_manager
+@export var max_buffer_frames  : int  = 12
+@export var neg_edge_enabled   : bool = false
+@export var debug_mode         : bool = true
 
-#Just Setting up some stuff for now
-var can_Jump: bool
-var can_Move: bool
-var can_Attack: bool
+const BUTTONS    : Array[String] = ["A", "B", "C", "D"]
+const DIRECTIONS : Array[String] = ["1","2","3","4","6","7","8","9"]
 
-func _ready() -> void:
-	pass
+const DIAG_TO_CARDINALS : Dictionary = {
+	"1": ["1","2","4"],
+	"3": ["3","2","6"],
+	"7": ["7","8","4"],
+	"9": ["9","8","6"],
+}
 
+const CARDINAL_RELEASE_MAP : Dictionary = {
+	"2": ["1","2","3"],
+	"4": ["1","4","7"],
+	"6": ["3","6","9"],
+	"8": ["7","8","9"],
+}
+
+const PRIORITY : Dictionary = {
+	"Standing"       : 0,
+	"Walking"        : 1,
+	"Crouching"      : 2,
+	"Dash"           : 3,
+	"Jump"           : 4, 
+	"Super Jump"     : 5,
+	"Normal"         : 6,
+	"Command Normal" : 7,
+	"Guard Crush"    : 8,
+	"Throw"          : 9,
+	"Special"        : 10,
+	"EX Special"     : 11,
+	"Rapid Cancel"   : 12,
+	"Ultimate Art"   : 13,
+	"Burst"          : 14,
+	"Barrier"        : 15,
+}
+
+var event_log     : Array = [] ## Full match event log.
+var held_inputs   : Dictionary = {} ## Live held-inputs
+
+## Commands valid for the current state. Set by State_Manager on each transition.
+var command_list          : Array = []
+var release_command_list  : Array = []
+## Set by Fighter when it flips — used only for debug arrow display.
+var facing_right  : bool  = true
+## Reference to owning character node. Set by Fighter._setup_input_buffer().
+var character     : Node  = null
+
+@onready var label : Label = %Button_Label 
+
+# -----------------------------------------------------------------------------
+# Public API
+# -----------------------------------------------------------------------------
+
+## Called once per relevant input event by Fighter._capture_input().
 func register_input(action: String, type: String) -> void:
-	current_frame = Engine.get_physics_frames()
+	var frame : int = Engine.get_physics_frames()
 
-	buffer_history.append({
-		"action": action, #Command Name
-		"action_frame": current_frame, #Command Frame
-		"type": type, #Press or Release
-		"Character": player_char.name 
-	})
-	
-	check_commands()
+	_update_held(action, type, frame)
 
-func clear():
-	buffer_history.clear()
+	#Skip duplicate — same action+type already last in log
+	var last = event_log.back() if not event_log.is_empty() else null
+	if last == null or last["action"] != action or last["type"] != type:
+		event_log.append({ "action": action, "frame": frame, "type": type })
 
-func match_priority(command_type) -> int:
-	match command_type:
-		"Barrier":
-			return 12
-		"Redline/Burst": #Also tossing Around "Overclock" or "Awakening" or "Gear Shift" or "Turbo"
-			return 11
-		"Counter Attack":
-			return 10
-		"Gear Shift": #I Think I Want a CS Like ability, 50 Meter to Freeze Time and Cancel Stuff
-			return 9
-		"EX Special":
-			return 8
-		"Special":
-			return 7
-		"Throw":
-			return 6
-		"Guard Crush":
-			return 5
-		"Command Normal":
-			return 4
-		"Normal":
-			return 3
-		"Super Jump":
-			return 2
-		"Jump":
-			return 1 
-		"Movement":
-			return 0
-		_:
-			return -1
+	if label:
+		label.text = _to_arrow(action)
+	if debug_mode:
+		print("Input: %s %s @ %d  held:%s" % [type, action, frame, held_inputs.keys()])
 
-func set_queue(command: String) -> void:
-	print(command)
+	# Only run command matching on button events.
+	# Direction-only changes update held_inputs but don't trigger scanning.
+	if action in BUTTONS:
+		_match_commands(type)
+	elif action in DIRECTIONS and type == "press":
+		_match_commands(type)
 
-func check_commands():
-	print_buffer()
+## Replace the active command set. Called by State_Manager on every transition.
+func set_commands(press_cmds: Array, release_cmds: Array = []) -> void:
+	command_list         = press_cmds
+	release_command_list = release_cmds
 
-	var last_entry = buffer_history[-1]
-	
-	if last_entry["type"] == "press":
-		check_Command_list("press", command_list)
-	elif last_entry["type"] == "release" and release_command_list != null:
-		check_Command_list("release", release_command_list)
+## Clear everything. Call at round start.
+func reset() -> void:
+	event_log.clear()
+	held_inputs.clear()
 
-func check_held_inputs() -> Array:
-	var held_inputs:= {}
-	var directions := ["2", "4", "6", "8", "1", "3", "7", "9"]
-	var buttons:= ["A", "B", "C", "D"]
-	var direction_map:= {
-		"1": ["1", "2", "4"],
-		"3": ["3", "2", "6"],
-		"7": ["7", "8", "4"],
-		"9": ["9", "8", "6"],
+# -----------------------------------------------------------------------------
+# State_Base query API
+# -----------------------------------------------------------------------------
+
+## True if `btn` was pressed within the last `window` frames.
+func button_pressed_within(btn: String, window: int) -> bool:
+	return _find_event(btn, "press", window) != null
+
+## True if `btn` was released within the last `window` frames.
+func button_released_within(btn: String, window: int) -> bool:
+	return _find_event(btn, "release", window) != null
+
+# -----------------------------------------------------------------------------
+# Held-input maintenance  (O(1) per input)
+# -----------------------------------------------------------------------------
+
+func _update_held(action: String, type: String, frame: int) -> void:
+	if type == "press":
+		held_inputs[action] = frame
+		if action in DIAG_TO_CARDINALS:
+			for cardinal in DIAG_TO_CARDINALS[action]:
+				if cardinal not in held_inputs:
+					held_inputs[cardinal] = frame
+		if action == "5":
+			for d in DIRECTIONS:
+				held_inputs.erase(d)
+	else:  # release
+		held_inputs.erase(action)
+		if action in CARDINAL_RELEASE_MAP:
+			for d in CARDINAL_RELEASE_MAP[action]:
+				held_inputs.erase(d)
+
+## Called by Fighter._update_facing() only when a flip actually occurs.
+## Mirrors held directional inputs across the horizontal axis so that
+## "6" (forward) becomes "4" (back) and vice versa — diagonals too.
+## Called after facing_right is already updated.
+func flip_held_directions() -> void:
+	const MIRROR : Dictionary = {
+		"4": "6", "6": "4",
+		"1": "3", "3": "1",
+		"7": "9", "9": "7",
 	}
-	var release_map:= {
-		"2": ["1", "2", "3"],
-		"4": ["1", "4", "7"],
-		"8": ["7", "8", "9"],
-		"6": ["9", "6", "3"],
-	}
+	var to_add    : Dictionary = {}
+	var to_remove : Array      = []
+ 
+	for key in held_inputs.keys():
+		if key in MIRROR:
+			to_add[MIRROR[key]] = held_inputs[key]
+			to_remove.append(key)
+ 
+	for key in to_remove:
+		held_inputs.erase(key)
+	for key in to_add:
+		held_inputs[key] = to_add[key]
+ 
+func _any_button_held() -> bool:
+	for b in BUTTONS:
+		if b in held_inputs:
+			return true
+	return false
+# -----------------------------------------------------------------------------
+# Command matching
+# -----------------------------------------------------------------------------
 
-	for entry in buffer_history:
-		var Inputs = direction_map.get(entry.action, [entry.action])
-		var release = release_map.get(entry.action, [entry.action])
-		for key in Inputs:
-			if key == "5" and entry["type"] == "press":
-				for dir in directions:
-					held_inputs.erase(dir)
-			if key in directions or key in buttons:
-				if entry["type"] == "press":
-					held_inputs[key] = true
-				if entry["type"] == "release":
-					for btn in release:
-						held_inputs.erase(btn)
+func _match_commands(type: String) -> void:
+	var candidates : Array = []
+	var list := release_command_list if (type == "release" and neg_edge_enabled) else command_list
 	
-	return held_inputs.keys()
-
-func check_Command_list(type, cmd_list: Array):
-	var held_inputs = check_held_inputs()
-	var matched_commands: Array = []
-	if game_manager.Debug == true:
-		print(held_inputs)
-	
-	for command in cmd_list:
-		var sequence: Array = command["Sequence"]
-		var seq_index: int = sequence.size() - 1
-		var prev_frame: int = -1
-		var starter: Dictionary = buffer_history[-1]
-		
-		#Checks Only The Command Normals
-		if buffer_history.size() == 0:
-			return
-		if "Held" in command:
-			for i in range(buffer_history.size() - 1, -1, -1):
-				if seq_index < 0:
-					break
-				
-				var entry = buffer_history[i]
-				if starter["action"] == sequence[-1]:
-					if current_frame - starter["action_frame"] < max_buffer_frames: 
-						if entry["action"] == sequence[seq_index] and entry["type"] == type:
-							seq_index -= 1
-							if seq_index == -1:
-								for held_input in command["Held"]:
-									#Fixed Bug(Diagonals Would make this run)
-									if held_inputs.has(held_input):
-										matched_commands.append(command)
-								break
-		
-		#Checks only the Charge Based Commands
-		elif "Charge" in command:
-			var charge_btn: String  = command["Button"][0]
-			var charge_frames: int = command["Charge"]
-			var charge_met: bool = false
-					
-			for i in range(buffer_history.size() - 1, -1, -1):
-				var release_entry = buffer_history[i]
-				if release_entry["action"] == charge_btn and release_entry["type"] == "release":
-					# Step 2: Find matching press before that release
-					for j in range(i - 1, -1, -1):
-						var press_entry = buffer_history[j]
-						if press_entry["action"] == charge_btn and press_entry["type"] == "press":
-							var held_frames = release_entry["action_frame"] - press_entry["action_frame"]
-							if held_frames >= charge_frames:
-								charge_met = true
-							break
-					break
-				
-			if not charge_met:
-				continue
-				
-			for i in range(buffer_history.size() -1, -1, -1):
-				if seq_index < 0:
-					break
-				
-				var entry = buffer_history[i]
-				if entry["action"] == sequence[seq_index]:
-					# If this is the charge button, expect a RELEASE
-					if sequence[seq_index] == charge_btn:
-						if entry["type"] != "release":
-							continue
-						if prev_frame - entry["action_frame"] > max_buffer_frames:
-							break
-					else:
-						if entry["type"] != type:
-							continue
-						if prev_frame == -1:
-							if current_frame - entry["action_frame"] > max_buffer_frames:
-								break
-						else:
-							if prev_frame - entry["action_frame"] > max_buffer_frames:
-								break
-						prev_frame = entry["action_frame"]
-						
-					seq_index -= 1
-				if seq_index == -1:
-					matched_commands.append(command)
-					
-		
-		#Checks only the leftover Commands.
-		else: 
-			for i in range(buffer_history.size() - 1, -1, -1):
-				if seq_index < 0:
-					break
-					
-				var entry = buffer_history[i]
-				if starter["action"] == sequence[-1]:
-					if entry["action"] == sequence[seq_index] and entry["type"] == type:
-						if prev_frame == -1:
-							if current_frame - entry["action_frame"] > max_buffer_frames:
-								break
-							prev_frame = entry["action_frame"]
-						else:
-							if prev_frame - entry["action_frame"] > max_buffer_frames:
-								break
-							else:
-								prev_frame = entry["action_frame"]
-						
-						seq_index -= 1
-					if seq_index == -1:
-						matched_commands.append(command)
-						break
-	
-	if matched_commands.size() == 1:
-		print(matched_commands[0]["Command"]) #The Chosen Highest Priority
-		return
-	
-	elif matched_commands.size() > 1:
-		var curr_priority: int = -1
-		var curr_command = null
-		
-		for entry in matched_commands:
-			var entry_prio = match_priority(entry["Priority"])
-			if entry_prio > curr_priority:
-				curr_command = entry
-				curr_priority = entry_prio
-		
-		print(matched_commands) #All commands that Could have passed
-		print(curr_command["Command"]) #The Chosen Highest Priority
+	if type == "release" and not neg_edge_enabled:
 		return
 
-func print_buffer():
-	var entry = buffer_history[-1]
-	label.text = parse_emoji(entry["action"])
-	if game_manager.Debug == true:
-		print("Action: ", entry["type"], " : ", entry["action"], " at frame ",
-		entry["action_frame"], " by ", entry["Character"])
+	for cmd in list:
+		if   "Held"   in cmd and _check_held_command(cmd, type):
+			candidates.append(cmd)
+		elif "Charge" in cmd and _check_charge_command(cmd, type):
+			candidates.append(cmd)
+		elif _check_motion_command(cmd, type):
+			candidates.append(cmd)
 
-#This just writes out the latest pressed button
-func parse_emoji(button: String) -> String:
-	if player_char.dir_facing == "Right":
-		match button:
-			"1":
-				return "🢇"
-			"2":
-				return "🢃"
-			"3":
-				return "🢆"
-			"4":
-				return "🢀"
-			"5":
-				return "⚤"
-			"6":
-				return "🢂"
-			"7":
-				return "🢄"
-			"8":
-				return "🢁"
-			"9":
-				return "🢅"
-			"A":
-				return "🅰️"
-			"B":
-				return "🅱️"
-			"C":
-				return "𝓒"
-			"D":
-				return "Ɗ"
-			_:
-				return ""
-	
-	else:
-		match button:
-			"1":
-				return "🢆"
-			"2":
-				return "🢃"
-			"3":
-				return "🢇"
-			"4":
-				return "🢂"
-			"5":
-				return "⚤"
-			"6":
-				return "🢀"
-			"7":
-				return "🢅"
-			"8":
-				return "🢁"
-			"9":
-				return "🢄"
-			"A":
-				return "🅰️"
-			"B":
-				return "🅱️"
-			"C":
-				return "𝓒"
-			"D":
-				return "Ɗ"
-			_:
-				return ""
+	_resolve(candidates)
+
+# --- Held commands ---
+# Must match sequence AND all "Held" directions are in held_inputs right now.
+func _check_held_command(cmd: Dictionary, type: String) -> bool:
+	var sequence : Array = cmd["Sequence"]
+	var required : Array = cmd["Held"]
+	var frame    : int   = Engine.get_physics_frames()
+
+	var last = event_log.back()
+	if last == null or last["action"] != sequence[-1] or last["type"] != type:
+		return false
+	if frame - last["frame"] > max_buffer_frames:
+		return false
+
+	for h in required:
+		if h not in held_inputs:
+			return false
+	return true
+
+# --- Charge commands ---
+# Finds most recent valid charge hold, then matches the follow-up sequence.
+func _check_charge_command(cmd: Dictionary, type: String) -> bool:
+	var sequence      : Array  = cmd["Sequence"]
+	var charge_dir    : String = cmd["Button"][0]
+	var charge_needed : int    = cmd.get("Charge")
+
+	# Find the most recent release of charge_dir that was held long enough
+	var charge_valid          := false
+	var charge_released_frame := -1
+
+	for i in range(event_log.size() - 1, -1, -1):
+		var e = event_log[i]
+		if e["action"] == charge_dir and e["type"] == "release":
+			charge_released_frame = e["frame"]
+			for j in range(i - 1, -1, -1):
+				var pe = event_log[j]
+				if pe["action"] == charge_dir and pe["type"] == "press":
+					if charge_released_frame - pe["frame"] >= charge_needed:
+						charge_valid = true
+					break
+			break  # only check most recent release
+
+	if not charge_valid:
+		return false
+
+	# Match the sequence following the charge release
+	var seq_index  := sequence.size() - 1
+	var prev_frame := -1
+	var current    := Engine.get_physics_frames()
+
+	for i in range(event_log.size() - 1, -1, -1):
+		if seq_index < 0:
+			break
+		var e = event_log[i]
+		var expected_type := "release" if e["action"] == charge_dir else type
+		if e["action"] != sequence[seq_index] or e["type"] != expected_type:
+			continue
+		if prev_frame == -1:
+			if current - e["frame"] > max_buffer_frames:
+				return false
+		else:
+			if prev_frame - e["frame"] > max_buffer_frames:
+				return false
+		prev_frame = e["frame"]
+		seq_index -= 1
+
+	return seq_index < 0
+
+# --- Motion commands ---
+# Standard QCF, DP, HCF etc.
+func _check_motion_command(cmd: Dictionary, type: String) -> bool:
+	var sequence  : Array = cmd["Sequence"]
+	var seq_index : int   = sequence.size() - 1
+	var prev_frame: int   = -1
+	var current   : int   = Engine.get_physics_frames()
+
+	var last = event_log.back()
+	if last == null or last["action"] != sequence[-1] or last["type"] != type:
+		return false
+
+	for i in range(event_log.size() - 1, -1, -1):
+		if seq_index < 0:
+			break
+		var e = event_log[i]
+		if e["action"] != sequence[seq_index] or e["type"] != type:
+			continue
+		if prev_frame == -1:
+			if current - e["frame"] > max_buffer_frames:
+				return false
+		else:
+			if prev_frame - e["frame"] > max_buffer_frames:
+				return false
+		prev_frame = e["frame"]
+		seq_index -= 1
+
+	return seq_index < 0
+
+# -----------------------------------------------------------------------------
+# Priority resolution
+# -----------------------------------------------------------------------------
+
+func _resolve(candidates: Array) -> void:
+	if candidates.is_empty():
+		return
+
+	var winner    : Dictionary = candidates[0]
+	var top_prio  : int        = PRIORITY.get(winner.get("Priority", ""), -1)
+
+	for cmd in candidates.slice(1):
+		var p = PRIORITY.get(cmd.get("Priority", ""), -1)
+		if p > top_prio:
+			winner   = cmd
+			top_prio = p
+
+	if debug_mode:
+		print("Matched: %s (%s)" % [winner.get("Command","?"), winner.get("Priority","?")])
+
+	command_matched.emit(winner)
+	return
+
+# -----------------------------------------------------------------------------
+# Helpers
+# -----------------------------------------------------------------------------
+
+func _find_event(action: String, type: String, window: int):
+	var cutoff := Engine.get_physics_frames() - window
+	for i in range(event_log.size() - 1, -1, -1):
+		var e = event_log[i]
+		if e["frame"] < cutoff:
+			break
+		if e["action"] == action and e["type"] == type:
+			return e
+	return null
+
+func _to_arrow(action: String) -> String:
+	var r := {"1":"🢇","2":"🢃","3":"🢆","4":"🢀","5":"·","6":"🢂","7":"🢄","8":"🢁","9":"🢅"}
+	var l := {"1":"🢆","2":"🢃","3":"🢇","4":"🢂","5":"·","6":"🢀","7":"🢅","8":"🢁","9":"🢄"}
+	return (r if facing_right else l).get(action, action)
