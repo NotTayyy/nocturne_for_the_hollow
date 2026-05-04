@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CharacterData" load_steps=4 format=3 uid="uid://2h1kch7jg8gs"]
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://2h1kch7jg8gs"]
 
 [ext_resource type="PackedScene" uid="uid://dkycgk2cgyyy4" path="res://Characters/Tmp_Kokonoe/Char_Kokonoe.tscn" id="1_6exky"]
-[ext_resource type="Resource" uid="uid://bpyaugxgsxocc" path="res://Characters/Tmp_Kokonoe/Kokonoe_Commands.tres" id="1_xxw3f"]
+[ext_resource type="Resource" uid="uid://biquytppkfmbo" path="res://Characters/Tmp_Kokonoe/Kokonoe_Commands.tres" id="1_xxw3f"]
 [ext_resource type="Script" uid="uid://cpq072udwjvmf" path="res://Characters/BaseFighter/CharacterData.gd" id="1_yiyej"]
 
 [resource]

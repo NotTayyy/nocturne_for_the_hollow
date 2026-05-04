@@ -14,6 +14,8 @@
 [ext_resource type="Script" uid="uid://cojsgkhcoyfdv" path="res://Characters/Tmp_Byakuya/States/ST_Dash.gd" id="12_vhvxu"]
 [ext_resource type="Script" uid="uid://dgyd6ebqk0ql0" path="res://Characters/Tmp_Byakuya/States/ST_BackDash.gd" id="13_lmqxc"]
 [ext_resource type="Script" uid="uid://blm750vbmsiwl" path="res://Characters/Tmp_Byakuya/States/ST_AirDash.gd" id="14_2nsfe"]
+[ext_resource type="Script" uid="uid://d2sj6mu5yuibb" path="res://Characters/Tmp_Byakuya/States/ST_AirBackDash.gd" id="15_2nsfe"]
+[ext_resource type="Script" uid="uid://ti55t61ri376" path="res://Characters/Tmp_Byakuya/States/ST_RunSkid.gd" id="16_ymlut"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sgtre"]
 size = Vector2(124, 328)
@@ -56,41 +58,49 @@ shape = SubResource("RectangleShape2D_3m5cc")
 script = ExtResource("5_d06yc")
 metadata/_custom_type_script = "uid://spdxybg7602"
 
-[node name="State_Manager" type="Node" parent="Components" unique_id=1609173232]
+[node name="State_Manager" type="Node" parent="Components" unique_id=1915891363]
 script = ExtResource("6_pqj33")
 metadata/_custom_type_script = "uid://b8tx1i4237rpu"
 
-[node name="ST_Idle" type="Node" parent="Components/State_Manager" unique_id=83787967]
+[node name="ST_Idle" type="Node" parent="Components/State_Manager" unique_id=1369702614]
 script = ExtResource("7_f8jn1")
 metadata/_custom_type_script = "uid://cpt0knhmkxjmy"
 
-[node name="ST_Walk" type="Node" parent="Components/State_Manager" unique_id=34325494]
+[node name="ST_Walk" type="Node" parent="Components/State_Manager" unique_id=1493867535]
 script = ExtResource("8_vhvxu")
 metadata/_custom_type_script = "uid://brulrf40wr2u0"
 
-[node name="ST_Airborne" type="Node" parent="Components/State_Manager" unique_id=198580214]
+[node name="ST_Airborne" type="Node" parent="Components/State_Manager" unique_id=675778233]
 script = ExtResource("9_lmqxc")
 metadata/_custom_type_script = "uid://btvp5u5ycdbhg"
 
-[node name="ST_Crouch" type="Node" parent="Components/State_Manager" unique_id=1013651741]
+[node name="ST_Crouch" type="Node" parent="Components/State_Manager" unique_id=1378140910]
 script = ExtResource("10_2nsfe")
 metadata/_custom_type_script = "uid://cimobha5jl7t8"
 
-[node name="ST_Prejump" type="Node" parent="Components/State_Manager" unique_id=785114063]
+[node name="ST_Prejump" type="Node" parent="Components/State_Manager" unique_id=409212565]
 script = ExtResource("11_ymlut")
 metadata/_custom_type_script = "uid://crglqrks0ed54"
 
-[node name="ST_Dash" type="Node" parent="Components/State_Manager" unique_id=1317868336]
+[node name="ST_Dash" type="Node" parent="Components/State_Manager" unique_id=1049248486]
 script = ExtResource("12_vhvxu")
 metadata/_custom_type_script = "uid://cojsgkhcoyfdv"
 
-[node name="ST_BackDash" type="Node" parent="Components/State_Manager" unique_id=270842367]
+[node name="ST_BackDash" type="Node" parent="Components/State_Manager" unique_id=1799924603]
 script = ExtResource("13_lmqxc")
 metadata/_custom_type_script = "uid://dgyd6ebqk0ql0"
 
-[node name="ST_AirDash" type="Node" parent="Components/State_Manager" unique_id=1167514498]
+[node name="ST_AirDash" type="Node" parent="Components/State_Manager" unique_id=172501153]
 script = ExtResource("14_2nsfe")
 metadata/_custom_type_script = "uid://blm750vbmsiwl"
+
+[node name="ST_AirBackDash" type="Node" parent="Components/State_Manager" unique_id=593240501]
+script = ExtResource("15_2nsfe")
+metadata/_custom_type_script = "uid://d2sj6mu5yuibb"
+
+[node name="ST_RunSkid" type="Node" parent="Components/State_Manager" unique_id=697364147]
+script = ExtResource("16_ymlut")
+metadata/_custom_type_script = "uid://ti55t61ri376"
 
 [node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=1264115823]
 z_index = 1

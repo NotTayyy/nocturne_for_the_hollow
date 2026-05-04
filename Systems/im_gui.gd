@@ -191,7 +191,7 @@ func imgui_state_info(player) -> void:
 		if ImGui.TreeNode("Aerial Stocks"):
 			ImGui.Text("Jumps left:  %d / %d" % [player.jumps_remaining,  player.char_data.air_Jumps])
 			ImGui.Text("Dashes left: %d / %d" % [player.dashes_remaining, player.char_data.air_Dashes])
-			ImGui.Text("Lockout:     %d"       % st._lockout_timer)
+			ImGui.Text("Lockout:     %d"       % st.lockout_timer)
 			ImGui.TreePop()
 
 		ImGui.TreePop()

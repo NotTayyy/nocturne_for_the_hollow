@@ -16,10 +16,8 @@ func enter(_prev: String) -> void:
 	gate_drive     = true
 	gate_overdrive = true
 	gate_jump      = true
-	gate_rapid     = true
 	gate_dash      = true
 	gate_backdash  = true
-	gate_burst     = true
 	gate_barrier   = true
 	fighter.anim_player.play("idle")
 

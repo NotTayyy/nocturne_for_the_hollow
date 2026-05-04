@@ -1,59 +1,143 @@
-[gd_resource type="Resource" script_class="CommandData" load_steps=2 format=3 uid="uid://bpyaugxgsxocc"]
+[gd_resource type="Resource" script_class="CommandData" format=3 uid="uid://biquytppkfmbo"]
 
-[ext_resource type="Script" uid="uid://bhoay45i4tsn" path="res://Characters/BaseFighter/CommandData.gd" id="1_jf8xy"]
+[ext_resource type="Script" uid="uid://bhoay45i4tsn" path="res://Characters/BaseFighter/CommandData.gd" id="1_js4n4"]
 
 [resource]
-script = ExtResource("1_jf8xy")
+script = ExtResource("1_js4n4")
 command_list = [{
-"Command": "Forward Dash",
-"Priority": 1,
+"Command": "Crouch",
+"Priority": "Crouching",
+"Sequence": ["2"]
+}, {
+"Command": "Walk",
+"Priority": "Walking",
+"Sequence": ["6"]
+}, {
+"Command": "WalkBack",
+"Priority": "Walking",
+"Sequence": ["4"]
+}, {
+"Command": "Crouch",
+"Priority": "Crouching",
+"Sequence": ["2"]
+}, {
+"Command": "Dash",
+"Priority": "Dash",
 "Sequence": ["6", "5", "6"]
 }, {
-"Command": "Backwards Dash",
-"Priority": 1,
+"Command": "BackDash",
+"Priority": "Dash",
 "Sequence": ["4", "5", "4"]
+}, {
+"Command": "Jump",
+"Priority": "Jump",
+"Sequence": ["8"]
+}, {
+"Command": "SuperJump",
+"Priority": "Super Jump",
+"Sequence": ["2", "8"]
+}, {
+"Command": "JumpFwd",
+"Priority": "Jump",
+"Sequence": ["9"]
+}, {
+"Command": "JumpBack",
+"Priority": "Jump",
+"Sequence": ["7"]
+}, {
+"Command": "SuperJumpFwd",
+"Priority": "Super Jump",
+"Sequence": ["2", "9"]
+}, {
+"Command": "SuperJumpBack",
+"Priority": "Super Jump",
+"Sequence": ["2", "7"]
 }, {
 "Command": "6A",
 "Held": ["6"],
-"Priority": 1,
+"Priority": "Command Normal",
 "Sequence": ["6", "A"]
 }, {
 "Command": "6B",
 "Held": ["6"],
-"Priority": 1,
+"Priority": "Command Normal",
 "Sequence": ["6", "B"]
+}, {
+"Command": "4B",
+"Held": ["4"],
+"Priority": "Command Normal",
+"Sequence": ["4", "B"]
 }, {
 "Command": "6C",
 "Held": ["6"],
-"Priority": 1,
+"Priority": "Command Normal",
 "Sequence": ["6", "C"]
+}, {
+"Command": "3C",
+"Held": ["3"],
+"Priority": "Command Normal",
+"Sequence": ["3", "C"]
 }, {
 "Button": ["2"],
 "Charge": 45,
 "Command": "Flash Kick A",
-"Priority": 2,
+"Priority": "Special",
 "Sequence": ["2", "8", "A"]
 }, {
-"Button": ["2"],
+"Button": ["4"],
 "Charge": 45,
 "Command": "Back Charge A",
-"Priority": 2,
-"Sequence": ["2", "8", "A"]
+"Priority": "Special",
+"Sequence": ["4", "6", "A"]
 }, {
 "Command": "22A",
-"Priority": 2,
+"Priority": "Special",
 "Sequence": ["2", "5", "2", "A"]
 }, {
 "Command": "Quarter-Circle Fwd A",
-"Priority": 3,
+"Priority": "Special",
 "Sequence": ["2", "3", "6", "A"]
 }, {
-"Command": "Half Circle Back Forwards",
-"Priority": 5,
-"Sequence": ["4", "1", "2", "3", "6", "A"]
+"Command": "Half Circle Forwards B",
+"Priority": "EX Special",
+"Sequence": ["4", "1", "2", "3", "6", "B"]
 }, {
-"Command": "Golden Tager",
-"Priority": 8,
-"Sequence": ["4", "1", "2", "3", "6", "9", "8", "7", "4", "A"]
+"Command": "Quarter-Circle back Half-Circle Forwards C",
+"Priority": "EX Special",
+"Sequence": ["2", "4", "2", "6", "C"]
+}, {
+"Button": ["4"],
+"Charge": 30,
+"Command": "Charge Back Half Circle Forwards A",
+"Priority": "EX Special",
+"Sequence": ["4", "2", "6", "A"]
+}, {
+"Command": "Button A",
+"Priority": "Normal",
+"Sequence": ["A"]
+}, {
+"Command": "Button B",
+"Priority": "Normal",
+"Sequence": ["B"]
+}, {
+"Command": "Button C",
+"Priority": "Normal",
+"Sequence": ["C"]
+}, {
+"Command": "Button D",
+"Priority": "Normal",
+"Sequence": ["D"]
+}, {
+"Command": "Tiger Knee",
+"Priority": "Special",
+"Sequence": ["6", "2", "3", "A"]
+}, {
+"Command": "Reverse Tiger Knee",
+"Priority": "Special",
+"Sequence": ["4", "2", "1"]
+}, {
+"Command": "Throw",
+"Priority": "Throw",
+"Sequence": ["B", "C"]
 }]
 metadata/_custom_type_script = "uid://bhoay45i4tsn"
