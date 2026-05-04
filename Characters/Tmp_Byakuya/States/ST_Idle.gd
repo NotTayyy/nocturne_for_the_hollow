@@ -29,20 +29,22 @@ func exit() -> void:
 func update(_delta: float) -> void:
 	frame += 1
 	fighter.update_facing()
-
-func get_transition() -> String:
-	var h := input_buffer.held_inputs
-	if fighter.is_airborne:   return "Airborne"
-	if "2" in h:              return "Crouch"
-	if "6" in h or "4" in h: return "Walk"
-	return ""
+	if fighter.is_airborne and not state_manager.is_in_state("Airborne") and not state_manager.is_in_state("Prejump"):
+		state_manager.force_transition("Airborne")
+		return
 
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
 	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	match cmd:
-		"Dash":     state_manager.request("Dash", prio)
-		"BackDash": state_manager.request("BackDash", prio)
+		"Walk", "WalkBack":
+			state_manager.request("Walk", prio)
+		"Crouch":
+			state_manager.request("Crouch", prio)
+		"Dash":
+			state_manager.request("Dash", prio)
+		"BackDash":
+			state_manager.request("BackDash", prio)
 		_ when cmd in JUMP_COMMANDS:
 			_request_jump(cmd, prio)
 

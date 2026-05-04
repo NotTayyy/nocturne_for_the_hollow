@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bxrdw0dnmitbh"]
+
+[ext_resource type="Script" uid="uid://ddsi1x1w1leub" path="res://Systems/game_manager.gd" id="1_thld5"]
+[ext_resource type="PackedScene" uid="uid://4uaa400vgmam" path="res://Systems/Camera_Manager.tscn" id="2_h53vq"]
+[ext_resource type="PackedScene" uid="uid://dsja1ovopp7m3" path="res://Systems/Audio_Manager.tscn" id="3_gfaia"]
+[ext_resource type="PackedScene" uid="uid://b6ndt7pp1tfmd" path="res://Systems/Character_Manager.tscn" id="4_3ese2"]
+[ext_resource type="PackedScene" uid="uid://dgjyjt0qaano0" path="res://Systems/Level_Manager.tscn" id="5_3ese2"]
+[ext_resource type="Script" uid="uid://bwgfse7t5rqvn" path="res://Systems/level_manager.gd" id="6_uxoyq"]
+[ext_resource type="PackedScene" uid="uid://cwrhso1ckvfxl" path="res://Systems/UI_Manager.tscn" id="7_uxoyq"]
+[ext_resource type="Script" uid="uid://cjge1q5kolwat" path="res://Systems/im_gui.gd" id="8_ilnlw"]
+
+[node name="Game_Manager" type="Node" unique_id=1428439316]
+script = ExtResource("1_thld5")
+
+[node name="Camera_Manager" parent="." unique_id=1476164508 instance=ExtResource("2_h53vq")]
+z_index = 4096
+
+[node name="Audio_Manager" parent="." unique_id=1001020821 instance=ExtResource("3_gfaia")]
+
+[node name="Level_Manager" parent="." unique_id=1759437809 instance=ExtResource("5_3ese2")]
+script = ExtResource("6_uxoyq")
+
+[node name="Ui_Manager" parent="." unique_id=399768544 instance=ExtResource("7_uxoyq")]
+
+[node name="Character_Manager" parent="." unique_id=1500052717 instance=ExtResource("4_3ese2")]
+z_index = 5
+
+[node name="ImGui" type="Node2D" parent="." unique_id=1165548972]
+script = ExtResource("8_ilnlw")

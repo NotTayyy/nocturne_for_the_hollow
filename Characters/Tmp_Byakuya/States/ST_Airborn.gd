@@ -1,37 +1,32 @@
 extends State_Base
 class_name ST_Airborne
 
-# Countdown stocks — both deplete on any aerial action
-var jumps_remaining  : int = 0
-var dashes_remaining : int = 0
-var _lockout_timer   : int = 0
+
+var from_ground : bool 
 var _airjump_pending : bool = false
 
 func _ready() -> void:
 	state_id = "Airborne"
 
 func enter(prev: String) -> void:
-	frame         = 0
-	apply_gravity = true
-	gate_special   = true
-	gate_drive     = true
-	gate_overdrive = true
-	gate_burst     = true
-	gate_barrier   = true
-
-	var from_ground := prev in ["Prejump", "Idle", "Walk", "Crouch"]
-	if from_ground:
-		# Reset stocks to max on leaving the ground
-		jumps_remaining  = fighter.char_data.air_Jumps
-		dashes_remaining = fighter.char_data.air_Dashes
-		_lockout_timer   = fighter.char_data.airjump_lockout
-
+	from_ground = prev in ["Prejump", "Idle", "Walk", "RunSkid", "Dash"]
+	frame            = 0
+	apply_gravity    = true
 	_airjump_pending = false
+	
+	
+	if from_ground:
+		fighter.jumps_remaining  = cd.air_Jumps
+		fighter.dashes_remaining = cd.air_Dashes
+		lockout_timer   = cd.airjump_lockout
+	else:
+		# Returning from airdash — keep existing stocks, no new lockout
+		lockout_timer = 0
 
-	if prev != "Prejump":
-		fighter.velocity.y = maxf(fighter.velocity.y, 0.0)
+	# All aerial gates closed until lockout expires
+	_reset_gates()
+	gate_barrier = true
 
-	_update_gates()
 	_play_jump_anim()
 
 func exit() -> void:
@@ -41,10 +36,14 @@ func update(_delta: float) -> void:
 	frame += 1
 	_airjump_pending = false
 
-	if _lockout_timer > 0:
-		_lockout_timer -= 1
-
-	_update_gates()
+	if lockout_timer > 0:
+		lockout_timer -= 1
+		# Keep jump/dash gates closed during lockout
+		gate_jump     = false
+		gate_dash     = false
+		gate_backdash = false
+	else:
+		_update_gates()
 
 func get_transition() -> String:
 	if fighter.is_on_floor() and fighter.velocity.y >= 0.0:
@@ -54,8 +53,7 @@ func get_transition() -> String:
 
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
-	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
-
+	var prio : int    = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	match cmd:
 		"Jump", "JumpFwd", "JumpBack":
 			_request_airjump(cmd)
@@ -67,68 +65,68 @@ func on_command(command: Dictionary) -> void:
 # -----------------------------------------------------------------------------
 # Stock management
 # -----------------------------------------------------------------------------
-
-## Both pools deplete on every aerial action
 func _spend_aerial_stock() -> void:
-	jumps_remaining  = maxi(jumps_remaining  - 1, 0)
-	dashes_remaining = maxi(dashes_remaining - 1, 0)
+	fighter.jumps_remaining  = maxi(fighter.jumps_remaining  - 1, 0)
+	fighter.dashes_remaining = maxi(fighter.dashes_remaining - 1, 0)
 
 func _can_airjump() -> bool:
-	return jumps_remaining > 0 and _lockout_timer <= 0 and not _airjump_pending
+	return fighter.jumps_remaining > 0 and lockout_timer <= 0 and not _airjump_pending
 
 func _can_airdash() -> bool:
-	return dashes_remaining > 0
+	return fighter.dashes_remaining > 0 and lockout_timer <= 0
 
 func _update_gates() -> void:
-	gate_jump     = _can_airjump()
-	gate_dash     = _can_airdash()
-	gate_backdash = _can_airdash()
+	gate_jump      = _can_airjump()
+	gate_dash      = _can_airdash()
+	gate_backdash  = _can_airdash()
+	gate_special   = true
+	gate_drive     = true
+	gate_overdrive = true
+	gate_self      = true
+	gate_barrier   = true
 
 # -----------------------------------------------------------------------------
 # Air jump
 # -----------------------------------------------------------------------------
 func _request_airjump(cmd: String) -> void:
 	if not _can_airjump(): return
-
 	_airjump_pending = true
 	_spend_aerial_stock()
 	_update_gates()
+	
+	if not from_ground:
+		fighter.velocity.x = 0
 
-	var cd     := fighter.char_data
-	var sign_x := 1.0 if fighter.dir_facing == "Right" else -1.0
-
-	# Add to current velocity rather than replacing — boost feel not full reset
 	match cmd:
 		"Jump":
-			fighter.velocity.x = 0.0
-			fighter.velocity.y = cd.jump_velocity * 1
+			fighter.velocity.x += 0.0
+			fighter.velocity.y = cd.jump_velocity
 		"JumpFwd":
 			fighter.velocity.x = sign_x * cd.jump_fwd_velocity * 0.8
-			fighter.velocity.y = cd.jump_velocity * 1
+			fighter.velocity.y = cd.jump_velocity
 		"JumpBack":
 			fighter.velocity.x = sign_x * -cd.jump_bwd_velocity * 0.8
-			fighter.velocity.y = cd.jump_velocity * 1
+			fighter.velocity.y = cd.jump_velocity
 
-	# Clamp so velocity doesn't exceed a sensible max
+	fighter.velocity.y = maxf(fighter.velocity.y, cd.jump_velocity * 1.5)
 	_play_jump_anim()
 
 # -----------------------------------------------------------------------------
 # Air dash
 # -----------------------------------------------------------------------------
-func _request_airdash(prio: int, _is_back: bool) -> void:
+func _request_airdash(prio: int, is_back: bool) -> void:
+
 	if not _can_airdash(): return
 	_spend_aerial_stock()
 	_update_gates()
-	state_manager.request("AirDash", prio)
+	state_manager.request("AirBackDash" if is_back else "AirDash", prio)
 
 # -----------------------------------------------------------------------------
 # Helpers
 # -----------------------------------------------------------------------------
 func _play_jump_anim() -> void:
-	var vx     := fighter.velocity.x
-	var sign_x := 1.0 if fighter.dir_facing == "Right" else -1.0
-	var fwd    := vx * sign_x > 0.1
-	var back   := vx * sign_x < -0.1
+	var fwd  := fighter.velocity.x * sign_x > 0.1
+	var back := fighter.velocity.x * sign_x < -0.1
 	if   fwd:  fighter.anim_player.play("jump_fwd")
 	elif back: fighter.anim_player.play("jump_bwd")
 	else:      fighter.anim_player.play("jump_neutral")

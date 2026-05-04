@@ -9,6 +9,18 @@ command_list = [{
 "Priority": "Crouching",
 "Sequence": ["2"]
 }, {
+"Command": "Walk",
+"Priority": "Walking",
+"Sequence": ["6"]
+}, {
+"Command": "WalkBack",
+"Priority": "Walking",
+"Sequence": ["4"]
+}, {
+"Command": "Crouch",
+"Priority": "Crouching",
+"Sequence": ["2"]
+}, {
 "Command": "Dash",
 "Priority": "Dash",
 "Sequence": ["6", "5", "6"]

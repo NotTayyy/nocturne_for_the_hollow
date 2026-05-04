@@ -60,34 +60,41 @@ enum BackDashType { Step, Dash, Teleport}
 @export_category("Dashes")
 @export var dashType: DashType = DashType.Dash
 @export_subgroup("Dash")
-@export var dash_Startup: int = 4 ##4 Is Default
-@export var dash_int: int = 300 ## The initial Speed of the character Movement on dash start
-@export var dash_acc: int = 20 ## The Speed added per second of running
-@export var dash_max: int = 450 ## The max Speed the character will reach after running for awhile
-## Take the Current speed of the Character and Multiply it by this for the Skid
-@export var dash_skid: float = 0.8 
+@export var dash_int: int = 800 ## The initial Speed of the character Movement on dash start
+@export var dash_acc: int = 100 ## The Speed added per second of running
+@export var dash_max: int = 1200 ## The max Speed the character will reach after running for awhile
+@export var dash_skid: float = 0.7 ## Take the Current speed of the Character and Multiply it by this for the Skid
+@export var dash_min: int = 10 ## How many frames will Dash be applied before allowed to end
 
-@export_subgroup("Step")
-@export var step_Duration: int = 18 ## 18 Frames of Step Startup is default for now
-@export var step_distance: int = 350 ## Need to test the Distance's
+@export_subgroup("Step Teleport")
+
+@export var step_Duration: int = 20 ## 20 Frames of Step Startup is default for now
+@export var step_distance: int = 1000 ## 1000 for Step, 400 For Teleport
+@export var step_recovery: int = 6 ## Recovery after Teleporting
+@export var step_Startup: int = 4 ## How many frames before the teleport
 
 @export_subgroup("Backdash")
 @export var backdash_type: BackDashType = BackDashType.Step
-@export var backdash_invul: int = 10  ##Invul frames
-@export var backdash_distance: int = 400 ## Distance
-@export var backdash_duration: int = 30 ## Duriation
+@export var backdash_startup:  int = 4 ## Startup
+@export var backdash_distance: int = 675 ## Distance
+@export var backdash_duration: int = 21 ## Duriation
+@export var backdash_recovery: int = 6 ## Teleport Recovery
+@export var backdash_invul_start: int = 0  ##Invul frames
+@export var backdash_invul_end: int = 0  ##Invul frames
+@export var backdash_airborne_start: int = 0
+@export var backdash_airborne_end: int = 0
 
 @export_category("Air Movement")
 @export var prejump: int = 4
 @export var gravity: int = 4000
 @export var air_Jumps: int = 1
 @export var air_Dashes: int = 1
-@export var airjump_lockout: int = 2
+@export var airjump_lockout: int = 8
 
 @export_subgroup("Jump/Normal", "jump_")
 @export var jump_velocity: int = -1450 ##Base Jump Height 1450, High 1700. Low 1300
-@export var jump_fwd_velocity: int = 400
-@export var jump_bwd_velocity: int = 400
+@export var jump_fwd_velocity: int = 500
+@export var jump_bwd_velocity: int = 500
 
 @export_subgroup("Jump/Super ", "superjump_")
 @export var superjump_velocity: int = -1650
@@ -95,6 +102,7 @@ enum BackDashType { Step, Dash, Teleport}
 @export var superjump_bwd_velocity: int = 400
 
 @export_subgroup("Airdashes", "airdash_")
+@export var airdash_duration: int = 20
 @export var airdash_fwd_velocity: int = 1000
 @export var airdash_bwd_velocity: int = -1000
 

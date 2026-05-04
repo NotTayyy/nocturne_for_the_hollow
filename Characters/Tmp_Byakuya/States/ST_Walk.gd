@@ -28,26 +28,26 @@ func exit() -> void:
 func update(_delta: float) -> void:
 	frame += 1
 	fighter.update_facing()
-	var h      := input_buffer.held_inputs
+	var h       := input_buffer.held_inputs
 	var forward := "6" in h
 	var speed   := fighter.get_walk_speed(forward)
-	var sign_x  := 1.0 if fighter.dir_facing == "Right" else -1.0
 	fighter.velocity.x = sign_x * speed if forward else -sign_x * speed
 	fighter.anim_player.play("walk_fwd" if forward else "walk_bwd")
 
-func get_transition() -> String:
-	var h := input_buffer.held_inputs
-	if fighter.is_airborne:                        return "Airborne"
-	if "2" in h:                                   return "Crouch"
-	if "6" not in h and "4" not in h:             return "Idle"
-	return ""
+	# No direction held — return to idle
+	if "6" not in h and "4" not in h:
+		state_manager.request("Idle", InputBuffer.PRIORITY["Standing"])
 
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
 	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	match cmd:
-		"Dash":     state_manager.request("Dash", prio)
-		"BackDash": state_manager.request("BackDash", prio)
+		"Crouch":
+			state_manager.request("Crouch", prio)
+		"Dash":
+			state_manager.request("Dash", prio)
+		"BackDash":
+			state_manager.request("BackDash", prio)
 		_ when cmd in JUMP_COMMANDS:
 			_request_jump(cmd, prio)
 

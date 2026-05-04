@@ -25,14 +25,14 @@ func push_if_overlapping() -> void:
 			#Checks if corner fight is happening, THe higher player loses and is Pushed off
 			if is_on_wall(owner) and is_on_wall(opponent) == true:
 				if my_rect.position.y < enemy_rect.position.y:
-					owner.is_on_Wall_Left = false
-					owner.is_on_Wall_Right = false
+					owner.is_on_wall_left = false
+					owner.is_on_wall_right = false
 					return
 			
-			if owner.is_on_Wall_Left == true:
+			if owner.is_on_wall_left == true:
 				opponent.global_position.x += push_distance * 2
 				return
-			elif owner.is_on_Wall_Right == true:
+			elif owner.is_on_wall_right == true:
 				opponent.global_position.x -= push_distance * 2
 				return
 			else:
@@ -42,4 +42,4 @@ func push_if_overlapping() -> void:
 					owner.global_position.x += push_distance
 
 func is_on_wall(checker: Node) -> bool:
-	return checker.is_on_Wall_Left or checker.is_on_Wall_Right
+	return checker.is_on_wall_left or checker.is_on_wall_right
