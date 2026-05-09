@@ -33,6 +33,7 @@ func initialise(p_fighter: Fighter) -> void:
 			child.state_manager = self
 			child.input_buffer  = fighter.input_buffer
 			child.cd            = fighter.char_data
+			child.ap            = fighter.anim_player   
 
 	assert(states.has(initial_state_id),
 		"State_Manager: initial state '%s' not found." % initial_state_id)

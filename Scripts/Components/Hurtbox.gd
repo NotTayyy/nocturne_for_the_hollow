@@ -1,4 +1,5 @@
-class_name Hurtbox extends Area2D
+class_name Hurtbox 
+extends Area2D
 
 enum hurtbox_Attribute {
 	Head,

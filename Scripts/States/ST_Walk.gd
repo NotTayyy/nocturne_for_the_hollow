@@ -1,0 +1,77 @@
+extends State_Base
+class_name ST_Walk
+
+const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack","SuperJump","SuperJumpFwd","SuperJumpBack"]
+
+var _last_forward : bool = true
+
+func _ready() -> void:	
+	state_id = "Walk"
+
+func enter(_prev: String) -> void:
+	frame         = 0
+	apply_gravity = false
+	fighter.velocity.y = 0.0
+	_last_forward = "6" in input_buffer.held_inputs
+	gate_self      = true
+	gate_special   = true
+	gate_drive     = true
+	gate_overdrive = true
+	gate_jump      = true
+	gate_dash      = true
+	gate_backdash  = true
+	gate_barrier   = true
+	_play_walk_anim(_last_forward)
+
+func exit() -> void:
+	_reset_gates()
+	fighter.velocity.x = 0.0
+
+func update(_delta: float) -> void:
+	frame += 1
+	fighter.update_facing()
+
+	var h       := input_buffer.held_inputs
+	var forward := "6" in h
+
+	# Facing flipped this frame — mirror to correct animation
+	if fighter.facing_updated:
+		_last_forward = not _last_forward
+		var curr := ap.current_animation
+		if curr in ["WalkF_Loop", "WalkB_Loop"]:
+			ap.play("WalkF_Loop" if _last_forward else "WalkB_Loop")
+		else:
+			ap.play("WalkF_Start" if _last_forward else "WalkB_Start")
+
+	var speed := fighter.get_walk_speed(forward)
+	fighter.velocity.x = sign_x * speed if forward else -sign_x * speed
+
+	# No direction held — return to idle
+	if "6" not in h and "4" not in h:
+		state_manager.request("Idle", InputBuffer.PRIORITY["Standing"])
+	if "2" in h or "1" in h or "3" in h:
+		state_manager.request("Crouch", InputBuffer.PRIORITY["Crouching"])
+
+func on_command(command: Dictionary) -> void:
+	var cmd  : String = command.get("Command", "")
+	var prio : int    = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	match cmd:
+		"Crouch":
+			state_manager.request("Crouch", prio)
+		"Dash":
+			state_manager.request("Dash", prio)
+		"BackDash":
+			state_manager.request("BackDash", prio)
+		_ when cmd in JUMP_COMMANDS:
+			_request_jump(cmd, prio)
+
+func _request_jump(cmd: String, prio: int) -> void:
+	var prejump := state_manager.states.get("Prejump") as ST_Prejump
+	if prejump: prejump.jump_command = cmd
+	state_manager.request("Prejump", prio)
+
+func _play_walk_anim(forward: bool) -> void:
+	var loop := "WalkF_Loop" if forward else "WalkB_Loop"
+	if ap.current_animation == loop:
+		return
+	ap.play("WalkF_Start" if forward else "WalkB_Start")

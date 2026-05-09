@@ -379,15 +379,21 @@ func _get_max_timer(st: State_Base) -> int:
 	if cd == null: return 0
 	match st.state_id:
 		"Dash":
-			match st._phase:
-				0: return cd.dash_Startup   # STARTUP
-				1: return cd.dash_int       # ACTIVE
-				_: return cd.dash_skid
+			if cd.dashType == cd.DashType.Dash:
+				return 1
+			else:
+				match st._phase:
+					0: return cd.step_Startup
+					1: return cd.step_Duration
+					_: return cd.step_recovery
 		"BackDash":
-			match st._phase:
-				0: return cd.backdash_invul_start
-				1: return cd.backdash_duration - cd.backdash_invul_end
-				_: return 8
+			if cd.backdash_type == cd.BackDashType.Dash:
+					return 1
+			else:
+				match st._phase:
+					0: return cd.backdash_startup
+					1: return cd.backdash_duration
+					_: return cd.backdash_recovery
 		_: return 0
 
 # =============================================================================

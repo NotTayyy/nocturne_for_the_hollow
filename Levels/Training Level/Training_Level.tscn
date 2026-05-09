@@ -1,17 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://btjeex4giaghl"]
+[gd_scene format=3 uid="uid://btjeex4giaghl"]
 
 [ext_resource type="Texture2D" uid="uid://dgnt20ksc3lve" path="res://Levels/Training Level/TheGrid.webp" id="1_hfwao"]
 [ext_resource type="PackedScene" uid="uid://c56fob4nvar6h" path="res://Levels/Components/stage.tscn" id="2_sabbx"]
 [ext_resource type="PackedScene" uid="uid://c0ejqxr2ktkr0" path="res://Levels/Components/Walls.tscn" id="5_4232i"]
 
-[node name="Test Level" type="Node2D"]
+[node name="Test Level" type="Node2D" unique_id=1742061467]
 
-[node name="TheGrid" type="Sprite2D" parent="."]
-position = Vector2(-2.9999995, 118)
+[node name="TheGrid" type="Sprite2D" parent="." unique_id=776667690]
+position = Vector2(54.000008, 138)
 scale = Vector2(1.745, 1.89915)
 texture = ExtResource("1_hfwao")
 
-[node name="Stage" parent="." instance=ExtResource("2_sabbx")]
+[node name="Stage" parent="." unique_id=1055037615 instance=ExtResource("2_sabbx")]
 position = Vector2(0, 434)
 
-[node name="Walls" parent="." instance=ExtResource("5_4232i")]
+[node name="Walls" parent="." unique_id=981176055 instance=ExtResource("5_4232i")]

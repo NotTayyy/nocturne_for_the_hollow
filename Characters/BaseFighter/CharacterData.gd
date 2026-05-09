@@ -51,6 +51,8 @@ enum BackDashType { Step, Dash, Teleport}
 @export_range(0, 5, 1) var willpower: int = 3 ## More Defense and maybe More Meter gain lower the HP
 @export var ground_throw_range: int = 70 #99% of peeps will be The default
 @export var air_throw_range: int = 120 #99% of peeps will be The default
+@export var landing_recovery: int = 5 ## All Characters Experience 5 Frames of Landing Lag
+@export var friction: float = 0.9  ## Some characters are more slipery
 
 @export_category("Walking")
 #Walking
@@ -59,14 +61,14 @@ enum BackDashType { Step, Dash, Teleport}
 
 @export_category("Dashes")
 @export var dashType: DashType = DashType.Dash
-@export_subgroup("Dash")
+@export_subgroup("Dash/Run")
 @export var dash_int: int = 800 ## The initial Speed of the character Movement on dash start
 @export var dash_acc: int = 100 ## The Speed added per second of running
 @export var dash_max: int = 1200 ## The max Speed the character will reach after running for awhile
 @export var dash_skid: float = 0.7 ## Take the Current speed of the Character and Multiply it by this for the Skid
 @export var dash_min: int = 10 ## How many frames will Dash be applied before allowed to end
 
-@export_subgroup("Step Teleport")
+@export_subgroup("Dash/Step & Teleport")
 
 @export var step_Duration: int = 20 ## 20 Frames of Step Startup is default for now
 @export var step_distance: int = 1000 ## 1000 for Step, 400 For Teleport
@@ -75,14 +77,14 @@ enum BackDashType { Step, Dash, Teleport}
 
 @export_subgroup("Backdash")
 @export var backdash_type: BackDashType = BackDashType.Step
-@export var backdash_startup:  int = 4 ## Startup
-@export var backdash_distance: int = 675 ## Distance
-@export var backdash_duration: int = 21 ## Duriation
-@export var backdash_recovery: int = 6 ## Teleport Recovery
-@export var backdash_invul_start: int = 0  ##Invul frames
-@export var backdash_invul_end: int = 0  ##Invul frames
-@export var backdash_airborne_start: int = 0
-@export var backdash_airborne_end: int = 0
+@export var backdash_startup:  int = 4  ## Startup (Before Movement)
+@export var backdash_duration: int = 6 ## Duriation (During Movement)
+@export var backdash_recovery: int = 15 ## Recovery (After Movement)
+@export var backdash_distance: int = 1650 ## Distance
+@export var backdash_invul_start: int = 1
+@export var backdash_invul_end: int = 8
+@export var backdash_airborne_start: int = 1
+@export var backdash_airborne_end: int = 8
 
 @export_category("Air Movement")
 @export var prejump: int = 4
@@ -150,7 +152,3 @@ func _on_flow_set(new_value: int) -> void:
 	flow_changed.emit(curr_flow, base_max_flow)
 	if curr_flow == base_max_flow:
 		flow_state_entered.emit()
-	
-	
-	
-	

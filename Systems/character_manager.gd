@@ -4,21 +4,14 @@ var player1
 var player2
 var game_manager
 
-const P1_START_POS : Vector2 = Vector2(-250, 400)
-const P2_START_POS : Vector2 = Vector2(250, 400)
+const P1_START_POS : Vector2 = Vector2(-275, 400)
+const P2_START_POS : Vector2 = Vector2(275, 400)
 
 func _ready() -> void:
 	await get_tree().process_frame
 	game_manager = get_parent()
 	
 	Global.character_manager = self
-	
-	if Global.game_manager.Debug == true:
-		print("Character Manager Loaded!")
-		if Global.camera_manager:
-			print("Camera Found!")
-		else:
-			print("Cam Not Found")
 
 func game_start() -> void: #Call this To Spawn the Characters
 	var P1_Select = Global.P1_Select
@@ -60,8 +53,6 @@ func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2):
 	fighter.player_id = player_id
 	fighter.position = spawn_pos
 	add_child(fighter)
-	if Global.game_manager.Debug == true:
-		print("✅ Spawned %s as Player %d" % [data.character_name, player_id])
 	
 	return fighter
 

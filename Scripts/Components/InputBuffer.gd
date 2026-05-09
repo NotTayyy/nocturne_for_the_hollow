@@ -23,7 +23,7 @@ signal command_matched(command: Dictionary)
 # Exports
 # -----------------------------------------------------------------------------
 @export var max_buffer_frames  : int  = 12
-@export var debug_mode         : bool = false
+@export var debug_mode         : bool = true
 
 # -----------------------------------------------------------------------------
 # Constants
@@ -346,8 +346,18 @@ func _check_motion_command(cmd: Dictionary, type: String) -> bool:
 	var current   : int   = Engine.get_physics_frames()
 
 	var last = event_log.back()
-	if last == null or last["action"] != sequence[-1] or last["type"] != type:
+	if last == null or last["type"] != type:
 		return false
+
+	# Single step — allow diagonal equivalents (1/2/3 for crouch, 7/8/9 for jump)
+	# Multi step — exact match only so 236 can't be input as 233
+	if sequence.size() == 1:
+		var valid = CARDINAL_RELEASE_MAP.get(sequence[-1], [sequence[-1]])
+		if last["action"] not in valid:
+			return false
+	else:
+		if last["action"] != sequence[-1]:
+			return false
 
 	for i in range(event_log.size() - 1, -1, -1):
 		if seq_index < 0: break

@@ -7,8 +7,10 @@ func _ready() -> void:
 	load_characters()
 
 func load_characters():
+	characters["Kagura"] = preload("res://Characters/Tmp_kagura/Data_Kagura.tres")
 	characters["Byakuya"] = preload("res://Characters/Tmp_Byakuya/Data_Byakuya.tres")
 	characters["Kokonoe"] = preload("res://Characters/Tmp_Kokonoe/Data_Kokonoe.tres")
+	
 
 func get_char_names() -> PackedStringArray:
 	return PackedStringArray(characters.keys())

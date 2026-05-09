@@ -8,6 +8,7 @@ var fighter       : Fighter
 var state_manager : State_Manager
 var input_buffer  : InputBuffer
 var cd            : CharacterData
+var ap            : AnimationPlayer
 var lockout_timer : int = 0
 
 ## Facing-relative horizontal sign. Always current — computed on access.
@@ -135,7 +136,7 @@ func any_button_just_pressed() -> bool:
 # Physics helpers
 # -----------------------------------------------------------------------------
 func tick_gravity(delta: float) -> void:
-	fighter.velocity.y += fighter.char_data.gravity * delta
+	fighter.velocity.y += cd.gravity * delta
 
 func land() -> void:
 	fighter.velocity.y = 0.0

@@ -1,0 +1,55 @@
+extends State_Base
+class_name ST_Crouch
+
+const STAND_UP_FRAMES : int = 8
+
+var _stand_up_timer : int  = 0
+var _standing_up    : bool = false
+
+func _ready() -> void:
+	state_id = "Crouch"
+
+func enter(_prev: String) -> void:
+	frame           = 0
+	apply_gravity   = false
+	_stand_up_timer = 0
+	_standing_up    = false
+	fighter.velocity.x = 0.0
+	fighter.velocity.y = 0.0
+	gate_special   = true
+	gate_drive     = true
+	gate_overdrive = true
+	gate_barrier   = true
+	ap.play("Crouch_Start")
+
+func exit() -> void:
+	_reset_gates()
+	_standing_up    = false
+	_stand_up_timer = 0
+
+func update(_delta: float) -> void:
+	frame += 1
+	
+	if fighter.facing_updated == true:
+		ap.play("Crouch_Turn")
+	
+	if not ap.is_playing():
+		ap.play("Crouch_Loop")
+
+	# Released down — begin stand-up
+	if "2" not in input_buffer.held_inputs and not _standing_up:
+		_standing_up    = true
+		_stand_up_timer = STAND_UP_FRAMES
+		ap.play("Crouch_End")
+
+	if _standing_up:
+		if _stand_up_timer > 0:
+			_stand_up_timer -= 1
+		else:
+			state_manager.request("Idle", InputBuffer.PRIORITY["Standing"])
+
+func on_command(command: Dictionary) -> void:
+	var cmd  : String = command.get("Command", "")
+	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	match cmd:
+		pass

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://b46ol8xw7kkdv"]
+
+[ext_resource type="PackedScene" uid="uid://dcidd4wb8eg4m" path="res://Characters/Tmp_Kagura/Kagura.tscn" id="1_1gwx2"]
+[ext_resource type="Script" uid="uid://cpq072udwjvmf" path="res://Characters/BaseFighter/CharacterData.gd" id="1_ihjn4"]
+[ext_resource type="Resource" uid="uid://bambf8vo134v" path="res://Characters/Tmp_Kagura/Kagura_Commands.tres" id="1_ydg2p"]
+
+[resource]
+script = ExtResource("1_ihjn4")
+fighter_scene = ExtResource("1_1gwx2")
+command_list = ExtResource("1_ydg2p")
+charge_moves = true
+friction = 0.88
+backdash_distance = 1700
+metadata/_custom_type_script = "uid://cpq072udwjvmf"
