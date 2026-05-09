@@ -1,0 +1,165 @@
+[gd_scene format=3 uid="uid://dcidd4wb8eg4m"]
+
+[ext_resource type="Script" uid="uid://dpgwm65l3ma15" path="res://Characters/Tmp_Kagura/Kagura.gd" id="1_4s4hb"]
+[ext_resource type="Script" uid="uid://u6lkkiwrap7c" path="res://Scripts/Components/Hurtbox.gd" id="1_x6gho"]
+[ext_resource type="Script" uid="uid://vdot3es4dinw" path="res://Scripts/Components/Pushbox.gd" id="2_ys73i"]
+[ext_resource type="Script" uid="uid://spdxybg7602" path="res://Scripts/Components/InputBuffer.gd" id="3_s44pe"]
+[ext_resource type="Script" uid="uid://b8tx1i4237rpu" path="res://Scripts/Components/StateManager.gd" id="4_6k7md"]
+[ext_resource type="Script" uid="uid://cpt0knhmkxjmy" path="res://Characters/Tmp_Byakuya/States/ST_Idle.gd" id="5_fkpi0"]
+[ext_resource type="Script" uid="uid://brulrf40wr2u0" path="res://Characters/Tmp_Byakuya/States/ST_Walk.gd" id="6_30n6a"]
+[ext_resource type="Script" uid="uid://btvp5u5ycdbhg" path="res://Characters/Tmp_Byakuya/States/ST_Airborn.gd" id="7_kt4rh"]
+[ext_resource type="Script" uid="uid://cimobha5jl7t8" path="res://Characters/Tmp_Byakuya/States/ST_Crouch.gd" id="8_0ha2o"]
+[ext_resource type="Script" uid="uid://crglqrks0ed54" path="res://Characters/Tmp_Byakuya/States/ST_PreJump.gd" id="9_v36ip"]
+[ext_resource type="Script" uid="uid://cojsgkhcoyfdv" path="res://Characters/Tmp_Byakuya/States/ST_Dash.gd" id="10_28xpp"]
+[ext_resource type="Script" uid="uid://dgyd6ebqk0ql0" path="res://Characters/Tmp_Byakuya/States/ST_BackDash.gd" id="11_tglwn"]
+[ext_resource type="Script" uid="uid://blm750vbmsiwl" path="res://Characters/Tmp_Byakuya/States/ST_AirDash.gd" id="12_dwlsq"]
+[ext_resource type="Script" uid="uid://d2sj6mu5yuibb" path="res://Characters/Tmp_Byakuya/States/ST_AirBackDash.gd" id="13_lwon6"]
+[ext_resource type="Script" uid="uid://ti55t61ri376" path="res://Characters/Tmp_Byakuya/States/ST_RunSkid.gd" id="14_ocx4e"]
+[ext_resource type="Texture2D" uid="uid://7eqg2xgoaddr" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_00.png" id="15_qw0w0"]
+[ext_resource type="Texture2D" uid="uid://dpl1jc4sf2gt6" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_01.png" id="16_ojxtb"]
+[ext_resource type="Texture2D" uid="uid://dropikwpnfnnh" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_02.png" id="17_4s4hb"]
+[ext_resource type="Texture2D" uid="uid://bw2adct6kpk30" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_03.png" id="18_7nql1"]
+[ext_resource type="Texture2D" uid="uid://b3penaay72wng" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_04.png" id="19_dxgwu"]
+[ext_resource type="Texture2D" uid="uid://bbw8qm78ctlw8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_06.png" id="20_vvkhf"]
+[ext_resource type="Texture2D" uid="uid://b14f6uq0e730j" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_07.png" id="21_c4vh0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fnuni"]
+size = Vector2(114, 348)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pbvoj"]
+size = Vector2(100, 187)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bed0j"]
+size = Vector2(100, 188)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yipan"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_qw0w0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_ojxtb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_4s4hb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_7nql1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_dxgwu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_vvkhf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_c4vh0")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 7.0
+}]
+
+[node name="Kagura" type="CharacterBody2D" unique_id=1435740143]
+script = ExtResource("1_4s4hb")
+
+[node name="State_Label" type="Label" parent="." unique_id=897855518]
+unique_name_in_owner = true
+offset_left = -28.0
+offset_top = -321.0
+offset_right = 64.0
+offset_bottom = -298.0
+text = "Placeholder"
+
+[node name="Button_Label" type="Label" parent="." unique_id=775422656]
+unique_name_in_owner = true
+offset_left = -26.0
+offset_top = -290.0
+offset_right = 66.0
+offset_bottom = -267.0
+text = "Placeholder"
+
+[node name="Components" type="Node2D" parent="." unique_id=1064610710]
+
+[node name="Hurtbox" type="Area2D" parent="Components" unique_id=482100738]
+script = ExtResource("1_x6gho")
+metadata/_custom_type_script = "uid://u6lkkiwrap7c"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Hurtbox" unique_id=128655557]
+position = Vector2(1, -79)
+shape = SubResource("RectangleShape2D_fnuni")
+debug_color = Color(0, 0.28627452, 0.8862745, 0.41960785)
+
+[node name="Pushbox" type="Area2D" parent="Components" unique_id=960486358]
+script = ExtResource("2_ys73i")
+metadata/_custom_type_script = "uid://vdot3es4dinw"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Pushbox" unique_id=487061554]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_pbvoj")
+
+[node name="InputBuffer" type="Node" parent="Components" unique_id=1278073048]
+script = ExtResource("3_s44pe")
+metadata/_custom_type_script = "uid://spdxybg7602"
+
+[node name="State_Manager" type="Node" parent="Components" unique_id=576201209]
+script = ExtResource("4_6k7md")
+metadata/_custom_type_script = "uid://b8tx1i4237rpu"
+
+[node name="ST_Idle" type="Node" parent="Components/State_Manager" unique_id=1048011120]
+script = ExtResource("5_fkpi0")
+metadata/_custom_type_script = "uid://cpt0knhmkxjmy"
+
+[node name="ST_Walk" type="Node" parent="Components/State_Manager" unique_id=705064829]
+script = ExtResource("6_30n6a")
+metadata/_custom_type_script = "uid://brulrf40wr2u0"
+
+[node name="ST_Airborne" type="Node" parent="Components/State_Manager" unique_id=969018460]
+script = ExtResource("7_kt4rh")
+metadata/_custom_type_script = "uid://btvp5u5ycdbhg"
+
+[node name="ST_Crouch" type="Node" parent="Components/State_Manager" unique_id=176756570]
+script = ExtResource("8_0ha2o")
+metadata/_custom_type_script = "uid://cimobha5jl7t8"
+
+[node name="ST_Prejump" type="Node" parent="Components/State_Manager" unique_id=365754318]
+script = ExtResource("9_v36ip")
+metadata/_custom_type_script = "uid://crglqrks0ed54"
+
+[node name="ST_Dash" type="Node" parent="Components/State_Manager" unique_id=1291975803]
+script = ExtResource("10_28xpp")
+metadata/_custom_type_script = "uid://cojsgkhcoyfdv"
+
+[node name="ST_BackDash" type="Node" parent="Components/State_Manager" unique_id=1736820090]
+script = ExtResource("11_tglwn")
+metadata/_custom_type_script = "uid://dgyd6ebqk0ql0"
+
+[node name="ST_AirDash" type="Node" parent="Components/State_Manager" unique_id=751586315]
+script = ExtResource("12_dwlsq")
+metadata/_custom_type_script = "uid://blm750vbmsiwl"
+
+[node name="ST_AirBackDash" type="Node" parent="Components/State_Manager" unique_id=943228512]
+script = ExtResource("13_lwon6")
+metadata/_custom_type_script = "uid://d2sj6mu5yuibb"
+
+[node name="ST_RunSkid" type="Node" parent="Components/State_Manager" unique_id=1471047823]
+script = ExtResource("14_ocx4e")
+metadata/_custom_type_script = "uid://ti55t61ri376"
+
+[node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=299450226]
+z_index = 1
+shape = SubResource("RectangleShape2D_bed0j")
+debug_color = Color(0.7049782, 0.6326187, 0, 0.41960785)
+
+[node name="Char_Audio_Spawner" type="AudioStreamPlayer2D" parent="." unique_id=907271593]
+max_polyphony = 2
+
+[node name="Char_Sprite_Animator" type="AnimationPlayer" parent="." unique_id=1893088372]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=88549663]
+position = Vector2(174.37189, -97)
+scale = Vector2(0.98492473, 0.9849246)
+sprite_frames = SubResource("SpriteFrames_yipan")
+animation = &"Idle"
+frame_progress = 0.46837628

@@ -9,7 +9,7 @@ signal knocked_out
 @onready var state_machine : State_Manager    = $Components/State_Manager
 @onready var input_buffer  : InputBuffer      = $Components/InputBuffer
 @onready var anim_player   : AnimationPlayer  = $Char_Sprite_Animator
-@onready var char_sprite   : Node2D           = $Char_Sprite
+@onready var char_sprite   : Sprite2D         = $Char_Sprite
 @onready var pushbox       : Area2D           = $Components/Pushbox
 @onready var collision_Box : CollisionShape2D = $Components/Pushbox/CollisionShape2D
 
@@ -21,6 +21,7 @@ var is_on_wall_left  : bool   = false
 var is_on_wall_right : bool   = false
 var jumps_remaining  : int    = 0
 var dashes_remaining : int    = 0
+var facing_updated   : bool   = false
 
 ## All Active Properties
 var properties : Array[Property] = []
@@ -41,9 +42,10 @@ func _ready() -> void:
 	_setup_input_buffer()
 	state_machine.initialise(self)
 	char_data.health_depleted.connect(_on_health_depleted)
+	anim_player.play("Idle")
 
 func _physics_process(delta: float) -> void:
-	_update_facing()
+	update_facing()
 	_stage_input()
 	state_machine.tick(delta)
 	_tick_properties()
@@ -54,18 +56,16 @@ func _physics_process(delta: float) -> void:
 # Facing
 # -----------------------------------------------------------------------------
 func update_facing() -> void:
-	if is_airborne or is_on_wall_left or is_on_wall_right:
-		return
-	_update_facing()
-
-func _update_facing() -> void:
 	var target := "Right" if global_position.x <= opponent.global_position.x else "Left"
-	if target == dir_facing or is_airborne:
-		return
+	if target == dir_facing or is_airborne or is_on_wall_left or is_on_wall_right:
+		facing_updated = false
+		return 
 	dir_facing = target
 	char_sprite.scale.x = 1.0 if dir_facing == "Right" else -1.0
 	input_buffer.facing_right = (dir_facing == "Right")
 	input_buffer.flip_held_directions()
+	facing_updated = true
+	return
 
 # -----------------------------------------------------------------------------
 # Input staging — collect raw hardware inputs, pass to InputBuffer
