@@ -29,7 +29,6 @@ func update(_delta: float) -> void:
 	frame += 1
 	fighter.velocity.x *= cd.friction
 	var h       := input_buffer.held_inputs
-	var forward := "6" in h
 	
 	if fighter.facing_updated == true:
 		ap.play("Idle_Turn")
@@ -37,7 +36,7 @@ func update(_delta: float) -> void:
 	if frame % 60 == 0:
 		_chance += 10
 		
-		if randi_range(1, 100) >= _chance and _chance >= 0:
+		if randi_range(1, 100) <= _chance:
 			print("hello")
 			ap.play("Idle_Goad")
 			_chance = -100

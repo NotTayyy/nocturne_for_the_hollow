@@ -31,7 +31,7 @@ func _ready() -> void:
 	if game_manager and game_manager.Debug == true:
 		print("Camera Manager Loaded!")
 
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not Player_1 and not Player_2:
 		Player_1 = Global.P1
 		Player_2 = Global.P2

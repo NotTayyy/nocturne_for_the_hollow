@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://dpl1jc4sf2gt6" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_01.png" id="16_ojxtb"]
 [ext_resource type="Script" uid="uid://dfpausy7mwbh7" path="res://Scripts/States/ST_JumpLanding.gd" id="17_3dint"]
 [ext_resource type="Texture2D" uid="uid://dropikwpnfnnh" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_02.png" id="17_4s4hb"]
+[ext_resource type="Script" uid="uid://lsrl3hjuitwo" path="res://Scripts/Components/Frame_Data.gd" id="18_3x780"]
 [ext_resource type="Texture2D" uid="uid://bw2adct6kpk30" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_03.png" id="18_7nql1"]
 [ext_resource type="Texture2D" uid="uid://cgt6if60cxugx" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_00.png" id="18_v36ip"]
 [ext_resource type="Texture2D" uid="uid://wqtl0ok0awn0" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_01.png" id="19_28xpp"]
@@ -727,6 +728,36 @@ tracks/2/keys = {
 "values": [Vector2(-142.58, -59.45)]
 }
 
+[sub_resource type="Animation" id="Animation_c51yn"]
+resource_name = "KG_5A"
+length = 0.95
+loop_mode = 1
+step = 0.016666668
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Char_Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Char_Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
 [sub_resource type="Animation" id="Animation_dxgwu"]
 length = 0.001
 tracks/0/type = "value"
@@ -957,6 +988,7 @@ _data = {
 &"Jump_Desc_Loo\\": SubResource("Animation_k4qim"),
 &"Jump_LandRecov": SubResource("Animation_3dint"),
 &"Jump_Pre": SubResource("Animation_tovmc"),
+&"KG_5A": SubResource("Animation_c51yn"),
 &"RESET": SubResource("Animation_dxgwu"),
 &"WalkB_Loop": SubResource("Animation_wh2fp"),
 &"WalkB_Start": SubResource("Animation_qhwvr"),
@@ -1057,6 +1089,12 @@ script = ExtResource("14_ocx4e")
 [node name="ST_JumpLanding" type="Node" parent="Components/State_Manager" unique_id=1264848801]
 script = ExtResource("17_3dint")
 metadata/_custom_type_script = "uid://dfpausy7mwbh7"
+
+[node name="FrameData" type="Node2D" parent="Components" unique_id=403102285]
+
+[node name="HitboxFrameData" type="Area2D" parent="Components/FrameData" unique_id=840545490]
+script = ExtResource("18_3x780")
+metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=299450226]
 visible = false

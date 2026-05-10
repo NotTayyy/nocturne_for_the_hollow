@@ -44,7 +44,7 @@ func exit() -> void:
 func update(_delta: float) -> void:
 	frame += 1
 	fighter.velocity.x *= cd.friction
-	if absf(fighter.velocity.x) < 200.0:
+	if absf(fighter.velocity.x) < 250.0:
 		state_manager.request("Idle", 0)
 
 func on_command(command: Dictionary) -> void:

@@ -247,16 +247,16 @@ func imgui_input_info(player) -> void:
 		ImGui.Separator()
 
 		# Build grouped rows — one row per frame, direction + buttons together
-		var log   : Array = buf.event_log
-		var start : int   = maxi(0, log.size() - 60)
+		var plog   : Array = buf.event_log
+		var start : int   = maxi(0, plog.size() - 60)
 		var rows  : Array = []
 		var i     : int   = start
 
-		while i < log.size():
-			var e   = log[i]
+		while i < plog.size():
+			var e   = plog[i]
 			var row = { "frame": e["frame"], "dir": "5", "pressed": [], "released": [] }
-			while i < log.size() and log[i]["frame"] == e["frame"]:
-				var ev = log[i]
+			while i < plog.size() and plog[i]["frame"] == e["frame"]:
+				var ev = plog[i]
 				if ev["action"] in InputBuffer.DIRECTIONS:
 					row["dir"] = ev["action"]
 				elif ev["type"] == "press":

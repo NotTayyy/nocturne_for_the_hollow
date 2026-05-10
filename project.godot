@@ -8,6 +8,8 @@
 
 config_version=5
 
+show_default_buttons=false
+
 [addons]
 
 resources_spreadsheet_view/array_color_tint=100.0
@@ -65,7 +67,7 @@ script/templates_search_path="res://Scripts/Templates"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/imgui-godot/plugin.cfg")
+enabled=PackedStringArray("res://addons/imgui-godot/plugin.cfg", "res://addons/tool_button/plugin.cfg")
 
 [input]
 
