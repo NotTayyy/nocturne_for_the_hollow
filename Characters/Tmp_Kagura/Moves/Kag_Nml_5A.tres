@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_uhntl")
 move_name = "5A"
-move_id = "5A"
+move_id = "Nml_5A"
 startup = 5
 active = Array[int]([3])
 recovery = 9
@@ -13,4 +13,19 @@ damage = Array[int]([300])
 min_damage = Array[int]([15])
 p2 = Array[int]([80])
 p2_once = true
+hitbox_data = Array[Dictionary]([{
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_1_index_0",
+"position": {
+"x": 352.0,
+"y": -108.5
+},
+"size": {
+"x": 188.0,
+"y": 61.0
+},
+"start_frame": -1
+}])
 metadata/_custom_type_script = "uid://c1ie505730ew"

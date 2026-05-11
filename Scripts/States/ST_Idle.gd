@@ -52,7 +52,12 @@ func to_idle():
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
 	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
-	if command["Res"]
+	if command.has("Frame_Data") and command["Frame_Data"] != null:
+		var attack : ST_Attack = state_manager.states.get("Attack") as ST_Attack
+		if attack != null:
+			attack.hfd = fighter.get_node(command["Frame_Data"]) as HitboxFrameData
+			state_manager.request("Attack", prio)
+			return
 	match cmd:
 		"Walk", "WalkBack":
 			state_manager.request("Walk", prio)

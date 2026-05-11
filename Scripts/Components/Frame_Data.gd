@@ -18,13 +18,15 @@ class_name HitboxFrameData
 @export var index_viewer : Array[String] = []
 
 ## Runtime — set by ST_Attack when a move begins
-var _current_frame    : int  = 0
-var _active           : bool = false
-var _move_data_rt     : MoveData = null   # runtime reference, separate from editor reference
+var _current_frame       : int        = 0
+var _active              : bool       = false
+var _move_data_rt        : MoveData   = null
+var _current_active_index : int       = -1
+var _spawned_shapes      : Array[CollisionShape2D] = []
 
 ## HitLog per index — prevents same target being hit twice per index
 ## key = hit_index, value = Array of hurtbox instance IDs already hit
-var _hit_log          : Dictionary = {}
+var _hit_log             : Dictionary = {}
 
 func _get_tool_buttons() -> Array:
 	return [
@@ -36,6 +38,24 @@ func _get_tool_buttons() -> Array:
 
 func _ready() -> void:
 	_apply_collision_layers()
+	if not Engine.is_editor_hint():
+		area_entered.connect(_on_area_entered)
+
+# =============================================================================
+# Tmp hit detection test
+# =============================================================================
+
+func _on_area_entered(area : Area2D) -> void:
+	# Ignore self — check owning fighter's player_id
+	if area.owner == owner:
+		return
+	if not area.has_method("recieve_hit"):
+		return
+	var hit_index : int = _current_active_index
+	if already_hit(hit_index, area.get_instance_id()):
+		return
+	register_hit(hit_index, area.get_instance_id())
+	print("HIT! ", owner.name, " hit ", area.owner.name, " with index ", hit_index)
 
 # =============================================================================
 # Collision layers
@@ -54,100 +74,96 @@ func _apply_collision_layers() -> void:
 # Runtime API — called by ST_Attack
 # =============================================================================
 
-## Call at the start of an attack to begin frame counting
 func begin(p_move_data : MoveData) -> void:
-	_move_data_rt  = p_move_data
-	_current_frame = 0
-	_active        = true
+	_move_data_rt         = p_move_data
+	_current_frame        = 0
+	_active               = true
+	_current_active_index = -1
 	_hit_log.clear()
-	_set_all_monitoring(false)
+	_despawn_shapes()
 
-## Call every physics frame during an attack
 func tick() -> void:
 	if not _active or _move_data_rt == null:
 		return
 	_current_frame += 1
 	_update_active_boxes()
 
-## Call when the attack ends or is cancelled
 func stop() -> void:
 	_active = false
-	_set_all_monitoring(false)
+	_despawn_shapes()
 	_hit_log.clear()
+	_current_active_index = -1
 
-## Returns true if this hurtbox instance has already been hit by hit_index
 func already_hit(hit_index : int, hurtbox_id : int) -> bool:
 	if not _hit_log.has(hit_index):
 		return false
 	return hurtbox_id in _hit_log[hit_index]
 
-## Register a hit to prevent multi-hit on same target
 func register_hit(hit_index : int, hurtbox_id : int) -> void:
 	if not _hit_log.has(hit_index):
 		_hit_log[hit_index] = []
 	_hit_log[hit_index].append(hurtbox_id)
 
 # =============================================================================
-# Frame update — activates boxes based on MoveData timeline
+# Frame update — spawns/despawns shapes based on MoveData timeline
 # =============================================================================
 
 func _update_active_boxes() -> void:
 	if _move_data_rt == null:
 		return
 
-	var startup : int = _move_data_rt.startup
-	var frame   : int = _current_frame
+	var startup      : int = _move_data_rt.startup
+	var frame        : int = _current_frame
+	var active_frame : int = frame - startup
+	var new_index    : int = -1
+	var cursor       : int = 0
 
-	# Still in startup — nothing active
 	if frame <= startup:
-		_set_all_monitoring(false)
+		if _current_active_index != -1:
+			_despawn_shapes()
+			_current_active_index = -1
 		return
 
-	# Build timeline position
-	var active_frame : int = frame - startup   # frame within the active+gap window
-	var current_index : int = -1
-	var index_frame   : int = 0               # frame within the current index window
-
-	var cursor : int = 0
 	for i : int in _move_data_rt.active.size():
 		var window_size : int = _move_data_rt.active[i]
-		if active_frame <= cursor + window_size:
-			current_index = i
-			index_frame   = active_frame - cursor
+		if active_frame > cursor and active_frame <= cursor + window_size:
+			new_index = i
 			break
 		cursor += window_size
-		# Add gap if there is one
 		if i < _move_data_rt.gaps.size():
 			cursor += _move_data_rt.gaps[i]
 
-	# In recovery or gap — nothing active
-	if current_index == -1:
-		_set_all_monitoring(false)
-		return
+	# Index changed — despawn old, spawn new
+	if new_index != _current_active_index:
+		_despawn_shapes()
+		_current_active_index = new_index
+		if new_index != -1:
+			_spawn_shapes_for_index(new_index)
 
-	# Enable boxes for current_index, respecting active_start/active_end overrides
-	for child in get_children():
-		if not child is FrameDataObject:
+func _spawn_shapes_for_index(hit_index : int) -> void:
+	for entry : Dictionary in _move_data_rt.hitbox_data:
+		if entry.get("hit_index", 0) != hit_index:
 			continue
-		var obj : FrameDataObject = child
-		var should_be_active : bool = false
 
-		if obj.hit_index == current_index:
-			if obj.start_frame == -1 and obj.end_frame == -1:
-				should_be_active = true
-			elif obj.start_frame != -1 and obj.end_frame != -1:
-				should_be_active = index_frame >= obj.start_frame and index_frame <= obj.end_frame
-			elif obj.start_frame != -1:
-				should_be_active = index_frame >= obj.start_frame
-			elif obj.end_frame != -1:
-				should_be_active = index_frame <= obj.end_frame
+		var shape_node : CollisionShape2D = CollisionShape2D.new()
+		var rect       : RectangleShape2D = RectangleShape2D.new()
+		var sz         : Dictionary       = entry.get("size",     { "x": 50.0, "y": 50.0 })
+		var pos        : Dictionary       = entry.get("position", { "x": 0.0,  "y": 0.0  })
 
-		obj.set_deferred("disabled", not should_be_active)
+		rect.size           = Vector2(sz["x"], sz["y"])
+		shape_node.shape    = rect
+		shape_node.position = Vector2(pos["x"], pos["y"])
+		shape_node.name     = entry.get("name", "Hitbox_rt")
+		shape_node.debug_color = Color(1.0, 0.2, 0.2, 0.35) if entry.get("box_type", 0) == FrameDataObject.BoxType.Hitbox else Color(0.0, 0.531, 0.852, 0.349)
 
-func _set_all_monitoring(enabled : bool) -> void:
-	for child in get_children():
-		if child is FrameDataObject:
-			(child as FrameDataObject).set_deferred("disabled", not enabled)
+		add_child(shape_node)
+		_spawned_shapes.append(shape_node)
+
+func _despawn_shapes() -> void:
+	for shape in _spawned_shapes:
+		if is_instance_valid(shape):
+			shape.queue_free()
+	_spawned_shapes.clear()
 
 # =============================================================================
 # Editor — Add / Remove

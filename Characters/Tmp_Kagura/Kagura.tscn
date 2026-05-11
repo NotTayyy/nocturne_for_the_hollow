@@ -21,9 +21,10 @@
 [ext_resource type="Texture2D" uid="uid://dropikwpnfnnh" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_02.png" id="17_4s4hb"]
 [ext_resource type="Script" uid="uid://lsrl3hjuitwo" path="res://Scripts/Components/Frame_Data.gd" id="18_3x780"]
 [ext_resource type="Texture2D" uid="uid://bw2adct6kpk30" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_03.png" id="18_7nql1"]
+[ext_resource type="Script" uid="uid://dyqi3pbqdwlll" path="res://Scripts/States/ST_Attack.gd" id="18_42ihw"]
 [ext_resource type="Texture2D" uid="uid://cgt6if60cxugx" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_00.png" id="18_v36ip"]
 [ext_resource type="Texture2D" uid="uid://wqtl0ok0awn0" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_01.png" id="19_28xpp"]
-[ext_resource type="Resource" uid="uid://cr7o70g342blg" path="res://Characters/Tmp_Kagura/Moves/Kagura_NmlAtck_5A.tres" id="19_42ihw"]
+[ext_resource type="Resource" uid="uid://cr7o70g342blg" path="res://Characters/Tmp_Kagura/Moves/Kag_Nml_5A.tres" id="19_42ihw"]
 [ext_resource type="Texture2D" uid="uid://b3penaay72wng" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_04.png" id="19_dxgwu"]
 [ext_resource type="Texture2D" uid="uid://cndfldvopgux8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_02.png" id="20_667k5"]
 [ext_resource type="Texture2D" uid="uid://djs4e2p455dii" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_02.png" id="20_tglwn"]
@@ -110,6 +111,11 @@
 [ext_resource type="Texture2D" uid="uid://bdl7uvyh0au3r" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Walk/B_Walk/kg031_00.png" id="58_lwon6"]
 [ext_resource type="Texture2D" uid="uid://bn1k8sn2kgwo1" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Walk/B_Walk/kg031_01.png" id="59_ocx4e"]
 [ext_resource type="AudioStream" uid="uid://dbb4gerehbeic" path="res://Assets/SFX/Footsteps/Conc_Footstep_2.wav" id="59_qli8t"]
+[ext_resource type="Texture2D" uid="uid://bq74wpf7lvp16" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_00.png" id="86_15he3"]
+[ext_resource type="Texture2D" uid="uid://c1h34260uet4o" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_01.png" id="87_h1goo"]
+[ext_resource type="Texture2D" uid="uid://etun1302yagj" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_02.png" id="88_h1goo"]
+[ext_resource type="Texture2D" uid="uid://gf0jooikr7jo" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_03.png" id="88_r2n8l"]
+[ext_resource type="Texture2D" uid="uid://kj3tghko7x4n" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_04.png" id="89_mium3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fnuni"]
 size = Vector2(140, 362)
@@ -731,8 +737,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_c51yn"]
 resource_name = "KG_5A"
-length = 0.5
-loop_mode = 1
+length = 0.28333333
 step = 0.016666668
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -741,10 +746,10 @@ tracks/0/path = NodePath("Char_Sprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
+"times": PackedFloat32Array(0, 0.016666668, 0.05, 0.083333336, 0.13333334, 0.16666667, 0.20000002, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": []
+"values": [ExtResource("86_15he3"), ExtResource("87_h1goo"), ExtResource("88_h1goo"), ExtResource("88_r2n8l"), ExtResource("89_mium3"), ExtResource("88_h1goo"), ExtResource("87_h1goo"), ExtResource("86_15he3")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -753,15 +758,15 @@ tracks/1/path = NodePath("Char_Sprite:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"update": 0,
-"values": []
+"times": PackedFloat32Array(0, 0.016666668, 0.05, 0.083333336, 0.13333334, 0.16666667, 0.20000002, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(-137.63, -77.225), Vector2(-126.205, -73.93), Vector2(-115.448, -74.157), Vector2(-75.458, -74.157), Vector2(-86.783, -74.157), Vector2(-115.448, -74.157), Vector2(-126.205, -73.93), Vector2(-137.63, -77.225)]
 }
 tracks/2/type = "method"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Components/FrameData/Nml_Atck_5A")
+tracks/2/path = NodePath("Components/FrameData/Nml_5A")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -1000,7 +1005,7 @@ _data = {
 &"Jump_Desc_Loo\\": SubResource("Animation_k4qim"),
 &"Jump_LandRecov": SubResource("Animation_3dint"),
 &"Jump_Pre": SubResource("Animation_tovmc"),
-&"KG_5A": SubResource("Animation_c51yn"),
+&"Nml_5A": SubResource("Animation_c51yn"),
 &"RESET": SubResource("Animation_dxgwu"),
 &"WalkB_Loop": SubResource("Animation_wh2fp"),
 &"WalkB_Start": SubResource("Animation_qhwvr"),
@@ -1102,10 +1107,14 @@ script = ExtResource("14_ocx4e")
 script = ExtResource("17_3dint")
 metadata/_custom_type_script = "uid://dfpausy7mwbh7"
 
+[node name="ST_Attack" type="Node" parent="Components/State_Manager" unique_id=1851673900]
+script = ExtResource("18_42ihw")
+
 [node name="FrameData" type="Node2D" parent="Components" unique_id=403102285]
 
-[node name="Nml_Atck_5A" type="Area2D" parent="Components/FrameData" unique_id=840545490]
+[node name="Nml_5A" type="Area2D" parent="Components/FrameData" unique_id=840545490]
 position = Vector2(-210, -119)
+collision_layer = 16
 script = ExtResource("18_3x780")
 move_data = ExtResource("19_42ihw")
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"

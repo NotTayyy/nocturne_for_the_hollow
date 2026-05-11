@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://gf0jooikr7jo"
-path="res://.godot/imported/kg200_03.png-5e80b575933781ea489116a962ce8aad.ctex"
+path="res://.godot/imported/kg200_03.png-39b1482e8745ce31c1c5d24f1f920ff1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Characters/Tmp_Kagura/Kagura Mutsuki/kg200_03.png"
-dest_files=["res://.godot/imported/kg200_03.png-5e80b575933781ea489116a962ce8aad.ctex"]
+source_file="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_03.png"
+dest_files=["res://.godot/imported/kg200_03.png-39b1482e8745ce31c1c5d24f1f920ff1.ctex"]
 
 [params]
 
