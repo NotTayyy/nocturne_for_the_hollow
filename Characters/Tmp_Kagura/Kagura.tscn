@@ -23,7 +23,9 @@
 [ext_resource type="Texture2D" uid="uid://bw2adct6kpk30" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_03.png" id="18_7nql1"]
 [ext_resource type="Texture2D" uid="uid://cgt6if60cxugx" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_00.png" id="18_v36ip"]
 [ext_resource type="Texture2D" uid="uid://wqtl0ok0awn0" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_01.png" id="19_28xpp"]
+[ext_resource type="Resource" uid="uid://cr7o70g342blg" path="res://Characters/Tmp_Kagura/Moves/Kagura_NmlAtck_5A.tres" id="19_42ihw"]
 [ext_resource type="Texture2D" uid="uid://b3penaay72wng" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_04.png" id="19_dxgwu"]
+[ext_resource type="Script" uid="uid://dfgm3pywo5u2e" path="res://Scripts/Components/FrameDataObject.gd" id="20_0bp7s"]
 [ext_resource type="Texture2D" uid="uid://cndfldvopgux8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_02.png" id="20_667k5"]
 [ext_resource type="Texture2D" uid="uid://djs4e2p455dii" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_02.png" id="20_tglwn"]
 [ext_resource type="Texture2D" uid="uid://bbw8qm78ctlw8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_06.png" id="20_vvkhf"]
@@ -118,6 +120,9 @@ size = Vector2(238, 113)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pbvoj"]
 size = Vector2(104, 187)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_42ihw"]
+size = Vector2(50, 50)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bed0j"]
 size = Vector2(104, 188)
@@ -1092,12 +1097,20 @@ metadata/_custom_type_script = "uid://dfpausy7mwbh7"
 
 [node name="FrameData" type="Node2D" parent="Components" unique_id=403102285]
 
-[node name="HitboxFrameData" type="Area2D" parent="Components/FrameData" unique_id=840545490]
+[node name="Nml_Atck5A" type="Area2D" parent="Components/FrameData" unique_id=840545490]
 script = ExtResource("18_3x780")
+move_data = ExtResource("19_42ihw")
+index_viewer = Array[String](["Index 0: 1 box(es)"])
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
+[node name="Hitbox_1_index_0" type="CollisionShape2D" parent="Components/FrameData/Nml_Atck5A" unique_id=585936191]
+shape = SubResource("RectangleShape2D_42ihw")
+debug_color = Color(1, 0.2, 0.2, 0.35)
+script = ExtResource("20_0bp7s")
+start_frame = -1
+end_frame = -1
+
 [node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=299450226]
-visible = false
 z_index = 1
 shape = SubResource("RectangleShape2D_bed0j")
 debug_color = Color(0.7049782, 0.6326187, 0, 0.41960785)

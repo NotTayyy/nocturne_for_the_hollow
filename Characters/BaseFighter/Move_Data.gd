@@ -79,11 +79,11 @@ const COMBO_RATE : float = 0.60
 # -----------------------------------------------------------------------------
 # Enums
 # -----------------------------------------------------------------------------
-enum GuardType  { Mid, High, Low, All, Throw, GuardBreak, Barrier }
+enum GuardType  { High, Mid, Low, All, Throw, GuardBreak }
 enum Attribute  { Head, Body, Foot, Projectile, Throw, Doll }
 enum HitEffect  { None, Launch, Crumple, WallBounce, GroundBounce, WallStick, Slide, Down, SpinFall, Crouch }
-enum StarterType { Normal, Long, Short, Very_Short }
-enum InvulType  { None = 0, Strike = 1, Throw = 2, Projectile = 4, Full = 7 }
+enum StarterType { Very_Short, Short, Normal, Long}
+enum InvulType  { None, Strike, Throw, Projectile, Full }
 
 # -----------------------------------------------------------------------------
 # Identity
@@ -138,8 +138,8 @@ enum InvulType  { None = 0, Strike = 1, Throw = 2, Projectile = 4, Full = 7 }
 # Guard / Attribute
 # -----------------------------------------------------------------------------
 @export_group("Guard and Attribute")
-@export var guard     : Array[int] = [GuardType.Mid]   ## Per-hit guard type
-@export var attribute : Array[int] = [Attribute.Body]  ## Per-hit attribute
+@export var guard     : Array[GuardType] = [GuardType.Mid]   ## Per-hit guard type
+@export var attribute : Array[Attribute] = [Attribute.Body]  ## Per-hit attribute
 
 # -----------------------------------------------------------------------------
 # Attack level
@@ -162,27 +162,34 @@ enum InvulType  { None = 0, Strike = 1, Throw = 2, Projectile = 4, Full = 7 }
 # Hit effects
 # -----------------------------------------------------------------------------
 @export_group("Hit Effects")
-@export var ground_hit_effect   : Array[int] = [HitEffect.None]
-@export var ground_hit_duration : Array[int] = [-1]   ## -1 = use table hitstun
-@export var air_hit_effect      : Array[int] = [HitEffect.None]
-@export var air_hit_duration    : Array[int] = [-1]   ## -1 = use table untechable
-@export var ground_ch_effect    : Array[int] = [HitEffect.None]
-@export var ground_ch_duration  : Array[int] = [-1]
-@export var air_ch_effect       : Array[int] = [HitEffect.None]
-@export var air_ch_duration     : Array[int] = [-1]
+@export var ground_hit_effect   : Array[HitEffect] = [HitEffect.None]
+@export var ground_hit_duration : Array[int]       = [-1]   ## -1 = use table hitstun
+@export var air_hit_effect      : Array[HitEffect] = [HitEffect.None]
+@export var air_hit_duration    : Array[int]       = [-1]   ## -1 = use table untechable
+@export var ground_ch_effect    : Array[HitEffect] = [HitEffect.None]
+@export var ground_ch_duration  : Array[int]       = [-1]
+@export var air_ch_effect       : Array[HitEffect] = [HitEffect.None]
+@export var air_ch_duration     : Array[int]       = [-1]
 
 # -----------------------------------------------------------------------------
 # Invulnerability
 # -----------------------------------------------------------------------------
 @export_group("Invulnerability")
+@export var invul_type  : InvulType = InvulType.None   ## Bitmask
 @export var invul_start : int = -1   ## -1 = no invul
 @export var invul_end   : int = -1
-@export var invul_type  : int = InvulType.None   ## Bitmask
 
 ## Doll-specific invul (e.g. Ignis in Duo Bios) — handled character-side
 @export var doll_invul_start : int = -1
 @export var doll_invul_end   : int = -1
-@export var doll_invul_type  : int = InvulType.None
+@export var doll_invul_type  : InvulType = InvulType.None
+
+# -----------------------------------------------------------------------------
+# Hitbox / Hurtbox shape data
+# Populated by HitboxFrameData.Bake() — do not edit manually
+# -----------------------------------------------------------------------------
+@export_group("Box Data")
+@export var hitbox_data : Array[Dictionary] = []
 
 # -----------------------------------------------------------------------------
 # Counter hit
