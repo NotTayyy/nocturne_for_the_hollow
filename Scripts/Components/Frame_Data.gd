@@ -9,7 +9,10 @@ class_name HitboxFrameData
 @export var hitboxes_to_add : int = 1
 
 ## Default box type for newly added shapes
-@export var default_box_type : FrameDataObject.BoxType = FrameDataObject.BoxType.Hitbox
+@export var default_box_type : FrameDataObject.BoxType = FrameDataObject.BoxType.Hitbox :
+	set(value):
+		default_box_type = value
+		_apply_collision_layers()
 
 ## Read-only index viewer — shows all hit indices and box counts
 @export var index_viewer : Array[String] = []
@@ -30,6 +33,22 @@ func _get_tool_buttons() -> Array:
 		{ displayName = "Bake to MoveData",      call = "Bake"           },
 		{ displayName = "Restore from MoveData", call = "Restore"        },
 	]
+
+func _ready() -> void:
+	_apply_collision_layers()
+
+# =============================================================================
+# Collision layers
+# =============================================================================
+
+func _apply_collision_layers() -> void:
+	match default_box_type:
+		FrameDataObject.BoxType.Hitbox:
+			collision_layer = 16   # Layer 5
+			collision_mask  = 1    # Layer 1
+		FrameDataObject.BoxType.Hurtbox:
+			collision_layer = 1    # Layer 1
+			collision_mask  = 16   # Layer 5
 
 # =============================================================================
 # Runtime API — called by ST_Attack
@@ -114,14 +133,14 @@ func _update_active_boxes() -> void:
 		var should_be_active : bool = false
 
 		if obj.hit_index == current_index:
-			if obj.active_start == -1 and obj.active_end == -1:
+			if obj.start_frame == -1 and obj.end_frame == -1:
 				should_be_active = true
-			elif obj.active_start != -1 and obj.active_end != -1:
-				should_be_active = index_frame >= obj.active_start and index_frame <= obj.active_end
-			elif obj.active_start != -1:
-				should_be_active = index_frame >= obj.active_start
-			elif obj.active_end != -1:
-				should_be_active = index_frame <= obj.active_end
+			elif obj.start_frame != -1 and obj.end_frame != -1:
+				should_be_active = index_frame >= obj.start_frame and index_frame <= obj.end_frame
+			elif obj.start_frame != -1:
+				should_be_active = index_frame >= obj.start_frame
+			elif obj.end_frame != -1:
+				should_be_active = index_frame <= obj.end_frame
 
 		obj.set_deferred("disabled", not should_be_active)
 
@@ -184,13 +203,13 @@ func Bake() -> void:
 			size = Vector2(radius * 2.0, radius * 2.0)
 
 		baked.append({
-			"name":         obj.name,
-			"hit_index":    obj.hit_index,
-			"active_start": obj.start_frame,
-			"active_end":   obj.end_frame,
-			"box_type":     obj.box_type,
-			"position":     { "x": position.x, "y": position.y },
-			"size":         { "x": size.x,     "y": size.y     },
+			"name":        obj.name,
+			"hit_index":   obj.hit_index,
+			"start_frame": obj.start_frame,
+			"end_frame":   obj.end_frame,
+			"box_type":    obj.box_type,
+			"position":    { "x": position.x, "y": position.y },
+			"size":        { "x": size.x,     "y": size.y     },
 		})
 
 	move_data.hitbox_data = baked

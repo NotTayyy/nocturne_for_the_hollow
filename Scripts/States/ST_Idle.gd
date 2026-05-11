@@ -52,6 +52,7 @@ func to_idle():
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
 	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	if command["Res"]
 	match cmd:
 		"Walk", "WalkBack":
 			state_manager.request("Walk", prio)

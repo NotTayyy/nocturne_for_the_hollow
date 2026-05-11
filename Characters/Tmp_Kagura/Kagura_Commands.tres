@@ -113,6 +113,7 @@ command_list = [{
 "Sequence": ["4", "2", "6", "A"]
 }, {
 "Command": "Button A",
+"Frame_Data": NodePath("Components/FrameData/Nml_Atck_5A"),
 "Priority": "Normal",
 "Sequence": ["A"]
 }, {
