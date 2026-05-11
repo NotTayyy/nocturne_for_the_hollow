@@ -31,15 +31,15 @@ func enter(prev: String) -> void:
 			gate_overdrive = true
 			gate_jump      = true
 			gate_barrier   = true
-			ap.play("DashF_Start")
+			ap.play("Dash/DashF_Start")
 		CharacterData.DashType.Step:
 			_phase = Phase.STARTUP
 			_timer = fighter.char_data.step_Startup
-			ap.play("DashF_Start")
+			ap.play("Dash/DashF_Start")
 		CharacterData.DashType.Teleport:
 			_phase = Phase.STARTUP
 			_timer = fighter.char_data.step_Startup
-			ap.play("DashF_Start")
+			ap.play("Dash/DashF_Start")
 
 func exit() -> void:
 	_reset_gates()

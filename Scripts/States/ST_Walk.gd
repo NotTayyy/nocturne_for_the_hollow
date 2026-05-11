@@ -38,10 +38,10 @@ func update(_delta: float) -> void:
 	if fighter.facing_updated:
 		_last_forward = not _last_forward
 		var curr := ap.current_animation
-		if curr in ["WalkF_Loop", "WalkB_Loop"]:
-			ap.play("WalkF_Loop" if _last_forward else "WalkB_Loop")
+		if curr in ["Walk/WalkF_Loop", "Walk/WalkB_Loop"]:
+			ap.play("Walk/WalkF_Loop" if _last_forward else "Walk/WalkB_Loop")
 		else:
-			ap.play("WalkF_Start" if _last_forward else "WalkB_Start")
+			ap.play("Walk/WalkF_Start" if _last_forward else "Walk/WalkB_Start")
 
 	var speed := fighter.get_walk_speed(forward)
 	fighter.velocity.x = sign_x * speed if forward else -sign_x * speed
@@ -55,6 +55,9 @@ func update(_delta: float) -> void:
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
 	var prio : int    = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	if command.has("Frame_Data") and command["Frame_Data"] != null:
+		_request_attack(command)
+		return
 	match cmd:
 		"Crouch":
 			state_manager.request("Crouch", prio)
@@ -71,7 +74,7 @@ func _request_jump(cmd: String, prio: int) -> void:
 	state_manager.request("Prejump", prio)
 
 func _play_walk_anim(forward: bool) -> void:
-	var loop := "WalkF_Loop" if forward else "WalkB_Loop"
+	var loop : String = "Walk/WalkF_Loop" if forward else "Walk/WalkB_Loop"
 	if ap.current_animation == loop:
 		return
-	ap.play("WalkF_Start" if forward else "WalkB_Start")
+	ap.play("Walk/WalkF_Start" if forward else "Walk/WalkB_Start")

@@ -13,6 +13,6 @@ func _ready() -> void:
 	set_collision_layer_value(1, true)   # Layer 1 — hurtbox layer
 	set_collision_mask_value(1, false)
 
-func recieve_hit(damage : int, type : int) -> void:
+func recieve_hit(damage : int, _type : int) -> void:
 	print(owner.char_data.character_name, " took ", damage, " damage")
 	owner.char_data.curr_health -= damage

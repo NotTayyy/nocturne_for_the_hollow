@@ -1,0 +1,166 @@
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://dxrjbm3k2o05b"]
+
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Characters/BaseFighter/Move_Data.gd" id="1_v6gwd"]
+
+[resource]
+script = ExtResource("1_v6gwd")
+move_name = "5B"
+move_id = "Nml_5B"
+anim_path = "Normals/Nml_5B"
+startup = 7
+active = Array[int]([3])
+recovery = 11
+damage = Array[int]([480])
+p1 = 90
+p2 = Array[int]([85])
+starter = 3
+guard = Array[int]([2])
+attribute = Array[int]([2])
+attack_level = 2
+air_hit_effect = Array[int]([4])
+air_hit_duration = Array[int]([4])
+air_ch_effect = Array[int]([4])
+air_ch_duration = Array[int]([1])
+hitbox_data = Array[Dictionary]([{
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_1_index_0",
+"position": {
+"x": 176.5,
+"y": 59.0
+},
+"size": {
+"x": 55.0,
+"y": 74.0
+},
+"start_frame": -1
+}, {
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_2_index_0",
+"position": {
+"x": 140.0,
+"y": 30.5
+},
+"size": {
+"x": 70.0,
+"y": 93.0
+},
+"start_frame": -1
+}, {
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_3_index_0",
+"position": {
+"x": 111.0,
+"y": -4.5
+},
+"size": {
+"x": 56.0,
+"y": 87.0
+},
+"start_frame": -1
+}, {
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_4_index_0",
+"position": {
+"x": 75.5,
+"y": -24.0
+},
+"size": {
+"x": 51.0,
+"y": 84.0
+},
+"start_frame": -1
+}, {
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_5_index_0",
+"position": {
+"x": 43.5,
+"y": -51.0
+},
+"size": {
+"x": 65.0,
+"y": 90.0
+},
+"start_frame": -1
+}])
+hitbox_data_backup = Array[Dictionary]([{
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_1_index_0",
+"position": {
+"x": 176.5,
+"y": 59.0
+},
+"size": {
+"x": 55.0,
+"y": 74.0
+},
+"start_frame": -1
+}, {
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_2_index_0",
+"position": {
+"x": 140.0,
+"y": 30.5
+},
+"size": {
+"x": 70.0,
+"y": 93.0
+},
+"start_frame": -1
+}, {
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_3_index_0",
+"position": {
+"x": 111.0,
+"y": -4.5
+},
+"size": {
+"x": 56.0,
+"y": 87.0
+},
+"start_frame": -1
+}, {
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_4_index_0",
+"position": {
+"x": 75.5,
+"y": -24.0
+},
+"size": {
+"x": 51.0,
+"y": 84.0
+},
+"start_frame": -1
+}, {
+"box_type": 0,
+"end_frame": -1,
+"hit_index": 0,
+"name": &"Hitbox_5_index_0",
+"position": {
+"x": 43.5,
+"y": -51.0
+},
+"size": {
+"x": 65.0,
+"y": 90.0
+},
+"start_frame": -1
+}])
+metadata/_custom_type_script = "uid://c1ie505730ew"

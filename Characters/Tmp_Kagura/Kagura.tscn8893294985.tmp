@@ -32,25 +32,16 @@
 [ext_resource type="Texture2D" uid="uid://caj6yn7rxg4al" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_05.png" id="21_7nql1"]
 [ext_resource type="Texture2D" uid="uid://b14f6uq0e730j" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_07.png" id="21_c4vh0"]
 [ext_resource type="Texture2D" uid="uid://dafxa4waigoec" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_03.png" id="21_dwlsq"]
-[ext_resource type="Script" uid="uid://dfgm3pywo5u2e" path="res://Scripts/Components/FrameDataObject.gd" id="21_r2n8l"]
-[ext_resource type="Resource" uid="uid://dxrjbm3k2o05b" path="res://Characters/Tmp_Kagura/Moves/Kag_Nml_5B.tres" id="21_raku0"]
-[ext_resource type="Texture2D" uid="uid://b04dx8kx8bhmy" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/ABDash/kg036_00.png" id="21_rp8v4"]
 [ext_resource type="Texture2D" uid="uid://btxxfyicphtro" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_03.png" id="21_wq2oq"]
 [ext_resource type="Texture2D" uid="uid://cgp1y8lbxk0ff" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/Crouch_Turn/kg013_00.png" id="22_flxcq"]
 [ext_resource type="Texture2D" uid="uid://l2ggqarejsgi" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_04.png" id="22_lwon6"]
-[ext_resource type="Texture2D" uid="uid://c01i81kmtm42q" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/AFDash/kg035_01.png" id="22_mium3"]
-[ext_resource type="Texture2D" uid="uid://0fb4jkjifhj" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/ABDash/kg036_01.png" id="22_oyf83"]
 [ext_resource type="Texture2D" uid="uid://dxxer0ydi8wng" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_04.png" id="22_rcj2y"]
 [ext_resource type="Texture2D" uid="uid://bfekc1fnsok33" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_05.png" id="23_3x780"]
-[ext_resource type="Texture2D" uid="uid://byq5saoj6hmop" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/AFDash/kg035_02.png" id="23_ljw5q"]
 [ext_resource type="Texture2D" uid="uid://b4xhhi5tbfusg" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_05.png" id="23_ocx4e"]
-[ext_resource type="Texture2D" uid="uid://dgbi61cy0d44c" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/ABDash/kg036_02.png" id="23_qv5ip"]
 [ext_resource type="Texture2D" uid="uid://do5715up5lwv8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/Crouch_Turn/kg013_01.png" id="23_v7kyq"]
-[ext_resource type="Texture2D" uid="uid://c4gd2tf4b1jd1" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/ABDash/kg036_03.png" id="24_6d8s5"]
 [ext_resource type="Texture2D" uid="uid://b1ojsxeebrn6h" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_06.png" id="24_c51yn"]
 [ext_resource type="Texture2D" uid="uid://ggsxowex4i1d" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_06.png" id="24_dwlsq"]
 [ext_resource type="Texture2D" uid="uid://cm4m4x8bsevy8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/Idle_Taunt/kg001_00.png" id="24_dxgwu"]
-[ext_resource type="Texture2D" uid="uid://b46sk0hef4ytt" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/AFDash/kg035_03.png" id="24_hfsi5"]
 [ext_resource type="Texture2D" uid="uid://bqb4secbacbvf" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_07.png" id="25_42ihw"]
 [ext_resource type="Texture2D" uid="uid://0mtg726j6aqs" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_07.png" id="25_lwon6"]
 [ext_resource type="Texture2D" uid="uid://caeyvejjt8d58" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/Idle_Taunt/kg001_01.png" id="25_uehhx"]
@@ -60,7 +51,6 @@
 [ext_resource type="Texture2D" uid="uid://dnv7fv0gkdxg7" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_09.png" id="27_0lcrl"]
 [ext_resource type="Texture2D" uid="uid://dx4yp714gg68l" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/Idle_Taunt/kg001_03.png" id="27_i5ti6"]
 [ext_resource type="Texture2D" uid="uid://dnlyph6ya8pjx" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/FDash/kg032_02.png" id="27_qhwvr"]
-[ext_resource type="Texture2D" uid="uid://b3jcsgd5aip0s" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/AFDash/kg035_00.png" id="27_v7yuv"]
 [ext_resource type="Texture2D" uid="uid://dr8ofrybv7pi1" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/Idle_Taunt/kg001_04.png" id="28_3dint"]
 [ext_resource type="Texture2D" uid="uid://d2qcw01hssu4w" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/FDash/kg032_03.png" id="28_yamqc"]
 [ext_resource type="Texture2D" uid="uid://bs0ijqvinyy4m" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/FDash/kg032_00.png" id="29_5lqsr"]
@@ -126,14 +116,6 @@
 [ext_resource type="Texture2D" uid="uid://etun1302yagj" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_02.png" id="88_h1goo"]
 [ext_resource type="Texture2D" uid="uid://gf0jooikr7jo" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_03.png" id="88_r2n8l"]
 [ext_resource type="Texture2D" uid="uid://kj3tghko7x4n" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_04.png" id="89_mium3"]
-[ext_resource type="Texture2D" uid="uid://dpphn436x1kgi" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_00.png" id="100_v7yuv"]
-[ext_resource type="Texture2D" uid="uid://1e5nwixqa6ag" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_01.png" id="101_uevin"]
-[ext_resource type="Texture2D" uid="uid://dh6r1dxwmffs4" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_02.png" id="102_8l3vj"]
-[ext_resource type="Texture2D" uid="uid://dt55m0fwpm6s3" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_03.png" id="103_8lx3x"]
-[ext_resource type="Texture2D" uid="uid://3foqovg2j3sw" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_04.png" id="104_dyujb"]
-[ext_resource type="Texture2D" uid="uid://ceqo4d8t7u3" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_05.png" id="105_0gg8v"]
-[ext_resource type="Texture2D" uid="uid://2xw5affng0fb" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_06.png" id="106_ji8s0"]
-[ext_resource type="Texture2D" uid="uid://b454u1mwaj1t7" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_07.png" id="107_sfp3s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fnuni"]
 size = Vector2(140, 362)
@@ -143,9 +125,6 @@ size = Vector2(238, 113)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pbvoj"]
 size = Vector2(104, 187)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_v7yuv"]
-size = Vector2(50, 50)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bed0j"]
 size = Vector2(104, 188)
@@ -192,70 +171,6 @@ tracks/2/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7nql1"]
 _data = {
 &"RESET": SubResource("Animation_dxgwu")
-}
-
-[sub_resource type="Animation" id="Animation_0gg8v"]
-resource_name = "BAirDash"
-length = 0.2
-step = 0.016666668
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Char_Sprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.099999994, 0.15),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [ExtResource("21_rp8v4"), ExtResource("22_oyf83"), ExtResource("23_qv5ip"), ExtResource("24_6d8s5")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Char_Sprite:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.05),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [Vector2(-37.61, -9.98), Vector2(-0.86, -9.98)]
-}
-
-[sub_resource type="Animation" id="Animation_dyujb"]
-resource_name = "AirDashF_Start"
-length = 0.2
-step = 0.016666668
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Char_Sprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.099999994, 0.15),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [ExtResource("27_v7yuv"), ExtResource("22_mium3"), ExtResource("23_ljw5q"), ExtResource("24_hfsi5")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Char_Sprite:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-131.55, -9.98)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_0gg8v"]
-_data = {
-&"BAirDash": SubResource("Animation_0gg8v"),
-&"FAirDash": SubResource("Animation_dyujb")
 }
 
 [sub_resource type="Animation" id="Animation_raku0"]
@@ -533,7 +448,7 @@ _data = {
 
 [sub_resource type="Animation" id="Animation_ljw5q"]
 resource_name = "new_animation"
-length = 0.8333333
+length = 0.95
 loop_mode = 1
 step = 0.016666668
 tracks/0/type = "value"
@@ -557,7 +472,7 @@ tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [Vector2(-168.815, -91)]
 }
 
@@ -908,7 +823,7 @@ tracks/0/path = NodePath("Char_Sprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.016666668, 0.033333335, 0.05, 0.1, 0.15, 0.18333334, 0.21666668, 0.25),
+"times": PackedFloat32Array(0, 0.016666668, 0.05, 0.083333336, 0.13333334, 0.16666667, 0.20000002, 0.23333335),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [ExtResource("86_15he3"), ExtResource("87_h1goo"), ExtResource("88_h1goo"), ExtResource("88_r2n8l"), ExtResource("89_mium3"), ExtResource("88_h1goo"), ExtResource("87_h1goo"), ExtResource("86_15he3")]
@@ -920,44 +835,15 @@ tracks/1/path = NodePath("Char_Sprite:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.016666668, 0.033333335, 0.05, 0.1, 0.15, 0.18333334, 0.21666668, 0.25),
+"times": PackedFloat32Array(0, 0.016666668, 0.05, 0.083333336, 0.13333334, 0.16666667, 0.20000002, 0.23333335),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [Vector2(-137.63, -77.225), Vector2(-126.205, -73.93), Vector2(-115.448, -74.157), Vector2(-75.458, -74.157), Vector2(-86.783, -74.157), Vector2(-115.448, -74.157), Vector2(-126.205, -73.93), Vector2(-137.63, -77.225)]
 }
 
-[sub_resource type="Animation" id="Animation_pbvoj"]
-length = 0.36666667
-step = 0.016666668
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Char_Sprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.016666668, 0.05, 0.083333336, 0.13333334, 0.18333334, 0.23333333, 0.3, 0.33333334),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [ExtResource("100_v7yuv"), ExtResource("101_uevin"), ExtResource("102_8l3vj"), ExtResource("103_8lx3x"), ExtResource("104_dyujb"), ExtResource("105_0gg8v"), ExtResource("106_ji8s0"), ExtResource("107_sfp3s")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Char_Sprite:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.016666668, 0.05, 0.083333336, 0.13333334, 0.18333334, 0.23333333, 0.3, 0.33333334),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [Vector2(-146.42, -77.425), Vector2(-155.845, -77.425), Vector2(-152.09, -77.425), Vector2(-66.895, -77.425), Vector2(-93.255, -73.855), Vector2(-122.425, -73.855), Vector2(-95.765, -73.855), Vector2(-103.37, -73.855)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dyujb"]
 _data = {
-&"Nml_5A": SubResource("Animation_8lx3x"),
-&"Nml_5B": SubResource("Animation_pbvoj")
+&"Nml_5A": SubResource("Animation_8lx3x")
 }
 
 [sub_resource type="Animation" id="Animation_h1goo"]
@@ -1180,7 +1066,6 @@ region_rect = Rect2(0, 0, 550.12, 409)
 [node name="Components" type="Node2D" parent="." unique_id=1064610710]
 
 [node name="Hurtbox" type="Area2D" parent="Components" unique_id=482100738]
-visible = false
 script = ExtResource("1_x6gho")
 metadata/_custom_type_script = "uid://u6lkkiwrap7c"
 
@@ -1199,7 +1084,6 @@ script = ExtResource("2_ys73i")
 metadata/_custom_type_script = "uid://vdot3es4dinw"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Pushbox" unique_id=487061554]
-visible = false
 shape = SubResource("RectangleShape2D_pbvoj")
 
 [node name="InputBuffer" type="Node" parent="Components" unique_id=1278073048]
@@ -1253,26 +1137,9 @@ script = ExtResource("18_42ihw")
 collision_layer = 16
 script = ExtResource("18_3x780")
 move_data = ExtResource("19_42ihw")
-index_viewer = Array[String](["Index 0: 1 box(es)"])
-metadata/_custom_type_script = "uid://lsrl3hjuitwo"
-
-[node name="Hitbox_1_index_0" type="CollisionShape2D" parent="Components/FrameData/Nml_5A" unique_id=960740357]
-shape = SubResource("RectangleShape2D_v7yuv")
-disabled = true
-debug_color = Color(1, 0.2, 0.2, 0.35)
-script = ExtResource("21_r2n8l")
-start_frame = -1
-end_frame = -1
-
-[node name="Nml_5B" type="Area2D" parent="Components/FrameData" unique_id=1177937670]
-collision_layer = 16
-script = ExtResource("18_3x780")
-move_data = ExtResource("21_raku0")
-preview_frame = 22
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=299450226]
-visible = false
 z_index = 1
 shape = SubResource("RectangleShape2D_bed0j")
 debug_color = Color(0.7049782, 0.6326187, 0, 0.41960785)
@@ -1282,7 +1149,6 @@ max_polyphony = 2
 
 [node name="Char_Sprite_Animator" type="AnimationPlayer" parent="." unique_id=1893088372]
 libraries/ = SubResource("AnimationLibrary_7nql1")
-libraries/Airdash = SubResource("AnimationLibrary_0gg8v")
 libraries/Crouch = SubResource("AnimationLibrary_r2n8l")
 libraries/Dash = SubResource("AnimationLibrary_raku0")
 libraries/Idle = SubResource("AnimationLibrary_1hpx1")

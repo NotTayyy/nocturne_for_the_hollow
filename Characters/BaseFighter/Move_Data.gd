@@ -1,3 +1,4 @@
+@tool
 extends Resource
 class_name MoveData
 
@@ -90,6 +91,7 @@ enum InvulType  { None, Strike, Throw, Projectile, Full }
 # -----------------------------------------------------------------------------
 @export var move_name : String = ""
 @export var move_id   : String = ""
+@export var anim_path : String = ""   ## Full AnimationPlayer path e.g. "Normals/Nml_5A"
 
 # -----------------------------------------------------------------------------
 # Flags
@@ -189,8 +191,10 @@ enum InvulType  { None, Strike, Throw, Projectile, Full }
 # Populated by HitboxFrameData.Bake() — do not edit manually
 # -----------------------------------------------------------------------------
 @export_group("Box Data")
+## The Hitboxes of the Current Move
 @export var hitbox_data : Array[Dictionary] = []
-
+## Hitbox bake backup — auto-saved before every bake
+@export var hitbox_data_backup : Array[Dictionary] = []
 # -----------------------------------------------------------------------------
 # Counter hit
 # -----------------------------------------------------------------------------
@@ -300,8 +304,12 @@ func calculate_damage(
 	# Final damage = base × combo_rate × P1 × accumulated_P2 × this_P2 × bonus
 	var scaled := base * COMBO_RATE * first_hit_p1 * accumulated_p2 * this_p2 * bonus
 
-	# Apply minimum damage floor — before bonus per BBCF rules
-	var floor_val := float(min_damage[min(hit_index, min_damage.size() - 1)])
+	# Apply minimum damage floor — 5% of base if min_damage array is empty
+	var floor_val : float
+	if min_damage.is_empty():
+		floor_val = base * 0.05
+	else:
+		floor_val = float(min_damage[min(hit_index, min_damage.size() - 1)])
 	scaled = maxf(scaled, floor_val)
 
 	return int(scaled)

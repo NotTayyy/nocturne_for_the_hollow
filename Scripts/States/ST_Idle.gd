@@ -20,7 +20,7 @@ func enter(_prev: String) -> void:
 	gate_dash      = true
 	gate_backdash  = true
 	gate_barrier   = true
-	ap.play("Idle")
+	ap.play("Idle/Idle")
 
 func exit() -> void:
 	_reset_gates()
@@ -31,14 +31,13 @@ func update(_delta: float) -> void:
 	var h       := input_buffer.held_inputs
 	
 	if fighter.facing_updated == true:
-		ap.play("Idle_Turn")
+		ap.play("Idle/Idle_Turn")
 	 
 	if frame % 60 == 0:
 		_chance += 10
 		
 		if randi_range(1, 100) <= _chance:
-			print("hello")
-			ap.play("Idle_Goad")
+			ap.play("Idle/Idle_Goad")
 			_chance = -100
 	
 	if "2" in h or "1" in h or "3" in h:
@@ -47,17 +46,14 @@ func update(_delta: float) -> void:
 		state_manager.request("Walk", InputBuffer.PRIORITY["Walking"])
 
 func to_idle():
-	ap.play("Idle")
+	ap.play("Idle/Idle")
 
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
 	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	if command.has("Frame_Data") and command["Frame_Data"] != null:
-		var attack : ST_Attack = state_manager.states.get("Attack") as ST_Attack
-		if attack != null:
-			attack.hfd = fighter.get_node(command["Frame_Data"]) as HitboxFrameData
-			state_manager.request("Attack", prio)
-			return
+		_request_attack(command)
+		return
 	match cmd:
 		"Walk", "WalkBack":
 			state_manager.request("Walk", prio)

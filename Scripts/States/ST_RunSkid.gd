@@ -36,7 +36,7 @@ func enter(_prev: String) -> void:
 	gate_burst     = true
 	gate_barrier   = true    # Barrier Brake — only path to blocking
 
-	ap.play("Dash_Skid")
+	ap.play("Dash/Dash_Skid")
 
 func exit() -> void:
 	_reset_gates()
@@ -66,4 +66,5 @@ func on_command(command: Dictionary) -> void:
 			state_manager.request("Barrier", prio)
 		_ when command.get("Priority","") in ["Normal","Command Normal",
 			   "Special","EX Special","Drive","Ultimate Art"]:
-			pass # wire to ST_Attack when ready
+			if command.has("Frame_Data") and command["Frame_Data"] != null:
+				_request_attack(command)

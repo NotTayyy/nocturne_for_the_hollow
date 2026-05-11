@@ -8,6 +8,9 @@ class_name HitboxFrameData
 ## How many hitbox shapes to add per index when clicking Add Frame
 @export var hitboxes_to_add : int = 1
 
+## Check this before clicking Bake to confirm — auto-unchecks after bake
+@export var confirm_bake : bool = false
+
 ## Default box type for newly added shapes
 @export var default_box_type : FrameDataObject.BoxType = FrameDataObject.BoxType.Hitbox :
 	set(value):
@@ -16,6 +19,15 @@ class_name HitboxFrameData
 
 ## Read-only index viewer — shows all hit indices and box counts
 @export var index_viewer : Array[String] = []
+
+## Live preview — shows hitbox state at current animation position
+@export var preview_enabled : bool = false
+
+## NodePath to the AnimationPlayer — set this in the Inspector
+@export var preview_animation_player : NodePath = NodePath("../../../Char_Sprite_Animator")
+
+## Read-only — current preview frame for reference
+@export var preview_frame : int = 0
 
 ## Runtime — set by ST_Attack when a move begins
 var _current_frame       : int        = 0
@@ -30,16 +42,63 @@ var _hit_log             : Dictionary = {}
 
 func _get_tool_buttons() -> Array:
 	return [
-		{ displayName = "Add Frame",             call = "AddFrame"       },
-		{ displayName = "Clear All",             call = "ClearFrameData" },
-		{ displayName = "Bake to MoveData",      call = "Bake"           },
-		{ displayName = "Restore from MoveData", call = "Restore"        },
+		{ displayName = "Add Frame",             call = "AddFrame"          },
+		{ displayName = "Clear All",             call = "ClearFrameData"    },
+		{ displayName = "Bake to MoveData",      call = "Bake"              },
+		{ displayName = "Restore from MoveData", call = "Restore"           },
+		{ displayName = "Restore from Backup",   call = "RestoreFromBackup" },
 	]
 
 func _ready() -> void:
 	_apply_collision_layers()
 	if not Engine.is_editor_hint():
 		area_entered.connect(_on_area_entered)
+
+func _process(_delta: float) -> void:
+	if not Engine.is_editor_hint():
+		return
+	if not preview_enabled or move_data == null:
+		_preview_disable_all()
+		return
+	if preview_animation_player.is_empty():
+		push_warning("[HFD Preview] No AnimationPlayer path set")
+		return
+	var ap : AnimationPlayer = get_node_or_null(preview_animation_player)
+	if ap == null:
+		push_warning("[HFD Preview] Could not find AnimationPlayer at: %s" % str(preview_animation_player))
+		return
+	preview_frame = int(ap.current_animation_position * 60.0)
+	_preview_update(preview_frame)
+
+func _preview_update(frame : int) -> void:
+	var startup : int = move_data.startup
+	var cursor  : int = 0
+	var current_index : int = -1
+	var active_frame  : int = frame - startup
+
+	if frame <= startup:
+		_preview_disable_all()
+		return
+
+	for i : int in move_data.active.size():
+		var window : int = move_data.active[i]
+		if active_frame > cursor and active_frame <= cursor + window:
+			current_index = i
+			break
+		cursor += window
+		if i < move_data.gaps.size():
+			cursor += move_data.gaps[i]
+
+	for child in get_children():
+		if not child is FrameDataObject:
+			continue
+		var obj : FrameDataObject = child
+		obj.disabled = obj.hit_index != current_index
+
+func _preview_disable_all() -> void:
+	for child in get_children():
+		if child is FrameDataObject:
+			(child as FrameDataObject).disabled = true
 
 # =============================================================================
 # Tmp hit detection test
@@ -56,6 +115,7 @@ func _on_area_entered(area : Area2D) -> void:
 		return
 	register_hit(hit_index, area.get_instance_id())
 	print("HIT! ", owner.name, " hit ", area.owner.name, " with index ", hit_index)
+	print("Fag")
 
 # =============================================================================
 # Collision layers
@@ -86,6 +146,9 @@ func tick() -> void:
 	if not _active or _move_data_rt == null:
 		return
 	_current_frame += 1
+	
+	if _current_frame == 6:
+		print(_active)
 	_update_active_boxes()
 
 func stop() -> void:
@@ -141,6 +204,10 @@ func _update_active_boxes() -> void:
 			_spawn_shapes_for_index(new_index)
 
 func _spawn_shapes_for_index(hit_index : int) -> void:
+	var facing_right : bool = true
+	if owner and owner.has_method("get") and owner.get("dir_facing") != null:
+		facing_right = owner.dir_facing == "Right"
+
 	for entry : Dictionary in _move_data_rt.hitbox_data:
 		if entry.get("hit_index", 0) != hit_index:
 			continue
@@ -150,10 +217,12 @@ func _spawn_shapes_for_index(hit_index : int) -> void:
 		var sz         : Dictionary       = entry.get("size",     { "x": 50.0, "y": 50.0 })
 		var pos        : Dictionary       = entry.get("position", { "x": 0.0,  "y": 0.0  })
 
-		rect.size           = Vector2(sz["x"], sz["y"])
-		shape_node.shape    = rect
-		shape_node.position = Vector2(pos["x"], pos["y"])
-		shape_node.name     = entry.get("name", "Hitbox_rt")
+		var pos_x : float = pos["x"] if facing_right else -pos["x"]
+
+		rect.size            = Vector2(sz["x"], sz["y"])
+		shape_node.shape     = rect
+		shape_node.position  = Vector2(pos_x, pos["y"])
+		shape_node.name      = entry.get("name", "Hitbox_rt")
 		shape_node.debug_color = Color(1.0, 0.2, 0.2, 0.35) if entry.get("box_type", 0) == FrameDataObject.BoxType.Hitbox else Color(0.0, 0.531, 0.852, 0.349)
 
 		add_child(shape_node)
@@ -196,6 +265,15 @@ func Bake() -> void:
 		push_error("[HFD] No MoveData assigned — cannot bake")
 		return
 
+	if not confirm_bake:
+		push_warning("[HFD] Check 'Confirm Bake' in the Inspector before baking")
+		return
+
+	# Auto-backup current hitbox_data before overwriting
+	if not move_data.hitbox_data.is_empty():
+		move_data.hitbox_data_backup = move_data.hitbox_data.duplicate(true)
+		print("[HFD] Backed up %d existing boxes" % move_data.hitbox_data_backup.size())
+
 	var baked : Array[Dictionary] = []
 
 	for child in get_children():
@@ -236,7 +314,20 @@ func Bake() -> void:
 	if move_data.resource_path != "":
 		ResourceSaver.save(move_data)
 
+	confirm_bake = false
 	print("[HFD] Baked %d boxes to %s" % [baked.size(), move_data.resource_path])
+
+func RestoreFromBackup() -> void:
+	if move_data == null:
+		push_error("[HFD] No MoveData assigned")
+		return
+	if move_data.hitbox_data_backup.is_empty():
+		push_warning("[HFD] No backup found — bake something first")
+		return
+	move_data.hitbox_data = move_data.hitbox_data_backup.duplicate(true)
+	if move_data.resource_path != "":
+		ResourceSaver.save(move_data)
+	print("[HFD] Restored %d boxes from backup" % move_data.hitbox_data.size())
 
 # =============================================================================
 # Restore

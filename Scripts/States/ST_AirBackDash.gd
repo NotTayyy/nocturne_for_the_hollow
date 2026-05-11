@@ -21,6 +21,7 @@ func enter(_prev: String) -> void:
 	gate_dash      = true
 	gate_backdash  = true
 	gate_barrier   = false
+	ap.play("Airdash/BAirDash")
 
 func exit() -> void:
 	_reset_gates()

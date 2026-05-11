@@ -77,9 +77,9 @@ func _update_jump_phase() -> void:
  
 func _play_jump_anim() -> void:
 	match _jump_phase:
-		JumpPhase.ASCENT:  fighter.anim_player.play("Jump_Asc")
-		JumpPhase.APEX:    fighter.anim_player.play("Jump_Apex")
-		JumpPhase.DESCENT: fighter.anim_player.play("Jump_Desc")
+		JumpPhase.ASCENT:  fighter.anim_player.play("Jump/Jump_Asc")
+		JumpPhase.APEX:    fighter.anim_player.play("Jump/Jump_Apex")
+		JumpPhase.DESCENT: fighter.anim_player.play("Jump/Jump_Desc")
  
 # -----------------------------------------------------------------------------
 # Stock management

@@ -117,6 +117,32 @@ func open_gate(move_data: MoveData, has_hit: bool, is_blocked: bool) -> void:
 	gate_dash      = move_data.cancel_dash.is_available(frame, has_hit, is_blocked, false)
 	gate_backdash  = move_data.cancel_backdash.is_available(frame, has_hit, is_blocked, false)
 
+## Safe animation play — silently skips missing animations.
+## Prints a warning in debug mode.
+func safe_play(anim_name: String) -> void:
+	if ap.has_animation(anim_name):
+		ap.play(anim_name)
+	elif Global.game_manager.Debug:
+		print("[%s] Animation not found: %s" % [state_id, anim_name])
+
+## Routes an attack command to ST_Attack using the Frame_Data path in the command.
+## Returns true if the attack was successfully routed.
+func _request_attack(command: Dictionary) -> bool:
+	var hfd_path : String = command.get("Frame_Data", "")
+	if hfd_path == "":
+		return false
+	var attack : ST_Attack = state_manager.states.get("Attack") as ST_Attack
+	if attack == null:
+		return false
+	var hfd : HitboxFrameData = fighter.get_node(hfd_path) as HitboxFrameData
+	if hfd == null:
+		push_error("[%s] Could not find HFD at path: %s" % [state_id, hfd_path])
+		return false
+	attack.hfd = hfd
+	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	state_manager.request("Attack", prio)
+	return true
+
 # -----------------------------------------------------------------------------
 # Button helpers
 # -----------------------------------------------------------------------------

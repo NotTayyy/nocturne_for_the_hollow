@@ -16,11 +16,12 @@ func enter(_prev: String) -> void:
 	_standing_up    = false
 	fighter.velocity.x = 0.0
 	fighter.velocity.y = 0.0
+	gate_self      = true
 	gate_special   = true
 	gate_drive     = true
 	gate_overdrive = true
 	gate_barrier   = true
-	ap.play("Crouch_Start")
+	ap.play("Crouch/Crouch_Start")
 
 func exit() -> void:
 	_reset_gates()
@@ -31,16 +32,16 @@ func update(_delta: float) -> void:
 	frame += 1
 	
 	if fighter.facing_updated == true:
-		ap.play("Crouch_Turn")
+		ap.play("Crouch/Crouch_Turn")
 	
 	if not ap.is_playing():
-		ap.play("Crouch_Loop")
+		ap.play("Crouch/Crouch_Loop")
 
 	# Released down — begin stand-up
 	if "2" not in input_buffer.held_inputs and not _standing_up:
 		_standing_up    = true
 		_stand_up_timer = STAND_UP_FRAMES
-		ap.play("Crouch_End")
+		ap.play("Crouch/Crouch_End")
 
 	if _standing_up:
 		if _stand_up_timer > 0:
@@ -51,5 +52,8 @@ func update(_delta: float) -> void:
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
 	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	if command.has("Frame_Data") and command["Frame_Data"] != null:
+		_request_attack(command)
+		return
 	match cmd:
 		pass

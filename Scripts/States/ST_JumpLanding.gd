@@ -26,7 +26,7 @@ func enter(_prev: String) -> void:
 
 	fighter.remove_property(Property.Type.Airborne)
 
-	fighter.anim_player.play("Jump_LandRecov")
+	fighter.anim_player.play("Jump/Jump_LandRecov")
 
 func exit() -> void:
 	_reset_gates()
@@ -34,7 +34,7 @@ func exit() -> void:
 func update(_delta: float) -> void:
 	frame += 1
 
-	if frame >= cd.landing_recovery and "Jump_LandRecov" == ap.current_animation:
+	if frame >= cd.landing_recovery and "Jump/Jump_LandRecov" == ap.current_animation:
 		state_manager.force_transition("Idle")
 
 func on_command(command: Dictionary) -> void:

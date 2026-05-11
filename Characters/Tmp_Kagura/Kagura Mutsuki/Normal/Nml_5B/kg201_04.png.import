@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b454u1mwaj1t7"
-path="res://.godot/imported/kg201_07.png-66860b97830ac8233aa5b0415c9e4d7c.ctex"
+uid="uid://3foqovg2j3sw"
+path="res://.godot/imported/kg201_04.png-1341932e9fd743f0841fa0f4b523e536.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Characters/Tmp_Kagura/Kagura Mutsuki/kg201_07.png"
-dest_files=["res://.godot/imported/kg201_07.png-66860b97830ac8233aa5b0415c9e4d7c.ctex"]
+source_file="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_04.png"
+dest_files=["res://.godot/imported/kg201_04.png-1341932e9fd743f0841fa0f4b523e536.ctex"]
 
 [params]
 
