@@ -51,7 +51,7 @@ func update(_delta: float) -> void:
 
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
-	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	var _prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	if command.has("Frame_Data") and command["Frame_Data"] != null:
 		_request_attack(command)
 		return

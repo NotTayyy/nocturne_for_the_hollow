@@ -60,7 +60,7 @@ func _process(_delta: float) -> void:
 	if P2:
 		if P2.velocity.y < p2_max_y: p2_max_y = P2.velocity.y
 
-	ImGui.SetNextWindowCollapsed(false, 4)
+	#ImGui.SetNextWindowCollapsed(false, 4)
 	ImGui.Begin("Players")
 
 	ImGui.PushID("Player1")

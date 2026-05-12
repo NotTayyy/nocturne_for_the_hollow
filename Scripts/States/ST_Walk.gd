@@ -4,6 +4,7 @@ class_name ST_Walk
 const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack","SuperJump","SuperJumpFwd","SuperJumpBack"]
 
 var _last_forward : bool = true
+var forward : bool = true
 
 func _ready() -> void:	
 	state_id = "Walk"
@@ -12,7 +13,7 @@ func enter(_prev: String) -> void:
 	frame         = 0
 	apply_gravity = false
 	fighter.velocity.y = 0.0
-	_last_forward = "6" in input_buffer.held_inputs
+	_last_forward  = "6" in input_buffer.held_inputs
 	gate_self      = true
 	gate_special   = true
 	gate_drive     = true
@@ -21,7 +22,7 @@ func enter(_prev: String) -> void:
 	gate_dash      = true
 	gate_backdash  = true
 	gate_barrier   = true
-	_play_walk_anim(_last_forward)
+	_play_walk_anim()
 
 func exit() -> void:
 	_reset_gates()
@@ -29,19 +30,15 @@ func exit() -> void:
 
 func update(_delta: float) -> void:
 	frame += 1
-	fighter.update_facing()
-
+	
 	var h       := input_buffer.held_inputs
-	var forward := "6" in h
+	forward = "6" in h
 
 	# Facing flipped this frame — mirror to correct animation
 	if fighter.facing_updated:
-		_last_forward = not _last_forward
-		var curr := ap.current_animation
-		if curr in ["Walk/WalkF_Loop", "Walk/WalkB_Loop"]:
-			ap.play("Walk/WalkF_Loop" if _last_forward else "Walk/WalkB_Loop")
-		else:
-			ap.play("Walk/WalkF_Start" if _last_forward else "Walk/WalkB_Start")
+		_change_anim()
+	if forward == not _last_forward:
+		_change_anim()
 
 	var speed := fighter.get_walk_speed(forward)
 	fighter.velocity.x = sign_x * speed if forward else -sign_x * speed
@@ -68,13 +65,21 @@ func on_command(command: Dictionary) -> void:
 		_ when cmd in JUMP_COMMANDS:
 			_request_jump(cmd, prio)
 
+func _change_anim() -> void:
+	_last_forward = not _last_forward
+	var curr := ap.current_animation
+	if curr in ["Walk/WalkF_Loop", "Walk/WalkB_Loop"]:
+		ap.play("Walk/WalkF_Loop" if forward else "Walk/WalkB_Loop")
+	else:
+		ap.play("Walk/WalkF_Start" if forward else "Walk/WalkB_Start")
+
 func _request_jump(cmd: String, prio: int) -> void:
 	var prejump := state_manager.states.get("Prejump") as ST_Prejump
 	if prejump: prejump.jump_command = cmd
 	state_manager.request("Prejump", prio)
 
-func _play_walk_anim(forward: bool) -> void:
-	var loop : String = "Walk/WalkF_Loop" if forward else "Walk/WalkB_Loop"
+func _play_walk_anim() -> void:
+	var loop : String = "Walk/WalkF_Loop" if _last_forward else "Walk/WalkB_Loop"
 	if ap.current_animation == loop:
 		return
-	ap.play("Walk/WalkF_Start" if forward else "Walk/WalkB_Start")
+	ap.play("Walk/WalkF_Start" if _last_forward else "Walk/WalkB_Start")

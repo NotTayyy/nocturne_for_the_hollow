@@ -22,7 +22,6 @@ air_hit_duration = Array[int]([4])
 air_ch_effect = Array[int]([4])
 air_ch_duration = Array[int]([1])
 hitbox_data = Array[Dictionary]([{
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_1_index_0",
@@ -36,7 +35,6 @@ hitbox_data = Array[Dictionary]([{
 },
 "start_frame": -1
 }, {
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_2_index_0",
@@ -50,7 +48,6 @@ hitbox_data = Array[Dictionary]([{
 },
 "start_frame": -1
 }, {
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_3_index_0",
@@ -64,7 +61,6 @@ hitbox_data = Array[Dictionary]([{
 },
 "start_frame": -1
 }, {
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_4_index_0",
@@ -78,7 +74,6 @@ hitbox_data = Array[Dictionary]([{
 },
 "start_frame": -1
 }, {
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_5_index_0",
@@ -93,7 +88,6 @@ hitbox_data = Array[Dictionary]([{
 "start_frame": -1
 }])
 hitbox_data_backup = Array[Dictionary]([{
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_1_index_0",
@@ -107,7 +101,6 @@ hitbox_data_backup = Array[Dictionary]([{
 },
 "start_frame": -1
 }, {
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_2_index_0",
@@ -121,7 +114,6 @@ hitbox_data_backup = Array[Dictionary]([{
 },
 "start_frame": -1
 }, {
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_3_index_0",
@@ -135,7 +127,6 @@ hitbox_data_backup = Array[Dictionary]([{
 },
 "start_frame": -1
 }, {
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_4_index_0",
@@ -149,7 +140,6 @@ hitbox_data_backup = Array[Dictionary]([{
 },
 "start_frame": -1
 }, {
-"box_type": 0,
 "end_frame": -1,
 "hit_index": 0,
 "name": &"Hitbox_5_index_0",
@@ -162,5 +152,90 @@ hitbox_data_backup = Array[Dictionary]([{
 "y": 90.0
 },
 "start_frame": -1
+}])
+hurtbox_data = Array[Dictionary]([{
+"end_frame": 17,
+"name": &"HurtDO_1",
+"position": {
+"x": -89.5,
+"y": 38.0
+},
+"size": {
+"x": 69.0,
+"y": 152.0
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": -14.5,
+"y": -139.0
+},
+"size": {
+"x": 145.0,
+"y": 262.0
+},
+"start_frame": -1
+}, {
+"end_frame": 10,
+"name": &"HurtDO_3",
+"position": {
+"x": 151.5,
+"y": 52.5
+},
+"size": {
+"x": 77.0,
+"y": 73.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_4",
+"position": {
+"x": 125.0,
+"y": 11.5
+},
+"size": {
+"x": 60.0,
+"y": 69.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_5",
+"position": {
+"x": 88.0,
+"y": -22.5
+},
+"size": {
+"x": 68.0,
+"y": 57.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_6",
+"position": {
+"x": 61.5,
+"y": -56.5
+},
+"size": {
+"x": 53.0,
+"y": 67.0
+},
+"start_frame": 8
+}, {
+"end_frame": -1,
+"name": &"HurtDO_7",
+"position": {
+"x": 9.0,
+"y": 44.5
+},
+"size": {
+"x": 238.0,
+"y": 119.0
+},
+"start_frame": 18
 }])
 metadata/_custom_type_script = "uid://c1ie505730ew"

@@ -40,7 +40,7 @@ func update(_delta: float) -> void:
 			ap.play("Idle/Idle_Goad")
 			_chance = -100
 	
-	if "2" in h or "1" in h or "3" in h:
+	if "2" in h:
 		state_manager.request("Crouch", InputBuffer.PRIORITY["Crouching"])
 	if "4" in h or "6" in h:
 		state_manager.request("Walk", InputBuffer.PRIORITY["Walking"])

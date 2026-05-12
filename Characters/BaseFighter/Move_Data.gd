@@ -192,9 +192,11 @@ enum InvulType  { None, Strike, Throw, Projectile, Full }
 # -----------------------------------------------------------------------------
 @export_group("Box Data")
 ## The Hitboxes of the Current Move
-@export var hitbox_data : Array[Dictionary] = []
-## Hitbox bake backup — auto-saved before every bake
+@export var hitbox_data        : Array[Dictionary] = []
+## Hitbox bake backup
 @export var hitbox_data_backup : Array[Dictionary] = []
+## Hurtbox overrides during this move
+@export var hurtbox_data       : Array[Dictionary] = []
 # -----------------------------------------------------------------------------
 # Counter hit
 # -----------------------------------------------------------------------------

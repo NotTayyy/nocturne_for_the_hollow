@@ -1,0 +1,168 @@
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://cbpgp2etnox1h"]
+
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Characters/BaseFighter/Move_Data.gd" id="1_ka1hv"]
+
+[resource]
+script = ExtResource("1_ka1hv")
+move_name = "6A"
+move_id = "Cmd Normal 6A"
+anim_path = "Normals/Cmd_6A"
+startup = 21
+active = Array[int]([3])
+recovery = 19
+damage = Array[int]([800])
+p1 = 80
+p2 = Array[int]([92])
+bonus_proration = 110
+guard = Array[int]([0])
+attack_level = 4
+ground_hit_effect = Array[int]([9])
+air_hit_effect = Array[int]([4])
+hitbox_data = Array[Dictionary]([{
+"end_frame": 25,
+"hit_index": 0,
+"name": &"HitDO_1_index_0",
+"position": {
+"x": 107.5,
+"y": -139.5
+},
+"size": {
+"x": 77.0,
+"y": 199.0
+},
+"start_frame": 22
+}])
+hurtbox_data = Array[Dictionary]([{
+"end_frame": 14,
+"name": &"HurtDO_1",
+"position": {
+"x": -6.0,
+"y": 54.5
+},
+"size": {
+"x": 252.0,
+"y": 99.0
+},
+"start_frame": -1
+}, {
+"end_frame": 6,
+"name": &"HurtDO_2",
+"position": {
+"x": -20.5,
+"y": -114.5
+},
+"size": {
+"x": 177.0,
+"y": 295.0
+},
+"start_frame": -1
+}, {
+"end_frame": 21,
+"name": &"HurtDO_3",
+"position": {
+"x": -46.0,
+"y": -114.5
+},
+"size": {
+"x": 132.0,
+"y": 315.0
+},
+"start_frame": 7
+}, {
+"end_frame": 30,
+"name": &"HurtDO_4",
+"position": {
+"x": -116.5,
+"y": 48.5
+},
+"size": {
+"x": 71.0,
+"y": 119.0
+},
+"start_frame": 15
+}, {
+"end_frame": 24,
+"name": &"HurtDO_5",
+"position": {
+"x": -4.0,
+"y": -114.0
+},
+"size": {
+"x": 262.0,
+"y": 218.0
+},
+"start_frame": 22
+}, {
+"end_frame": 24,
+"name": &"HurtDO_6",
+"position": {
+"x": -1.0,
+"y": -2.5
+},
+"size": {
+"x": 196.0,
+"y": 69.0
+},
+"start_frame": 22
+}, {
+"end_frame": 30,
+"name": &"HurtDO_7",
+"position": {
+"x": -43.0,
+"y": -233.0
+},
+"size": {
+"x": 75.0,
+"y": 66.0
+},
+"start_frame": 22
+}, {
+"end_frame": 30,
+"name": &"HurtDO_8",
+"position": {
+"x": -11.0,
+"y": -80.0
+},
+"size": {
+"x": 210.0,
+"y": 268.0
+},
+"start_frame": 25
+}, {
+"end_frame": 39,
+"name": &"HurtDO_9",
+"position": {
+"x": -2.0,
+"y": -119.5
+},
+"size": {
+"x": 166.0,
+"y": 449.0
+},
+"start_frame": 31
+}, {
+"end_frame": -1,
+"name": &"HurtDO_10",
+"position": {
+"x": -10.0,
+"y": 33.5
+},
+"size": {
+"x": 230.0,
+"y": 139.0
+},
+"start_frame": 30
+}, {
+"end_frame": -1,
+"name": &"HurtDO_11",
+"position": {
+"x": 10.0,
+"y": -107.0
+},
+"size": {
+"x": 146.0,
+"y": 344.0
+},
+"start_frame": 40
+}])
+metadata/_custom_type_script = "uid://c1ie505730ew"
