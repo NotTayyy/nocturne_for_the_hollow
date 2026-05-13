@@ -1311,6 +1311,38 @@ move_data = ExtResource("22_v7yuv")
 mode = 1
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
+[node name="ST_Idle" type="Area2D" parent="Components/FrameData" unique_id=953814357]
+collision_layer = 16
+script = ExtResource("18_3x780")
+mode = 1
+state_hurtbox_data = Array[Dictionary]([{
+"end_frame": -1,
+"name": &"HurtDO_1",
+"position": {
+"x": -4.5,
+"y": 51.0
+},
+"size": {
+"x": 257.0,
+"y": 108.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": -4.0,
+"y": -76.5
+},
+"size": {
+"x": 144.0,
+"y": 359.0
+},
+"start_frame": 0
+}])
+preview_enabled = true
+metadata/_custom_type_script = "uid://lsrl3hjuitwo"
+
 [node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=299450226]
 visible = false
 z_index = 1
