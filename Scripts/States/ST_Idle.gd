@@ -3,7 +3,7 @@ class_name ST_Idle
 
 const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack","SuperJump","SuperJumpFwd","SuperJumpBack"]
 
-var _chance : int = 10
+var _chance  : int            = 10
 
 func _ready() -> void:
 	state_id = "Idle"
@@ -20,39 +20,54 @@ func enter(_prev: String) -> void:
 	gate_dash      = true
 	gate_backdash  = true
 	gate_barrier   = true
-	ap.play("Idle")
+	ap.play("Idle/Idle")
+	if hfd_node != null:
+		hfd_node.begin(null)
 
 func exit() -> void:
 	_reset_gates()
+	if hfd_node != null:
+		hfd_node.stop()
 
 func update(_delta: float) -> void:
 	frame += 1
 	fighter.velocity.x *= cd.friction
-	var h       := input_buffer.held_inputs
+	var h := input_buffer.held_inputs
+	if hfd_node != null:
+		hfd_node.tick()
 	
 	if fighter.facing_updated == true:
-		ap.play("Idle_Turn")
+		ap.play("Idle/Idle_Turn")
 	 
 	if frame % 60 == 0:
 		_chance += 10
 		
 		if randi_range(1, 100) <= _chance:
-			print("hello")
-			ap.play("Idle_Goad")
+			ap.play("Idle/Idle_Goad")
 			_chance = -100
 	
-	if "2" in h or "1" in h or "3" in h:
+	if "2" in h:
 		state_manager.request("Crouch", InputBuffer.PRIORITY["Crouching"])
 	if "4" in h or "6" in h:
 		state_manager.request("Walk", InputBuffer.PRIORITY["Walking"])
 
 func to_idle():
-	ap.play("Idle")
+	ap.play("Idle/Idle")
 
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
 	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	match cmd:
+		"Button A":
+			_request_attack(command, "Components/FrameData/Nml_5A")
+		"Button B":
+			_request_attack(command, "Components/FrameData/Nml_5B")
+		"Button C":
+			_request_attack(command, "Components/FrameData/Nml_5C")
+		"Button D":
+			_request_attack(command, "Components/FrameData/Nml_5D")
+		"6A":
+			_request_attack(command, "Components/FrameData/Cmd_6A")
 		"Walk", "WalkBack":
 			state_manager.request("Walk", prio)
 		"Crouch":

@@ -132,7 +132,6 @@ func setup_char() -> void:
 
 func _on_health_set(new_value: int) -> void:
 	curr_health = clampi(new_value, 0, base_max_health)
-	print(curr_health)
 	health_changed.emit(curr_health, base_max_health)
 	if curr_health <= 0:
 		health_depleted.emit()

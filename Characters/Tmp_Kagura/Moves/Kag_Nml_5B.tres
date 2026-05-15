@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://dxrjbm3k2o05b"]
+
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Characters/BaseFighter/Move_Data.gd" id="1_v6gwd"]
+
+[resource]
+script = ExtResource("1_v6gwd")
+move_name = "5B"
+move_id = "Nml_5B"
+startup = 7
+active = Array[int]([3])
+recovery = 11
+damage = Array[int]([480])
+p1 = 90
+p2 = Array[int]([85])
+starter = 3
+guard = Array[int]([2])
+attribute = Array[int]([2])
+air_hit_effect = Array[int]([4])
+air_hit_duration = Array[int]([4])
+air_ch_effect = Array[int]([4])
+air_ch_duration = Array[int]([1])
+pushback = null
+air_pushback = null
+metadata/_custom_type_script = "uid://c1ie505730ew"

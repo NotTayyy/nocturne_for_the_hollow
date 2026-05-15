@@ -15,6 +15,7 @@ func enter(_prev: String) -> void:
 	gate_drive     = true
 	gate_overdrive = true
 	gate_jump      = true
+	ap.play("Airdash/FAirDash")
 
 
 func exit() -> void:

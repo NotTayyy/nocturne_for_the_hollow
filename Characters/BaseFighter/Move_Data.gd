@@ -1,3 +1,4 @@
+@tool
 extends Resource
 class_name MoveData
 
@@ -79,11 +80,11 @@ const COMBO_RATE : float = 0.60
 # -----------------------------------------------------------------------------
 # Enums
 # -----------------------------------------------------------------------------
-enum GuardType  { Mid, High, Low, All, Throw, GuardBreak, Barrier }
+enum GuardType  { High, Mid, Low, All, Throw, GuardBreak }
 enum Attribute  { Head, Body, Foot, Projectile, Throw, Doll }
 enum HitEffect  { None, Launch, Crumple, WallBounce, GroundBounce, WallStick, Slide, Down, SpinFall, Crouch }
-enum StarterType { Normal, Long, Short, Very_Short }
-enum InvulType  { None = 0, Strike = 1, Throw = 2, Projectile = 4, Full = 7 }
+enum StarterType { Very_Short, Short, Normal, Long}
+enum InvulType  { None, Strike, Throw, Projectile, Full }
 
 # -----------------------------------------------------------------------------
 # Identity
@@ -138,14 +139,14 @@ enum InvulType  { None = 0, Strike = 1, Throw = 2, Projectile = 4, Full = 7 }
 # Guard / Attribute
 # -----------------------------------------------------------------------------
 @export_group("Guard and Attribute")
-@export var guard     : Array[int] = [GuardType.Mid]   ## Per-hit guard type
-@export var attribute : Array[int] = [Attribute.Body]  ## Per-hit attribute
+@export var guard     : Array[GuardType] = [GuardType.Mid]   ## Per-hit guard type
+@export var attribute : Array[Attribute] = [Attribute.Body]  ## Per-hit attribute
 
 # -----------------------------------------------------------------------------
 # Attack level
 # -----------------------------------------------------------------------------
 @export_group("Attack Level")
-@export_range(0, 5) var attack_level : int = 1
+@export var attack_level : Array[int] = [1]   ## Per-hit attack level (0-5). Falls back to last entry.
 
 ## Overrides — set to -1 to use table default
 @export var override_hitstun   : int = -1
@@ -162,27 +163,52 @@ enum InvulType  { None = 0, Strike = 1, Throw = 2, Projectile = 4, Full = 7 }
 # Hit effects
 # -----------------------------------------------------------------------------
 @export_group("Hit Effects")
-@export var ground_hit_effect   : Array[int] = [HitEffect.None]
-@export var ground_hit_duration : Array[int] = [-1]   ## -1 = use table hitstun
-@export var air_hit_effect      : Array[int] = [HitEffect.None]
-@export var air_hit_duration    : Array[int] = [-1]   ## -1 = use table untechable
-@export var ground_ch_effect    : Array[int] = [HitEffect.None]
-@export var ground_ch_duration  : Array[int] = [-1]
-@export var air_ch_effect       : Array[int] = [HitEffect.None]
-@export var air_ch_duration     : Array[int] = [-1]
+@export var ground_hit_effect   : Array[HitEffect] = [HitEffect.None]
+@export var ground_hit_duration : Array[int]       = [-1]   ## -1 = use table hitstun
+@export var air_hit_effect      : Array[HitEffect] = [HitEffect.None]
+@export var air_hit_duration    : Array[int]       = [-1]   ## -1 = use table untechable
+@export var ground_ch_effect    : Array[HitEffect] = [HitEffect.None]
+@export var ground_ch_duration  : Array[int]       = [-1]
+@export var air_ch_effect       : Array[HitEffect] = [HitEffect.None]
+@export var air_ch_duration     : Array[int]       = [-1]
 
 # -----------------------------------------------------------------------------
 # Invulnerability
 # -----------------------------------------------------------------------------
 @export_group("Invulnerability")
+@export var invul_type  : InvulType = InvulType.None   ## Bitmask
 @export var invul_start : int = -1   ## -1 = no invul
 @export var invul_end   : int = -1
-@export var invul_type  : int = InvulType.None   ## Bitmask
 
 ## Doll-specific invul (e.g. Ignis in Duo Bios) — handled character-side
 @export var doll_invul_start : int = -1
 @export var doll_invul_end   : int = -1
-@export var doll_invul_type  : int = InvulType.None
+@export var doll_invul_type  : InvulType = InvulType.None
+
+# -----------------------------------------------------------------------------
+# Hitbox / Hurtbox shape data
+# Populated by HitboxFrameData.Bake() — do not edit manually
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# Physics Impulses
+# Each entry: { "x": float, "y": float, "start": int, "end": int, "falloff": float }
+# start/end in frames. -1 = whole move duration.
+# falloff: velocity multiplier per frame (e.g. 0.85). 1.0 = no falloff.
+# -----------------------------------------------------------------------------
+@export_group("Physics Impulses")
+
+## Impulses applied to the attacker
+@export var self_impulses : Array[Dictionary] = []
+
+# -----------------------------------------------------------------------------
+# Pushback
+# Applied along the X axis — positive = away from attacker.
+# Corner reversal handled by hit resolution system.
+# -1 = no pushback.
+# -----------------------------------------------------------------------------
+@export_group("Pushback")
+@export var pushback     : Array[float] = []
+@export var air_pushback : Array[float] = []
 
 # -----------------------------------------------------------------------------
 # Counter hit
@@ -209,44 +235,48 @@ var cancel_backdash  : CancelWindow = CancelWindow.new()
 # All respect overrides first, fall back to table.
 # -----------------------------------------------------------------------------
 
-func get_hitstun() -> int:
+func _get_level(hit_index : int) -> int:
+	if attack_level.is_empty(): return 1
+	return attack_level[min(hit_index, attack_level.size() - 1)]
+
+func get_hitstun(hit_index : int = 0) -> int:
 	return override_hitstun if override_hitstun != -1 \
-		else LEVEL_TABLE[attack_level]["hitstun"]
+		else LEVEL_TABLE[_get_level(hit_index)]["hitstun"]
 
-func get_hitstun_crouch() -> int:
-	return get_hitstun() + 2
+func get_hitstun_crouch(hit_index : int = 0) -> int:
+	return get_hitstun(hit_index) + 2
 
-func get_hitstun_ch() -> int:
-	return get_hitstun() + LEVEL_TABLE[attack_level]["hitstun_ch"]
+func get_hitstun_ch(hit_index : int = 0) -> int:
+	return get_hitstun(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["hitstun_ch"]
 
-func get_blockstun() -> int:
+func get_blockstun(hit_index : int = 0) -> int:
 	return override_blockstun if override_blockstun != -1 \
-		else LEVEL_TABLE[attack_level]["blockstun"]
+		else LEVEL_TABLE[_get_level(hit_index)]["blockstun"]
 
-func get_blockstun_air() -> int:
-	return get_blockstun() + 2
+func get_blockstun_air(hit_index : int = 0) -> int:
+	return get_blockstun(hit_index) + 2
 
-func get_blockstun_instant_block() -> int:
-	return get_blockstun() - 3
+func get_blockstun_instant_block(hit_index : int = 0) -> int:
+	return get_blockstun(hit_index) - 3
 
-func get_blockstun_instant_block_air() -> int:
-	return get_blockstun_air() - 6
+func get_blockstun_instant_block_air(hit_index : int = 0) -> int:
+	return get_blockstun_air(hit_index) - 6
 
-func get_blockstun_barrier() -> int:
-	return get_blockstun() + 1
+func get_blockstun_barrier(hit_index : int = 0) -> int:
+	return get_blockstun(hit_index) + 1
 
-func get_hitstop() -> int:
+func get_hitstop(hit_index : int = 0) -> int:
 	return override_hitstop if override_hitstop != -1 \
-		else LEVEL_TABLE[attack_level]["hitstop"]
+		else LEVEL_TABLE[_get_level(hit_index)]["hitstop"]
 
-func get_hitstop_ch() -> int:
-	return get_hitstop() + LEVEL_TABLE[attack_level]["hitstop_ch"]
+func get_hitstop_ch(hit_index : int = 0) -> int:
+	return get_hitstop(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["hitstop_ch"]
 
-func get_untechable() -> int:
-	return LEVEL_TABLE[attack_level]["untechable"]
+func get_untechable(hit_index : int = 0) -> int:
+	return LEVEL_TABLE[_get_level(hit_index)]["untechable"]
 
-func get_untechable_ch() -> int:
-	return get_untechable() + LEVEL_TABLE[attack_level]["untechable_ch"]
+func get_untechable_ch(hit_index : int = 0) -> int:
+	return get_untechable(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["untechable_ch"]
 
 func get_blockstop_attacker(hit_index: int) -> int:
 	if override_blockstop_attacker.size() > hit_index:
@@ -293,8 +323,12 @@ func calculate_damage(
 	# Final damage = base × combo_rate × P1 × accumulated_P2 × this_P2 × bonus
 	var scaled := base * COMBO_RATE * first_hit_p1 * accumulated_p2 * this_p2 * bonus
 
-	# Apply minimum damage floor — before bonus per BBCF rules
-	var floor_val := float(min_damage[min(hit_index, min_damage.size() - 1)])
+	# Apply minimum damage floor — 5% of base if min_damage array is empty
+	var floor_val : float
+	if min_damage.is_empty():
+		floor_val = base * 0.05
+	else:
+		floor_val = float(min_damage[min(hit_index, min_damage.size() - 1)])
 	scaled = maxf(scaled, floor_val)
 
 	return int(scaled)
@@ -316,13 +350,12 @@ func is_active_frame(frame: int)   -> bool: return frame >= startup and frame < 
 func is_recovery_frame(frame: int) -> bool: return frame >= startup + _total_active()
 func total_frames()                -> int:  return startup + _total_active() + recovery
 
-## Static difference (frame advantage on block, first active frame)
 func static_difference() -> int:
-	return get_blockstun() - ((active[0] - 1) + recovery)
+	return get_blockstun(0) - ((active[0] - 1) + recovery)
 
 ## Real frame advantage given remaining active frames
 func real_frame_advantage(remaining_active: int) -> int:
-	return get_blockstun() - (remaining_active + recovery)
+	return get_blockstun(0) - (remaining_active + recovery)
 
 func _total_active() -> int:
 	var total := 0

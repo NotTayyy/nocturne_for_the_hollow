@@ -11,6 +11,8 @@ var cd            : CharacterData
 var ap            : AnimationPlayer
 var lockout_timer : int = 0
 
+@export var hfd_node : HitboxFrameData = null
+
 ## Facing-relative horizontal sign. Always current — computed on access.
 var sign_x : float :
 	get: return 1.0 if fighter.dir_facing == "Right" else -1.0
@@ -116,6 +118,57 @@ func open_gate(move_data: MoveData, has_hit: bool, is_blocked: bool) -> void:
 	gate_rapid     = move_data.cancel_rapid.is_available(frame, has_hit, is_blocked, false)
 	gate_dash      = move_data.cancel_dash.is_available(frame, has_hit, is_blocked, false)
 	gate_backdash  = move_data.cancel_backdash.is_available(frame, has_hit, is_blocked, false)
+
+## Safe animation play — silently skips missing animations.
+## Prints a warning in debug mode.
+func safe_play(anim_name: String) -> void:
+	if ap.has_animation(anim_name):
+		ap.play(anim_name)
+	elif Global.game_manager.Debug:
+		print("[%s] Animation not found: %s" % [state_id, anim_name])
+
+## Routes an attack command to ST_Attack using the given HFD node path.
+## Checks cancel windows if currently in ST_Attack.
+## Returns true if the attack was successfully routed.
+func _request_attack(command: Dictionary, hfd_path: String) -> bool:
+	var attack : ST_Attack = state_manager.states.get("Attack") as ST_Attack
+	if attack == null:
+		return false
+	var hfd : HitboxFrameData = fighter.get_node_or_null(hfd_path) as HitboxFrameData
+	if hfd == null:
+		push_error("[%s] Could not find HFD at path: %s" % [state_id, hfd_path])
+		return false
+	# Cancel window check if currently attacking
+	if state_manager.active_state != null and state_manager.active_state.state_id == "Attack":
+		var current_hfd : HitboxFrameData = (state_manager.active_state as ST_Attack).hfd
+		if not _cancel_allowed(current_hfd):
+			return false
+	attack.hfd = hfd
+	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	state_manager.request("Attack", prio)
+	return true
+
+## Checks whether a cancel out of the current attack is allowed.
+## Rules: never during startup, on_hit/on_block only, on_whiff only if stated.
+func _cancel_allowed(current_hfd : HitboxFrameData) -> bool:
+	if current_hfd == null or current_hfd.move_data == null:
+		return true
+	var md    : MoveData = current_hfd.move_data
+	var f     : int      = current_hfd._current_frame
+	# Never during startup
+	if f <= md.startup:
+		return false
+	# Check cancel windows
+	var hit   : bool = current_hfd.hit_state == HitboxFrameData.HitState.HIT
+	var block : bool = current_hfd.hit_state == HitboxFrameData.HitState.BLOCK
+	var whiff : bool = current_hfd.hit_state == HitboxFrameData.HitState.NONE
+	for window in md.cancel_windows:
+		if not window.is_available(f, hit, block, whiff):
+			continue
+		if hit   and window.on_hit:   return true
+		if block and window.on_block: return true
+		if whiff and window.on_whiff: return true
+	return false
 
 # -----------------------------------------------------------------------------
 # Button helpers

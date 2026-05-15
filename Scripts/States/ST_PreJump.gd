@@ -20,7 +20,7 @@ func enter(_prev: String) -> void:
 	invul_burst    = true
 	gate_special   = true
 	gate_burst     = true
-	ap.play("Jump_Pre")
+	ap.play("Jump/Jump_Pre")
 	_set_launch_velocity()
 
 func exit() -> void:
@@ -36,7 +36,7 @@ func update(_delta: float) -> void:
 
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
-	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	var _prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	if cmd in ["Special", "EX Special"]:
 		pass # wire to ST_Attack when ready
 

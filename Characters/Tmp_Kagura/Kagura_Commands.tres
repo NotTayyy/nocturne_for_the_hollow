@@ -63,11 +63,6 @@ command_list = [{
 "Priority": "Command Normal",
 "Sequence": ["6", "B"]
 }, {
-"Command": "4B",
-"Held": ["4"],
-"Priority": "Command Normal",
-"Sequence": ["4", "B"]
-}, {
 "Command": "6C",
 "Held": ["6"],
 "Priority": "Command Normal",

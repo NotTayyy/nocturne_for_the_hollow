@@ -118,8 +118,6 @@ func stage(action: String, type: String) -> void:
 
 	if label:
 		label.text = _to_arrow(action)
-	if debug_mode:
-		print("Staged: %s %s @ %d  held:%s" % [type, action, frame, held_inputs.keys()])
 
 ## Called by State_Manager.tick() at end of frame.
 ## Runs all command matching against staged inputs, fires command_matched,
@@ -411,7 +409,6 @@ func _try_buffered_command() -> void:
 		_buffered_command_frame = -1
 		return
 	# Re-emit so State_Manager can try again against current gates
-	print(_buffered_command["Command"]," ", age, " ", BUFFER_WINDOW)
 	command_matched.emit(_buffered_command)
 
 # -----------------------------------------------------------------------------

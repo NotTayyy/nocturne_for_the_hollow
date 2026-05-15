@@ -19,7 +19,7 @@ func enter(prev: String) -> void:
 	apply_gravity      = false
 	fighter.velocity.y = 0.0
 	_reset_gates()
-	ap.play("DashBack")
+	ap.play("Dash/DashBack")
 
 	match cd.backdash_type:
 		CharacterData.DashType.Dash:
