@@ -4,9 +4,9 @@ class_name ST_Walk
 const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack","SuperJump","SuperJumpFwd","SuperJumpBack"]
 
 var _last_forward : bool = true
-var forward : bool = true
+var forward       : bool = true
 
-func _ready() -> void:	
+func _ready() -> void:
 	state_id = "Walk"
 
 func enter(_prev: String) -> void:
@@ -23,14 +23,19 @@ func enter(_prev: String) -> void:
 	gate_backdash  = true
 	gate_barrier   = true
 	_play_walk_anim()
+	if hfd_node != null:
+		hfd_node.begin(null)
 
 func exit() -> void:
 	_reset_gates()
 	fighter.velocity.x = 0.0
+	if hfd_node != null:
+		hfd_node.stop()
 
 func update(_delta: float) -> void:
 	frame += 1
-	
+	if hfd_node != null:
+		hfd_node.tick()
 	var h       := input_buffer.held_inputs
 	forward = "6" in h
 
@@ -52,10 +57,19 @@ func update(_delta: float) -> void:
 func on_command(command: Dictionary) -> void:
 	var cmd  : String = command.get("Command", "")
 	var prio : int    = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
-	if command.has("Frame_Data") and command["Frame_Data"] != null:
-		_request_attack(command)
-		return
 	match cmd:
+		"Button A":
+			_request_attack(command, "Components/FrameData/Nml_5A")
+		"Button B":
+			_request_attack(command, "Components/FrameData/Nml_5B")
+		"Button C":
+			_request_attack(command, "Components/FrameData/Nml_5C")
+		"Button D":
+			_request_attack(command, "Components/FrameData/Nml_5D")
+		"6A":
+			_request_attack(command, "Components/FrameData/Cmd_6A")
+		"Button A":
+			_request_attack(command, "Components/FrameData/Nml_5A")
 		"Crouch":
 			state_manager.request("Crouch", prio)
 		"Dash":

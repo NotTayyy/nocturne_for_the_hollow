@@ -126,34 +126,28 @@
 [ext_resource type="Texture2D" uid="uid://etun1302yagj" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_02.png" id="88_h1goo"]
 [ext_resource type="Texture2D" uid="uid://gf0jooikr7jo" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_03.png" id="88_r2n8l"]
 [ext_resource type="Texture2D" uid="uid://kj3tghko7x4n" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5A/kg200_04.png" id="89_mium3"]
-[ext_resource type="Texture2D" uid="uid://b4iln5gb7w33o" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_00.png" id="96_pstfx"]
-[ext_resource type="Texture2D" uid="uid://ltnxhn65j5g" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_01.png" id="97_l6tdk"]
-[ext_resource type="Texture2D" uid="uid://cej3ijkk5yi5s" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_02.png" id="98_adevy"]
-[ext_resource type="Texture2D" uid="uid://dpke4uwp34yny" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_03.png" id="99_1aklr"]
-[ext_resource type="Texture2D" uid="uid://d3umjsipduv7f" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_04.png" id="100_bqgqd"]
+[ext_resource type="Texture2D" uid="uid://b4iln5gb7w33o" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_00.png" id="96_pstfx"]
+[ext_resource type="Texture2D" uid="uid://ltnxhn65j5g" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_01.png" id="97_l6tdk"]
+[ext_resource type="Texture2D" uid="uid://cej3ijkk5yi5s" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_02.png" id="98_adevy"]
+[ext_resource type="Texture2D" uid="uid://dpke4uwp34yny" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_03.png" id="99_1aklr"]
+[ext_resource type="Texture2D" uid="uid://d3umjsipduv7f" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_04.png" id="100_bqgqd"]
 [ext_resource type="Texture2D" uid="uid://dpphn436x1kgi" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_00.png" id="100_v7yuv"]
 [ext_resource type="Texture2D" uid="uid://1e5nwixqa6ag" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_01.png" id="101_uevin"]
-[ext_resource type="Texture2D" uid="uid://cpeb34l77kf6o" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_05.png" id="101_w0w46"]
+[ext_resource type="Texture2D" uid="uid://cpeb34l77kf6o" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_05.png" id="101_w0w46"]
 [ext_resource type="Texture2D" uid="uid://dh6r1dxwmffs4" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_02.png" id="102_8l3vj"]
-[ext_resource type="Texture2D" uid="uid://bwmoqwd82t4ms" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_06.png" id="102_cpsol"]
+[ext_resource type="Texture2D" uid="uid://bwmoqwd82t4ms" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_06.png" id="102_cpsol"]
 [ext_resource type="Texture2D" uid="uid://dt55m0fwpm6s3" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_03.png" id="103_8lx3x"]
-[ext_resource type="Texture2D" uid="uid://dsc4gr2tycocn" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_07.png" id="103_vnlv6"]
+[ext_resource type="Texture2D" uid="uid://dsc4gr2tycocn" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_07.png" id="103_vnlv6"]
 [ext_resource type="Texture2D" uid="uid://3foqovg2j3sw" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_04.png" id="104_dyujb"]
-[ext_resource type="Texture2D" uid="uid://dc0saa01ckuqy" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_08.png" id="104_q4ikk"]
+[ext_resource type="Texture2D" uid="uid://dc0saa01ckuqy" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_08.png" id="104_q4ikk"]
 [ext_resource type="Texture2D" uid="uid://ceqo4d8t7u3" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_05.png" id="105_0gg8v"]
-[ext_resource type="Texture2D" uid="uid://l7gy4aclwk8e" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_09.png" id="105_e8oof"]
+[ext_resource type="Texture2D" uid="uid://l7gy4aclwk8e" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_09.png" id="105_e8oof"]
 [ext_resource type="Texture2D" uid="uid://2xw5affng0fb" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_06.png" id="106_ji8s0"]
-[ext_resource type="Texture2D" uid="uid://phqyc4v2l0j8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_10.png" id="106_vaxrd"]
+[ext_resource type="Texture2D" uid="uid://phqyc4v2l0j8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_10.png" id="106_vaxrd"]
 [ext_resource type="Texture2D" uid="uid://b454u1mwaj1t7" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Normal/Nml_5B/kg201_07.png" id="107_sfp3s"]
-[ext_resource type="Texture2D" uid="uid://n3oc03e383o0" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_11.png" id="107_x1p5d"]
-[ext_resource type="Texture2D" uid="uid://d2g7xm6roasrt" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_12.png" id="108_efijj"]
-[ext_resource type="Texture2D" uid="uid://blk450plgb5ct" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/kg210_13.png" id="109_n1drn"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fnuni"]
-size = Vector2(140, 362)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_yipan"]
-size = Vector2(238, 65)
+[ext_resource type="Texture2D" uid="uid://n3oc03e383o0" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_11.png" id="107_x1p5d"]
+[ext_resource type="Texture2D" uid="uid://d2g7xm6roasrt" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_12.png" id="108_efijj"]
+[ext_resource type="Texture2D" uid="uid://blk450plgb5ct" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Command_Normals/6A/kg210_13.png" id="109_n1drn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pbvoj"]
 size = Vector2(104, 187)
@@ -544,7 +538,7 @@ _data = {
 
 [sub_resource type="Animation" id="Animation_ljw5q"]
 resource_name = "new_animation"
-length = 0.8333333
+length = 0.95
 loop_mode = 1
 step = 0.016666668
 tracks/0/type = "value"
@@ -948,7 +942,7 @@ tracks/0/path = NodePath("Char_Sprite:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.016666668, 0.033333335, 0.05, 0.1, 0.15, 0.18333334, 0.21666668, 0.25),
+"times": PackedFloat32Array(0.016666668, 0.033333335, 0.05, 0.083333336, 0.13333334, 0.16666667, 0.20000002, 0.23333333),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [ExtResource("86_15he3"), ExtResource("87_h1goo"), ExtResource("88_h1goo"), ExtResource("88_r2n8l"), ExtResource("89_mium3"), ExtResource("88_h1goo"), ExtResource("87_h1goo"), ExtResource("86_15he3")]
@@ -960,7 +954,7 @@ tracks/1/path = NodePath("Char_Sprite:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.016666668, 0.033333335, 0.05, 0.1, 0.15, 0.18333334, 0.21666668, 0.25),
+"times": PackedFloat32Array(0.016666668, 0.033333335, 0.05, 0.083333336, 0.13333334, 0.16666667, 0.20000002, 0.23333333),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [Vector2(-137.63, -77.225), Vector2(-126.205, -73.93), Vector2(-115.448, -74.157), Vector2(-75.458, -74.157), Vector2(-86.783, -74.157), Vector2(-115.448, -74.157), Vector2(-126.205, -73.93), Vector2(-137.63, -77.225)]
@@ -1221,28 +1215,17 @@ region_rect = Rect2(0, 0, 550.12, 409)
 [node name="Components" type="Node2D" parent="." unique_id=1064610710]
 
 [node name="Hurtbox" type="Area2D" parent="Components" unique_id=482100738]
+collision_layer = 16
 script = ExtResource("1_x6gho")
 metadata/_custom_type_script = "uid://u6lkkiwrap7c"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Hurtbox" unique_id=128655557]
-visible = false
-position = Vector2(0, -81)
-shape = SubResource("RectangleShape2D_fnuni")
-debug_color = Color(0.37379378, 0.3447202, 0.5093183, 0.41960785)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Components/Hurtbox" unique_id=1622019315]
-visible = false
-position = Vector2(0, 67.5)
-shape = SubResource("RectangleShape2D_yipan")
-debug_color = Color(0.37379378, 0.3447202, 0.5093183, 0.41960785)
 
 [node name="Pushbox" type="Area2D" parent="Components" unique_id=960486358]
 script = ExtResource("2_ys73i")
 metadata/_custom_type_script = "uid://vdot3es4dinw"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Pushbox" unique_id=487061554]
-visible = false
 shape = SubResource("RectangleShape2D_pbvoj")
+debug_color = Color(0, 0.5537673, 0.4214139, 0.41960785)
 
 [node name="InputBuffer" type="Node" parent="Components" unique_id=1278073048]
 script = ExtResource("3_s44pe")
@@ -1252,11 +1235,13 @@ metadata/_custom_type_script = "uid://spdxybg7602"
 script = ExtResource("4_6k7md")
 metadata/_custom_type_script = "uid://b8tx1i4237rpu"
 
-[node name="ST_Idle" type="Node" parent="Components/State_Manager" unique_id=1048011120]
+[node name="ST_Idle" type="Node" parent="Components/State_Manager" unique_id=1048011120 node_paths=PackedStringArray("hfd_node")]
 script = ExtResource("5_fkpi0")
+hfd_node = NodePath("../../FrameData/ST_Idle")
 
-[node name="ST_Walk" type="Node" parent="Components/State_Manager" unique_id=705064829]
+[node name="ST_Walk" type="Node" parent="Components/State_Manager" unique_id=705064829 node_paths=PackedStringArray("hfd_node")]
 script = ExtResource("6_30n6a")
+hfd_node = NodePath("../../FrameData/ST_Walk")
 
 [node name="ST_Airborne" type="Node" parent="Components/State_Manager" unique_id=969018460]
 script = ExtResource("7_kt4rh")
@@ -1295,6 +1280,139 @@ script = ExtResource("18_42ihw")
 collision_layer = 16
 script = ExtResource("18_3x780")
 move_data = ExtResource("19_42ihw")
+valid_animations = Array[String](["Normals/Nml_5A"])
+hitbox_data = Array[Dictionary]([{
+"end_frame": 7,
+"hit_index": 0,
+"name": &"HitDO_1_index_0",
+"position": {
+"x": 152.5,
+"y": -224.0
+},
+"size": {
+"x": 187.0,
+"y": 68.0
+},
+"start_frame": 5
+}])
+hurtbox_sets = {
+"Normals/Nml_5A": Array[Dictionary]([{
+"end_frame": -1,
+"name": &"HurtDO_1",
+"position": {
+"x": 0.5,
+"y": 48.5
+},
+"size": {
+"x": 237.0,
+"y": 101.0
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": 1.5,
+"y": -77.0
+},
+"size": {
+"x": 135.0,
+"y": 354.0
+},
+"start_frame": -1
+}, {
+"end_frame": 11,
+"name": &"HurtDO_3",
+"position": {
+"x": 87.5,
+"y": -195.5
+},
+"size": {
+"x": 95.0,
+"y": 55.0
+},
+"start_frame": 3
+}, {
+"end_frame": 9,
+"name": &"HurtDO_4",
+"position": {
+"x": 126.0,
+"y": -209.0
+},
+"size": {
+"x": 149.0,
+"y": 50.0
+},
+"start_frame": 5
+}])
+}
+preview_frame = 12
+hitbox_data_backup = Array[Dictionary]([{
+"end_frame": 7,
+"hit_index": 0,
+"name": &"HitDO_1_index_0",
+"position": {
+"x": 152.5,
+"y": -224.0
+},
+"size": {
+"x": 187.0,
+"y": 68.0
+},
+"start_frame": 5
+}])
+hurtbox_sets_backup = {
+"Normals/Nml_5A": Array[Dictionary]([{
+"end_frame": -1,
+"name": &"HurtDO_1",
+"position": {
+"x": 0.5,
+"y": 48.5
+},
+"size": {
+"x": 237.0,
+"y": 101.0
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": 1.5,
+"y": -77.0
+},
+"size": {
+"x": 135.0,
+"y": 354.0
+},
+"start_frame": -1
+}, {
+"end_frame": 11,
+"name": &"HurtDO_3",
+"position": {
+"x": 87.5,
+"y": -195.5
+},
+"size": {
+"x": 95.0,
+"y": 55.0
+},
+"start_frame": 3
+}, {
+"end_frame": 9,
+"name": &"HurtDO_4",
+"position": {
+"x": 126.0,
+"y": -209.0
+},
+"size": {
+"x": 149.0,
+"y": 50.0
+},
+"start_frame": 5
+}])
+}
+active_set = "Normals/Nml_5A"
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Nml_5B" type="Area2D" parent="Components/FrameData" unique_id=1177937670]
@@ -1302,6 +1420,398 @@ collision_layer = 16
 script = ExtResource("18_3x780")
 move_data = ExtResource("21_raku0")
 mode = 1
+valid_animations = Array[String](["Normals/Nml_5B"])
+hitbox_data = Array[Dictionary]([{
+"end_frame": -1,
+"hit_index": 0,
+"name": &"HitDO_1_index_0",
+"position": {
+"x": 46.0,
+"y": -75.0
+},
+"size": {
+"x": 66.0,
+"y": 67.0
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"hit_index": 0,
+"name": &"HitDO_2_index_0",
+"position": {
+"x": 83.5,
+"y": -32.0
+},
+"size": {
+"x": 77.0,
+"y": 82.0
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"hit_index": 0,
+"name": &"HitDO_3_index_0",
+"position": {
+"x": 122.5,
+"y": 14.75
+},
+"size": {
+"x": 81.0,
+"y": 95.5
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"hit_index": 0,
+"name": &"HitDO_4_index_0",
+"position": {
+"x": 164.0,
+"y": 55.75
+},
+"size": {
+"x": 86.0,
+"y": 89.5
+},
+"start_frame": -1
+}])
+hurtbox_sets = {
+"Normals/Nml_5B": Array[Dictionary]([{
+"end_frame": 2,
+"name": &"HurtDO_1",
+"position": {
+"x": -18.0,
+"y": 55.5
+},
+"size": {
+"x": 190.0,
+"y": 91.0
+},
+"start_frame": 0
+}, {
+"end_frame": 17,
+"name": &"HurtDO_2",
+"position": {
+"x": -92.75,
+"y": 42.5
+},
+"size": {
+"x": 61.5,
+"y": 129.0
+},
+"start_frame": 3
+}, {
+"end_frame": -1,
+"name": &"HurtDO_3",
+"position": {
+"x": 13.375,
+"y": 46.0
+},
+"size": {
+"x": 229.25,
+"y": 102.0
+},
+"start_frame": 18
+}, {
+"end_frame": 17,
+"name": &"HurtDO_4",
+"position": {
+"x": -26.0,
+"y": -116.0
+},
+"size": {
+"x": 124.0,
+"y": 274.0
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"name": &"HurtDO_5",
+"position": {
+"x": -2.5,
+"y": -77.5
+},
+"size": {
+"x": 143.0,
+"y": 357.0
+},
+"start_frame": 18
+}, {
+"end_frame": 10,
+"name": &"HurtDO_6",
+"position": {
+"x": 48.0,
+"y": -188.0
+},
+"size": {
+"x": 72.0,
+"y": 50.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_7",
+"position": {
+"x": 47.0,
+"y": -74.0
+},
+"size": {
+"x": 50.0,
+"y": 50.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_8",
+"position": {
+"x": 79.0,
+"y": -43.0
+},
+"size": {
+"x": 50.0,
+"y": 50.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_9",
+"position": {
+"x": 112.0,
+"y": -10.0
+},
+"size": {
+"x": 50.0,
+"y": 62.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_10",
+"position": {
+"x": 136.0,
+"y": 18.0
+},
+"size": {
+"x": 53.0,
+"y": 55.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_11",
+"position": {
+"x": 159.0,
+"y": 58.0
+},
+"size": {
+"x": 63.0,
+"y": 67.0
+},
+"start_frame": 8
+}])
+}
+hitbox_data_backup = Array[Dictionary]([{
+"end_frame": -1,
+"hit_index": 0,
+"name": &"HitDO_1_index_0",
+"position": {
+"x": 46.0,
+"y": -75.0
+},
+"size": {
+"x": 66.0,
+"y": 67.0
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"hit_index": 0,
+"name": &"HitDO_2_index_0",
+"position": {
+"x": 83.5,
+"y": -32.0
+},
+"size": {
+"x": 77.0,
+"y": 82.0
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"hit_index": 0,
+"name": &"HitDO_3_index_0",
+"position": {
+"x": 122.5,
+"y": 14.75
+},
+"size": {
+"x": 81.0,
+"y": 95.5
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"hit_index": 0,
+"name": &"HitDO_4_index_0",
+"position": {
+"x": 164.0,
+"y": 55.75
+},
+"size": {
+"x": 86.0,
+"y": 89.5
+},
+"start_frame": -1
+}])
+hurtbox_sets_backup = {
+"Normals/Nml_5B": Array[Dictionary]([{
+"end_frame": 2,
+"name": &"HurtDO_1",
+"position": {
+"x": -18.0,
+"y": 55.5
+},
+"size": {
+"x": 190.0,
+"y": 91.0
+},
+"start_frame": 0
+}, {
+"end_frame": 17,
+"name": &"HurtDO_2",
+"position": {
+"x": -92.75,
+"y": 42.5
+},
+"size": {
+"x": 61.5,
+"y": 129.0
+},
+"start_frame": 3
+}, {
+"end_frame": -1,
+"name": &"HurtDO_3",
+"position": {
+"x": 13.375,
+"y": 46.0
+},
+"size": {
+"x": 229.25,
+"y": 102.0
+},
+"start_frame": 18
+}, {
+"end_frame": 17,
+"name": &"HurtDO_4",
+"position": {
+"x": -26.0,
+"y": -116.0
+},
+"size": {
+"x": 124.0,
+"y": 274.0
+},
+"start_frame": -1
+}, {
+"end_frame": -1,
+"name": &"HurtDO_5",
+"position": {
+"x": -2.5,
+"y": -77.5
+},
+"size": {
+"x": 143.0,
+"y": 357.0
+},
+"start_frame": 18
+}, {
+"end_frame": 10,
+"name": &"HurtDO_6",
+"position": {
+"x": 48.0,
+"y": -188.0
+},
+"size": {
+"x": 72.0,
+"y": 50.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_7",
+"position": {
+"x": 47.0,
+"y": -74.0
+},
+"size": {
+"x": 50.0,
+"y": 50.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_8",
+"position": {
+"x": 79.0,
+"y": -43.0
+},
+"size": {
+"x": 50.0,
+"y": 50.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_9",
+"position": {
+"x": 112.0,
+"y": -10.0
+},
+"size": {
+"x": 50.0,
+"y": 62.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_10",
+"position": {
+"x": 136.0,
+"y": 18.0
+},
+"size": {
+"x": 53.0,
+"y": 55.0
+},
+"start_frame": 8
+}, {
+"end_frame": 10,
+"name": &"HurtDO_11",
+"position": {
+"x": 159.0,
+"y": 58.0
+},
+"size": {
+"x": 63.0,
+"y": 67.0
+},
+"start_frame": 8
+}])
+}
+active_set = "Normals/Nml_5B"
+metadata/_custom_type_script = "uid://lsrl3hjuitwo"
+
+[node name="Nml_5C" type="Area2D" parent="Components/FrameData" unique_id=1429759579]
+collision_layer = 16
+script = ExtResource("18_3x780")
+move_data = ExtResource("19_42ihw")
+active_set = "Normals/Nml_5A"
+metadata/_custom_type_script = "uid://lsrl3hjuitwo"
+
+[node name="Nml_5D" type="Area2D" parent="Components/FrameData" unique_id=864882906]
+collision_layer = 16
+script = ExtResource("18_3x780")
+move_data = ExtResource("19_42ihw")
+active_set = "Normals/Nml_5A"
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Cmd_6A" type="Area2D" parent="Components/FrameData" unique_id=217675790]
@@ -1309,38 +1819,529 @@ collision_layer = 16
 script = ExtResource("18_3x780")
 move_data = ExtResource("22_v7yuv")
 mode = 1
+valid_animations = Array[String](["Normals/Cmd_6A"])
+hitbox_data = Array[Dictionary]([{
+"end_frame": 25,
+"hit_index": 0,
+"name": &"HitDO_1_index_0",
+"position": {
+"x": 107.5,
+"y": -139.5
+},
+"size": {
+"x": 77.0,
+"y": 199.0
+},
+"start_frame": 22
+}])
+hurtbox_sets = {
+"Normals/Cmd_6A": Array[Dictionary]([{
+"end_frame": 9,
+"name": &"HurtDO_1",
+"position": {
+"x": -4.0,
+"y": 62.0
+},
+"size": {
+"x": 250.0,
+"y": 80.0
+},
+"start_frame": 0
+}, {
+"end_frame": 9,
+"name": &"HurtDO_2",
+"position": {
+"x": -9.0,
+"y": -63.0
+},
+"size": {
+"x": 134.0,
+"y": 332.0
+},
+"start_frame": 0
+}, {
+"end_frame": 30,
+"name": &"HurtDO_3",
+"position": {
+"x": -98.0,
+"y": 40.5
+},
+"size": {
+"x": 60.0,
+"y": 139.0
+},
+"start_frame": 10
+}, {
+"end_frame": 21,
+"name": &"HurtDO_4",
+"position": {
+"x": -34.0,
+"y": -136.5
+},
+"size": {
+"x": 120.0,
+"y": 275.0
+},
+"start_frame": 10
+}, {
+"end_frame": 30,
+"name": &"HurtDO_5",
+"position": {
+"x": 11.5,
+"y": -102.0
+},
+"size": {
+"x": 195.0,
+"y": 246.0
+},
+"start_frame": 22
+}, {
+"end_frame": 30,
+"name": &"HurtDO_6",
+"position": {
+"x": -43.0,
+"y": -232.0
+},
+"size": {
+"x": 82.0,
+"y": 80.0
+},
+"start_frame": 22
+}, {
+"end_frame": -1,
+"name": &"HurtDO_7",
+"position": {
+"x": 2.5,
+"y": -90.0
+},
+"size": {
+"x": 145.0,
+"y": 378.0
+},
+"start_frame": 31
+}, {
+"end_frame": -1,
+"name": &"HurtDO_8",
+"position": {
+"x": -3.0,
+"y": 58.0
+},
+"size": {
+"x": 252.0,
+"y": 98.0
+},
+"start_frame": 31
+}, {
+"end_frame": 39,
+"name": &"HurtDO_9",
+"position": {
+"x": 36.0,
+"y": -297.5
+},
+"size": {
+"x": 84.0,
+"y": 121.0
+},
+"start_frame": 31
+}])
+}
+hitbox_data_backup = Array[Dictionary]([{
+"end_frame": 25,
+"hit_index": 0,
+"name": &"HitDO_1_index_0",
+"position": {
+"x": 107.5,
+"y": -139.5
+},
+"size": {
+"x": 77.0,
+"y": 199.0
+},
+"start_frame": 22
+}])
+hurtbox_sets_backup = {
+"Normals/Cmd_6A": Array[Dictionary]([{
+"end_frame": 9,
+"name": &"HurtDO_1",
+"position": {
+"x": -4.0,
+"y": 62.0
+},
+"size": {
+"x": 250.0,
+"y": 80.0
+},
+"start_frame": 0
+}, {
+"end_frame": 9,
+"name": &"HurtDO_2",
+"position": {
+"x": -9.0,
+"y": -63.0
+},
+"size": {
+"x": 134.0,
+"y": 332.0
+},
+"start_frame": 0
+}, {
+"end_frame": 30,
+"name": &"HurtDO_3",
+"position": {
+"x": -98.0,
+"y": 40.5
+},
+"size": {
+"x": 60.0,
+"y": 139.0
+},
+"start_frame": 10
+}, {
+"end_frame": 21,
+"name": &"HurtDO_4",
+"position": {
+"x": -34.0,
+"y": -136.5
+},
+"size": {
+"x": 120.0,
+"y": 275.0
+},
+"start_frame": 10
+}, {
+"end_frame": 30,
+"name": &"HurtDO_5",
+"position": {
+"x": 11.5,
+"y": -102.0
+},
+"size": {
+"x": 195.0,
+"y": 246.0
+},
+"start_frame": 22
+}, {
+"end_frame": 30,
+"name": &"HurtDO_6",
+"position": {
+"x": -43.0,
+"y": -232.0
+},
+"size": {
+"x": 82.0,
+"y": 80.0
+},
+"start_frame": 22
+}, {
+"end_frame": -1,
+"name": &"HurtDO_7",
+"position": {
+"x": 2.5,
+"y": -90.0
+},
+"size": {
+"x": 145.0,
+"y": 378.0
+},
+"start_frame": 31
+}, {
+"end_frame": -1,
+"name": &"HurtDO_8",
+"position": {
+"x": -3.0,
+"y": 58.0
+},
+"size": {
+"x": 252.0,
+"y": 98.0
+},
+"start_frame": 31
+}, {
+"end_frame": 39,
+"name": &"HurtDO_9",
+"position": {
+"x": 36.0,
+"y": -297.5
+},
+"size": {
+"x": 84.0,
+"y": 121.0
+},
+"start_frame": 31
+}])
+}
+active_set = "Normals/Cmd_6A"
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="ST_Idle" type="Area2D" parent="Components/FrameData" unique_id=953814357]
 collision_layer = 16
 script = ExtResource("18_3x780")
 mode = 1
-state_hurtbox_data = Array[Dictionary]([{
+valid_animations = Array[String](["Idle/Idle", "Idle/Idle_Goad"])
+hurtbox_sets = {
+"Idle/Idle": Array[Dictionary]([{
 "end_frame": -1,
 "name": &"HurtDO_1",
 "position": {
-"x": -4.5,
-"y": 51.0
+"x": -0.5,
+"y": 53.0
 },
 "size": {
-"x": 257.0,
-"y": 108.0
+"x": 237.0,
+"y": 94.0
 },
 "start_frame": 0
 }, {
 "end_frame": -1,
 "name": &"HurtDO_2",
 "position": {
-"x": -4.0,
-"y": -76.5
+"x": -0.5,
+"y": -79.5
 },
 "size": {
-"x": 144.0,
-"y": 359.0
+"x": 135.0,
+"y": 361.0
+},
+"start_frame": 0
+}]),
+"Idle/Idle_Goad": Array[Dictionary]([{
+"end_frame": 77,
+"name": &"HurtDO_1",
+"position": {
+"x": 83.75,
+"y": -152.0
+},
+"size": {
+"x": 102.5,
+"y": 80.0
+},
+"start_frame": 8
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": 12.0,
+"y": -176.5
+},
+"size": {
+"x": 160.0,
+"y": 165.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_3",
+"position": {
+"x": -62.5,
+"y": 48.5
+},
+"size": {
+"x": 121.0,
+"y": 113.0
 },
 "start_frame": 0
 }])
-preview_enabled = true
+}
+hurtbox_sets_backup = {
+"Idle/Idle": Array[Dictionary]([{
+"end_frame": -1,
+"name": &"HurtDO_1",
+"position": {
+"x": -0.5,
+"y": 53.0
+},
+"size": {
+"x": 237.0,
+"y": 94.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": -0.5,
+"y": -79.5
+},
+"size": {
+"x": 135.0,
+"y": 361.0
+},
+"start_frame": 0
+}]),
+"Idle/Idle_Goad": Array[Dictionary]([{
+"end_frame": 77,
+"name": &"HurtDO_1",
+"position": {
+"x": 83.75,
+"y": -152.0
+},
+"size": {
+"x": 102.5,
+"y": 80.0
+},
+"start_frame": 8
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": 0.0,
+"y": -79.0
+},
+"size": {
+"x": 136.0,
+"y": 360.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_3",
+"position": {
+"x": -0.5,
+"y": 55.5
+},
+"size": {
+"x": 245.0,
+"y": 99.0
+},
+"start_frame": 0
+}])
+}
+active_set = "Idle/Idle_Goad"
+metadata/_custom_type_script = "uid://lsrl3hjuitwo"
+
+[node name="ST_Walk" type="Area2D" parent="Components/FrameData" unique_id=16689226]
+collision_layer = 16
+script = ExtResource("18_3x780")
+mode = 1
+valid_animations = Array[String](["Walk/WalkB_Loop", "Walk/WalkB_Start", "Walk/WalkF_Start", "Walk/WalkF_Loop"])
+hurtbox_sets = {
+"Walk/WalkB_Loop": Array[Dictionary]([{
+"end_frame": -1,
+"name": &"HurtDO_1",
+"position": {
+"x": 11.0,
+"y": -108.0
+},
+"size": {
+"x": 150.0,
+"y": 410.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": 97.5,
+"y": -156.0
+},
+"size": {
+"x": 75.0,
+"y": 64.0
+},
+"start_frame": 0
+}]),
+"Walk/WalkB_Start": Array[Dictionary]([{
+"end_frame": 7,
+"name": &"HurtDO_1",
+"position": {
+"x": 16.0,
+"y": 56.0
+},
+"size": {
+"x": 218.0,
+"y": 84.0
+},
+"start_frame": 0
+}, {
+"end_frame": 7,
+"name": &"HurtDO_2",
+"position": {
+"x": 14.5,
+"y": -96.0
+},
+"size": {
+"x": 157.0,
+"y": 382.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_3",
+"position": {
+"x": 3.0,
+"y": 46.0
+},
+"size": {
+"x": 180.0,
+"y": 106.0
+},
+"start_frame": 8
+}, {
+"end_frame": -1,
+"name": &"HurtDO_4",
+"position": {
+"x": 1.0,
+"y": -98.0
+},
+"size": {
+"x": 144.0,
+"y": 384.0
+},
+"start_frame": 8
+}])
+}
+hurtbox_sets_backup = {
+"Walk/WalkB_Start": Array[Dictionary]([{
+"end_frame": 7,
+"name": &"HurtDO_1",
+"position": {
+"x": 16.0,
+"y": 56.0
+},
+"size": {
+"x": 218.0,
+"y": 84.0
+},
+"start_frame": 0
+}, {
+"end_frame": 7,
+"name": &"HurtDO_2",
+"position": {
+"x": 14.5,
+"y": -96.0
+},
+"size": {
+"x": 157.0,
+"y": 382.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_3",
+"position": {
+"x": 3.0,
+"y": 46.0
+},
+"size": {
+"x": 180.0,
+"y": 106.0
+},
+"start_frame": 8
+}, {
+"end_frame": -1,
+"name": &"HurtDO_4",
+"position": {
+"x": 1.0,
+"y": -98.0
+},
+"size": {
+"x": 144.0,
+"y": 384.0
+},
+"start_frame": 8
+}])
+}
+active_set = "Walk/WalkB_Loop"
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=299450226]

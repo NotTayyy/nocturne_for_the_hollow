@@ -30,13 +30,10 @@ func AddBoxToIndex() -> void:
 	new_box.name = "HitDO_%d_index_%d" % [box_count, hit_index]
 	hfd.add_child(new_box)
 	new_box.owner = get_tree().edited_scene_root
-	hfd._refresh_index_viewer()
 
 func RemoveThisBox() -> void:
 	var hfd : HitboxFrameData = get_parent() as HitboxFrameData
 	queue_free()
-	if hfd != null:
-		hfd._refresh_index_viewer()
 
 func InsertBefore() -> void:
 	var hfd : HitboxFrameData = get_parent() as HitboxFrameData
@@ -49,7 +46,6 @@ func InsertBefore() -> void:
 	hfd.add_child(new_box)
 	hfd.move_child(new_box, get_index())
 	new_box.owner = get_tree().edited_scene_root
-	hfd._refresh_index_viewer()
 
 func InsertAfter() -> void:
 	var hfd : HitboxFrameData = get_parent() as HitboxFrameData
@@ -62,7 +58,6 @@ func InsertAfter() -> void:
 	hfd.add_child(new_box)
 	hfd.move_child(new_box, get_index() + 1)
 	new_box.owner = get_tree().edited_scene_root
-	hfd._refresh_index_viewer()
 
 func _count_siblings_at_index(index : int) -> int:
 	var count  : int  = 0

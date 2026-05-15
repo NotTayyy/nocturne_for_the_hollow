@@ -1,6 +1,8 @@
 extends State_Base
 class_name ST_Crouch
 
+const JUMP_COMMANDS := ["SuperJump","SuperJumpFwd","SuperJumpBack"]
+
 const STAND_UP_FRAMES : int = 8
 
 var _stand_up_timer : int  = 0
@@ -21,15 +23,22 @@ func enter(_prev: String) -> void:
 	gate_drive     = true
 	gate_overdrive = true
 	gate_barrier   = true
+	gate_jump      = true
 	ap.play("Crouch/Crouch_Start")
+	if hfd_node != null:
+		hfd_node.begin(null)
 
 func exit() -> void:
 	_reset_gates()
 	_standing_up    = false
 	_stand_up_timer = 0
+	if hfd_node != null:
+		hfd_node.stop()
 
 func update(_delta: float) -> void:
 	frame += 1
+	if hfd_node != null:
+		hfd_node.tick()
 	
 	if fighter.facing_updated == true:
 		ap.play("Crouch/Crouch_Turn")
@@ -50,10 +59,16 @@ func update(_delta: float) -> void:
 			state_manager.request("Idle", InputBuffer.PRIORITY["Standing"])
 
 func on_command(command: Dictionary) -> void:
-	var cmd  : String = command.get("Command", "")
-	var _prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
-	if command.has("Frame_Data") and command["Frame_Data"] != null:
-		_request_attack(command)
-		return
+	var cmd   : String = command.get("Command", "")
+	var _prio : int    = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	match cmd:
-		pass
+		"Button A":
+			_request_attack(command, "Components/FrameData/Nml_2A")
+		_ when cmd in JUMP_COMMANDS:
+			_request_SuperJump(cmd, _prio)
+			
+func _request_SuperJump(cmd: String, prio: int) -> void:
+	var prejump := state_manager.states.get("Prejump") as ST_Prejump
+	if prejump:
+		prejump.jump_command = cmd
+	state_manager.request("Prejump", prio)

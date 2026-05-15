@@ -91,7 +91,6 @@ enum InvulType  { None, Strike, Throw, Projectile, Full }
 # -----------------------------------------------------------------------------
 @export var move_name : String = ""
 @export var move_id   : String = ""
-@export var anim_path : String = ""   ## Full AnimationPlayer path e.g. "Normals/Nml_5A"
 
 # -----------------------------------------------------------------------------
 # Flags
@@ -147,7 +146,7 @@ enum InvulType  { None, Strike, Throw, Projectile, Full }
 # Attack level
 # -----------------------------------------------------------------------------
 @export_group("Attack Level")
-@export_range(0, 5) var attack_level : int = 1
+@export var attack_level : Array[int] = [1]   ## Per-hit attack level (0-5). Falls back to last entry.
 
 ## Overrides — set to -1 to use table default
 @export var override_hitstun   : int = -1
@@ -190,13 +189,27 @@ enum InvulType  { None, Strike, Throw, Projectile, Full }
 # Hitbox / Hurtbox shape data
 # Populated by HitboxFrameData.Bake() — do not edit manually
 # -----------------------------------------------------------------------------
-@export_group("Box Data")
-## The Hitboxes of the Current Move
-@export var hitbox_data        : Array[Dictionary] = []
-## Hitbox bake backup
-@export var hitbox_data_backup : Array[Dictionary] = []
-## Hurtbox overrides during this move
-@export var hurtbox_data       : Array[Dictionary] = []
+# -----------------------------------------------------------------------------
+# Physics Impulses
+# Each entry: { "x": float, "y": float, "start": int, "end": int, "falloff": float }
+# start/end in frames. -1 = whole move duration.
+# falloff: velocity multiplier per frame (e.g. 0.85). 1.0 = no falloff.
+# -----------------------------------------------------------------------------
+@export_group("Physics Impulses")
+
+## Impulses applied to the attacker
+@export var self_impulses : Array[Dictionary] = []
+
+# -----------------------------------------------------------------------------
+# Pushback
+# Applied along the X axis — positive = away from attacker.
+# Corner reversal handled by hit resolution system.
+# -1 = no pushback.
+# -----------------------------------------------------------------------------
+@export_group("Pushback")
+@export var pushback     : Array[float] = []
+@export var air_pushback : Array[float] = []
+
 # -----------------------------------------------------------------------------
 # Counter hit
 # -----------------------------------------------------------------------------
@@ -222,44 +235,48 @@ var cancel_backdash  : CancelWindow = CancelWindow.new()
 # All respect overrides first, fall back to table.
 # -----------------------------------------------------------------------------
 
-func get_hitstun() -> int:
+func _get_level(hit_index : int) -> int:
+	if attack_level.is_empty(): return 1
+	return attack_level[min(hit_index, attack_level.size() - 1)]
+
+func get_hitstun(hit_index : int = 0) -> int:
 	return override_hitstun if override_hitstun != -1 \
-		else LEVEL_TABLE[attack_level]["hitstun"]
+		else LEVEL_TABLE[_get_level(hit_index)]["hitstun"]
 
-func get_hitstun_crouch() -> int:
-	return get_hitstun() + 2
+func get_hitstun_crouch(hit_index : int = 0) -> int:
+	return get_hitstun(hit_index) + 2
 
-func get_hitstun_ch() -> int:
-	return get_hitstun() + LEVEL_TABLE[attack_level]["hitstun_ch"]
+func get_hitstun_ch(hit_index : int = 0) -> int:
+	return get_hitstun(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["hitstun_ch"]
 
-func get_blockstun() -> int:
+func get_blockstun(hit_index : int = 0) -> int:
 	return override_blockstun if override_blockstun != -1 \
-		else LEVEL_TABLE[attack_level]["blockstun"]
+		else LEVEL_TABLE[_get_level(hit_index)]["blockstun"]
 
-func get_blockstun_air() -> int:
-	return get_blockstun() + 2
+func get_blockstun_air(hit_index : int = 0) -> int:
+	return get_blockstun(hit_index) + 2
 
-func get_blockstun_instant_block() -> int:
-	return get_blockstun() - 3
+func get_blockstun_instant_block(hit_index : int = 0) -> int:
+	return get_blockstun(hit_index) - 3
 
-func get_blockstun_instant_block_air() -> int:
-	return get_blockstun_air() - 6
+func get_blockstun_instant_block_air(hit_index : int = 0) -> int:
+	return get_blockstun_air(hit_index) - 6
 
-func get_blockstun_barrier() -> int:
-	return get_blockstun() + 1
+func get_blockstun_barrier(hit_index : int = 0) -> int:
+	return get_blockstun(hit_index) + 1
 
-func get_hitstop() -> int:
+func get_hitstop(hit_index : int = 0) -> int:
 	return override_hitstop if override_hitstop != -1 \
-		else LEVEL_TABLE[attack_level]["hitstop"]
+		else LEVEL_TABLE[_get_level(hit_index)]["hitstop"]
 
-func get_hitstop_ch() -> int:
-	return get_hitstop() + LEVEL_TABLE[attack_level]["hitstop_ch"]
+func get_hitstop_ch(hit_index : int = 0) -> int:
+	return get_hitstop(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["hitstop_ch"]
 
-func get_untechable() -> int:
-	return LEVEL_TABLE[attack_level]["untechable"]
+func get_untechable(hit_index : int = 0) -> int:
+	return LEVEL_TABLE[_get_level(hit_index)]["untechable"]
 
-func get_untechable_ch() -> int:
-	return get_untechable() + LEVEL_TABLE[attack_level]["untechable_ch"]
+func get_untechable_ch(hit_index : int = 0) -> int:
+	return get_untechable(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["untechable_ch"]
 
 func get_blockstop_attacker(hit_index: int) -> int:
 	if override_blockstop_attacker.size() > hit_index:
@@ -333,13 +350,12 @@ func is_active_frame(frame: int)   -> bool: return frame >= startup and frame < 
 func is_recovery_frame(frame: int) -> bool: return frame >= startup + _total_active()
 func total_frames()                -> int:  return startup + _total_active() + recovery
 
-## Static difference (frame advantage on block, first active frame)
 func static_difference() -> int:
-	return get_blockstun() - ((active[0] - 1) + recovery)
+	return get_blockstun(0) - ((active[0] - 1) + recovery)
 
 ## Real frame advantage given remaining active frames
 func real_frame_advantage(remaining_active: int) -> int:
-	return get_blockstun() - (remaining_active + recovery)
+	return get_blockstun(0) - (remaining_active + recovery)
 
 func _total_active() -> int:
 	var total := 0

@@ -52,6 +52,16 @@ func on_command(command: Dictionary) -> void:
 	var prio : int = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 
 	match cmd:
+		"Button A":
+			_request_attack(command, "Components/FrameData/Nml_5A")
+		"Button B":
+			_request_attack(command, "Components/FrameData/Nml_5B")
+		"Button C":
+			_request_attack(command, "Components/FrameData/Nml_5C")
+		"Button D":
+			_request_attack(command, "Components/FrameData/Nml_5D")
+		"6A":
+			_request_attack(command, "Components/FrameData/Cmd_6A")
 		"Walk", "WalkBack":
 			state_manager.request("Walk", prio)
 		"Dash":
@@ -64,7 +74,5 @@ func on_command(command: Dictionary) -> void:
 			state_manager.request("Prejump", prio)
 		"Barrier":
 			state_manager.request("Barrier", prio)
-		_ when command.get("Priority","") in ["Normal","Command Normal",
-			   "Special","EX Special","Drive","Ultimate Art"]:
-			if command.has("Frame_Data") and command["Frame_Data"] != null:
-				_request_attack(command)
+		"Button A":
+			_request_attack(command, "Components/FrameData/Nml_5A")

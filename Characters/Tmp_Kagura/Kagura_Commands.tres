@@ -54,7 +54,6 @@ command_list = [{
 "Sequence": ["2", "7"]
 }, {
 "Command": "6A",
-"Frame_Data": NodePath("Components/FrameData/Cmd_6A"),
 "Held": ["6"],
 "Priority": "Command Normal",
 "Sequence": ["6", "A"]
@@ -109,12 +108,10 @@ command_list = [{
 "Sequence": ["4", "2", "6", "A"]
 }, {
 "Command": "Button A",
-"Frame_Data": NodePath("Components/FrameData/Nml_5A"),
 "Priority": "Normal",
 "Sequence": ["A"]
 }, {
 "Command": "Button B",
-"Frame_Data": NodePath("Components/FrameData/Nml_5B"),
 "Priority": "Normal",
 "Sequence": ["B"]
 }, {

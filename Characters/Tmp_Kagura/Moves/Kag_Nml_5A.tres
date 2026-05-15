@@ -6,7 +6,6 @@
 script = ExtResource("1_uhntl")
 move_name = "5A"
 move_id = "Nml_5A"
-anim_path = "Normals/Nml_5A"
 startup = 4
 active = Array[int]([3])
 recovery = 9
@@ -14,94 +13,4 @@ damage = Array[int]([300])
 min_damage = Array[int]([15])
 p2 = Array[int]([80])
 p2_once = true
-hitbox_data = Array[Dictionary]([{
-"end_frame": -1,
-"hit_index": 0,
-"name": &"Hitbox_1_index_0",
-"position": {
-"x": 134.0,
-"y": -229.0
-},
-"size": {
-"x": 202.0,
-"y": 58.0
-},
-"start_frame": -1
-}])
-hitbox_data_backup = Array[Dictionary]([{
-"box_type": 0,
-"end_frame": -1,
-"hit_index": 0,
-"name": &"Hitbox_1_index_0",
-"position": {
-"x": 134.0,
-"y": -229.0
-},
-"size": {
-"x": 202.0,
-"y": 58.0
-},
-"start_frame": -1
-}])
-hurtbox_data = Array[Dictionary]([{
-"end_frame": -1,
-"name": &"HurtDO_1",
-"position": {
-"x": 0.0,
-"y": 45.0
-},
-"size": {
-"x": 238.0,
-"y": 114.0
-},
-"start_frame": -1
-}, {
-"end_frame": -1,
-"name": &"HurtDO_2",
-"position": {
-"x": 10.0,
-"y": -77.5
-},
-"size": {
-"x": 160.0,
-"y": 363.0
-},
-"start_frame": -1
-}, {
-"end_frame": 5,
-"name": &"HurtDO_3",
-"position": {
-"x": 86.5,
-"y": -195.5
-},
-"size": {
-"x": 99.0,
-"y": 57.0
-},
-"start_frame": 3
-}, {
-"end_frame": 10,
-"name": &"HurtDO_4",
-"position": {
-"x": 133.0,
-"y": -212.0
-},
-"size": {
-"x": 118.0,
-"y": 50.0
-},
-"start_frame": 6
-}, {
-"end_frame": 12,
-"name": &"HurtDO_5",
-"position": {
-"x": 87.0,
-"y": -195.0
-},
-"size": {
-"x": 96.0,
-"y": 50.0
-},
-"start_frame": 11
-}])
 metadata/_custom_type_script = "uid://c1ie505730ew"

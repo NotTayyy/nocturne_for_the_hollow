@@ -4,9 +4,8 @@ class_name ST_Airborne
 enum JumpPhase { ASCENT, APEX, DESCENT }
 
 var APEX_THRESHOLD : float = 300
-var _jump_phase : int = JumpPhase.ASCENT
-var from_ground : bool 
-
+var _jump_phase    : int   = JumpPhase.ASCENT
+var from_ground    : bool
 
 func _ready() -> void:
 	state_id = "Airborne"
@@ -15,27 +14,27 @@ func enter(prev: String) -> void:
 	from_ground = prev in ["Prejump", "Idle", "Walk", "RunSkid", "Dash"]
 	frame            = 0
 	apply_gravity    = true
-	
-	
 	if from_ground:
 		fighter.jumps_remaining  = cd.air_Jumps
 		fighter.dashes_remaining = cd.air_Dashes
 		lockout_timer   = cd.airjump_lockout
 	else:
-		# Returning from airdash — keep existing stocks, no new lockout
 		lockout_timer = 0
-
-	# All aerial gates closed until lockout expires
 	_reset_gates()
 	gate_barrier = true
-
 	_play_jump_anim()
+	if hfd_node != null:
+		hfd_node.begin(null)
 
 func exit() -> void:
 	_reset_gates()
+	if hfd_node != null:
+		hfd_node.stop()
 
 func update(_delta: float) -> void:
 	frame += 1
+	if hfd_node != null:
+		hfd_node.tick()
 
 	if lockout_timer > 0:
 		lockout_timer -= 1
