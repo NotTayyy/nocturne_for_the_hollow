@@ -988,11 +988,40 @@ tracks/1/keys = {
 "values": [Vector2(-146.42, -77.425), Vector2(-155.845, -77.425), Vector2(-152.09, -77.425), Vector2(-66.895, -77.425), Vector2(-93.255, -73.855), Vector2(-122.425, -73.855), Vector2(-95.765, -73.855), Vector2(-103.37, -73.855)]
 }
 
+[sub_resource type="Animation" id="Animation_pstfx"]
+resource_name = "Nml_5C"
+step = 0.016666668
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Char_Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Char_Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dyujb"]
 _data = {
 &"Cmd_6A": SubResource("Animation_ji8s0"),
 &"Nml_5A": SubResource("Animation_8lx3x"),
-&"Nml_5B": SubResource("Animation_pbvoj")
+&"Nml_5B": SubResource("Animation_pbvoj"),
+&"Nml_5C": SubResource("Animation_pstfx")
 }
 
 [sub_resource type="Animation" id="Animation_h1goo"]
@@ -1412,7 +1441,7 @@ hurtbox_sets_backup = {
 "start_frame": 5
 }])
 }
-active_set = "Normals/Nml_5A"
+active_set = ""
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Nml_5B" type="Area2D" parent="Components/FrameData" unique_id=1177937670]
@@ -1797,21 +1826,21 @@ hurtbox_sets_backup = {
 "start_frame": 8
 }])
 }
-active_set = "Normals/Nml_5B"
+active_set = ""
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Nml_5C" type="Area2D" parent="Components/FrameData" unique_id=1429759579]
 collision_layer = 16
 script = ExtResource("18_3x780")
 move_data = ExtResource("19_42ihw")
-active_set = "Normals/Nml_5A"
+active_set = ""
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Nml_5D" type="Area2D" parent="Components/FrameData" unique_id=864882906]
 collision_layer = 16
 script = ExtResource("18_3x780")
 move_data = ExtResource("19_42ihw")
-active_set = "Normals/Nml_5A"
+active_set = ""
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Cmd_6A" type="Area2D" parent="Components/FrameData" unique_id=217675790]
@@ -2070,15 +2099,104 @@ hurtbox_sets_backup = {
 "start_frame": 31
 }])
 }
-active_set = "Normals/Cmd_6A"
+active_set = ""
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="ST_Idle" type="Area2D" parent="Components/FrameData" unique_id=953814357]
 collision_layer = 16
 script = ExtResource("18_3x780")
 mode = 1
-valid_animations = Array[String](["Idle/Idle", "Idle/Idle_Goad"])
+valid_animations = Array[String](["Idle/Idle", "Idle/Idle_Goad", "Idle/Idle_Turn"])
 hurtbox_sets = {
+"Idle/Idle": Array[Dictionary]([{
+"end_frame": -1,
+"name": &"HurtDO_1",
+"position": {
+"x": -0.5,
+"y": 53.0
+},
+"size": {
+"x": 237.0,
+"y": 94.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": -0.5,
+"y": -79.5
+},
+"size": {
+"x": 135.0,
+"y": 361.0
+},
+"start_frame": 0
+}]),
+"Idle/Idle_Goad": Array[Dictionary]([{
+"end_frame": 77,
+"name": &"HurtDO_1",
+"position": {
+"x": 83.75,
+"y": -152.0
+},
+"size": {
+"x": 102.5,
+"y": 80.0
+},
+"start_frame": 8
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": 1.0,
+"y": -77.0
+},
+"size": {
+"x": 138.0,
+"y": 364.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_3",
+"position": {
+"x": 0.5,
+"y": 48.5
+},
+"size": {
+"x": 247.0,
+"y": 113.0
+},
+"start_frame": 0
+}]),
+"Idle/Idle_Turn": Array[Dictionary]([{
+"end_frame": -1,
+"name": &"HurtDO_1",
+"position": {
+"x": 0.0,
+"y": 45.0
+},
+"size": {
+"x": 220.0,
+"y": 110.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": 11.0,
+"y": -59.0
+},
+"size": {
+"x": 118.0,
+"y": 319.0
+},
+"start_frame": 0
+}])
+}
+hurtbox_sets_backup = {
 "Idle/Idle": Array[Dictionary]([{
 "end_frame": -1,
 "name": &"HurtDO_1",
@@ -2140,68 +2258,29 @@ hurtbox_sets = {
 "y": 113.0
 },
 "start_frame": 0
-}])
-}
-hurtbox_sets_backup = {
-"Idle/Idle": Array[Dictionary]([{
-"end_frame": -1,
-"name": &"HurtDO_1",
-"position": {
-"x": -0.5,
-"y": 53.0
-},
-"size": {
-"x": 237.0,
-"y": 94.0
-},
-"start_frame": 0
-}, {
-"end_frame": -1,
-"name": &"HurtDO_2",
-"position": {
-"x": -0.5,
-"y": -79.5
-},
-"size": {
-"x": 135.0,
-"y": 361.0
-},
-"start_frame": 0
 }]),
-"Idle/Idle_Goad": Array[Dictionary]([{
-"end_frame": 77,
-"name": &"HurtDO_1",
-"position": {
-"x": 83.75,
-"y": -152.0
-},
-"size": {
-"x": 102.5,
-"y": 80.0
-},
-"start_frame": 8
-}, {
+"Idle/Idle_Turn": Array[Dictionary]([{
 "end_frame": -1,
-"name": &"HurtDO_2",
+"name": &"HurtDO_1",
 "position": {
 "x": 0.0,
-"y": -79.0
+"y": 45.0
 },
 "size": {
-"x": 136.0,
-"y": 360.0
+"x": 220.0,
+"y": 110.0
 },
 "start_frame": 0
 }, {
 "end_frame": -1,
-"name": &"HurtDO_3",
+"name": &"HurtDO_2",
 "position": {
-"x": -0.5,
-"y": 55.5
+"x": 11.0,
+"y": -59.0
 },
 "size": {
-"x": 245.0,
-"y": 99.0
+"x": 118.0,
+"y": 319.0
 },
 "start_frame": 0
 }])
@@ -2288,9 +2367,72 @@ hurtbox_sets = {
 "y": 384.0
 },
 "start_frame": 8
+}]),
+"Walk/WalkF_Loop": Array[Dictionary]([{
+"end_frame": -1,
+"name": &"HurtDO_1",
+"position": {
+"x": 2.5,
+"y": -104.0
+},
+"size": {
+"x": 141.0,
+"y": 424.0
+},
+"start_frame": 0
+}]),
+"Walk/WalkF_Start": Array[Dictionary]([{
+"end_frame": 7,
+"name": &"HurtDO_1",
+"position": {
+"x": -25.5,
+"y": 36.0
+},
+"size": {
+"x": 185.0,
+"y": 112.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": -3.0,
+"y": -101.5
+},
+"size": {
+"x": 128.0,
+"y": 387.0
+},
+"start_frame": 0
 }])
 }
 hurtbox_sets_backup = {
+"Walk/WalkB_Loop": Array[Dictionary]([{
+"end_frame": -1,
+"name": &"HurtDO_1",
+"position": {
+"x": 11.0,
+"y": -108.0
+},
+"size": {
+"x": 150.0,
+"y": 410.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": 97.5,
+"y": -156.0
+},
+"size": {
+"x": 75.0,
+"y": 64.0
+},
+"start_frame": 0
+}]),
 "Walk/WalkB_Start": Array[Dictionary]([{
 "end_frame": 7,
 "name": &"HurtDO_1",
@@ -2339,9 +2481,34 @@ hurtbox_sets_backup = {
 "y": 384.0
 },
 "start_frame": 8
+}]),
+"Walk/WalkF_Start": Array[Dictionary]([{
+"end_frame": 7,
+"name": &"HurtDO_1",
+"position": {
+"x": -25.5,
+"y": 36.0
+},
+"size": {
+"x": 185.0,
+"y": 112.0
+},
+"start_frame": 0
+}, {
+"end_frame": -1,
+"name": &"HurtDO_2",
+"position": {
+"x": -3.0,
+"y": -101.5
+},
+"size": {
+"x": 128.0,
+"y": 387.0
+},
+"start_frame": 0
 }])
 }
-active_set = "Walk/WalkB_Loop"
+active_set = ""
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=299450226]

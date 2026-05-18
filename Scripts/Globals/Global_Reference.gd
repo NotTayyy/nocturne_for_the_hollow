@@ -1,6 +1,7 @@
 extends Node
 
 var game_manager: Node = null
+var combo_manager: Node2D = null
 var character_manager: Node2D = null
 var camera_manager: Node2D = null
 var level_manager: Node2D = null

@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://cwrhso1ckvfxl"]
-
-[ext_resource type="Script" uid="uid://dmyrb2wwfkdhc" path="res://Systems/ui_manager.gd" id="1_hbext"]
-
-[node name="UiManager" type="Node2D" unique_id=1424768459]
-script = ExtResource("1_hbext")

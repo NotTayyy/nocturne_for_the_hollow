@@ -1,4 +1,5 @@
 extends Node2D
+class_name Audio_Manager
 
 @onready var bgm_streamer = %BGM_Music_Player
 

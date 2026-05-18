@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://cbpgp2etnox1h"]
 
-[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Characters/BaseFighter/Move_Data.gd" id="1_ka1hv"]
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="1_ka1hv"]
 
 [resource]
 script = ExtResource("1_ka1hv")
@@ -10,10 +10,13 @@ startup = 21
 active = Array[int]([3])
 recovery = 19
 damage = Array[int]([800])
+min_damage = Array[int]([])
 p1 = 80
 p2 = Array[int]([92])
 bonus_proration = 110
 guard = Array[int]([0])
 ground_hit_effect = Array[int]([9])
 air_hit_effect = Array[int]([4])
+invul_type = 2
+doll_invul_type = 0
 metadata/_custom_type_script = "uid://c1ie505730ew"

@@ -51,6 +51,7 @@ func _physics_process(delta: float) -> void:
 	_tick_properties()
 	move_and_slide()
 	_update_post_slide_flags()
+	char_data.tick_grey_health_decay(delta, self)
 
 # -----------------------------------------------------------------------------
 # Facing
@@ -190,6 +191,18 @@ func _setup_input_buffer() -> void:
 
 func _on_health_depleted() -> void:
 	knocked_out.emit()
+
+func recieve_hit(result : HitResult) -> void:
+	add_property(Property.new(Property.Type.HitStop, result.hitstop, "system"))
+	add_property(Property.new(Property.Type.Hitstun, result.hitstun, "system"))
+
+func _is_actionable() -> bool:
+	return not has_property(Property.Type.Hitstun)  \
+		and not has_property(Property.Type.Blockstun) \
+		and not has_property(Property.Type.HitStop)   \
+		and not has_property(Property.Type.BlockStop) \
+		and not has_property(Property.Type.Frozen)    \
+		and not has_property(Property.Type.Stunned)
 
 # =============================================================================
 # Property system

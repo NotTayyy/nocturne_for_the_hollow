@@ -74,9 +74,13 @@ func tick(delta: float) -> void:
 # -----------------------------------------------------------------------------
 func _on_command_matched(command: Dictionary) -> void:
 	var priority_name : String = command.get("Priority", "")
-	var always_allowed := priority_name in ["Burst", "Barrier"]
 
-	if not always_allowed and not _gate_open_for(priority_name):
+	if not fighter._is_actionable():
+		if command.get("Command", "") == "Burst" and active_state.gate_burst:
+			active_state.on_command(command)
+		return
+
+	if not _gate_open_for(priority_name):
 		return
 
 	active_state.on_command(command)

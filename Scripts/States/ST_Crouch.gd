@@ -25,6 +25,7 @@ func enter(_prev: String) -> void:
 	gate_barrier   = true
 	gate_jump      = true
 	ap.play("Crouch/Crouch_Start")
+	fighter.add_property(Property.new(Property.Type.Crouching, -1, "system"))
 	if hfd_node != null:
 		hfd_node.begin(null)
 
@@ -32,6 +33,7 @@ func exit() -> void:
 	_reset_gates()
 	_standing_up    = false
 	_stand_up_timer = 0
+	fighter.remove_property(Property.Type.Crouching)
 	if hfd_node != null:
 		hfd_node.stop()
 

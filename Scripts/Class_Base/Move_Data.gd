@@ -3,38 +3,33 @@ extends Resource
 class_name MoveData
 
 # -----------------------------------------------------------------------------
-# Cancel window — typed inner class for intellisense + safety
+# Cancel window — typed inner class
+# No frame ranges — phase is determined by move state machine.
+# Rules:
+#   A. Nothing cancels during startup — enforced by _cancel_allowed()
+#   B. On hit or block — opens cancel window
+#   C. Whiff cancel only if on_whiff explicitly true
 # -----------------------------------------------------------------------------
 class CancelWindow:
-	var start    : int  = -1    # frame window opens. -1 = not available
-	var end      : int  = -1    # frame window closes. -1 = open ended
 	var on_hit   : bool = false
 	var on_block : bool = false
 	var on_whiff : bool = false
 
 	func _init(
-		p_start    : int  = -1,
-		p_end      : int  = -1,
 		p_on_hit   : bool = false,
 		p_on_block : bool = false,
 		p_on_whiff : bool = false
 	) -> void:
-		start    = p_start
-		end      = p_end
 		on_hit   = p_on_hit
 		on_block = p_on_block
 		on_whiff = p_on_whiff
 
-	func is_available(frame: int, hit: bool, blocked: bool, whiffed: bool) -> bool:
-		if start == -1:
-			return false
-		if frame < start:
-			return false
-		if end != -1 and frame > end:
-			return false
+	## Returns true if a cancel is allowed given current hit state.
+	## Phase check (no startup) is enforced externally by _cancel_allowed().
+	func is_available(hit: bool, blocked: bool) -> bool:
 		if hit     and on_hit:   return true
 		if blocked and on_block: return true
-		if whiffed and on_whiff: return true
+		if on_whiff:             return true
 		return false
 
 # -----------------------------------------------------------------------------
@@ -84,7 +79,7 @@ enum GuardType  { High, Mid, Low, All, Throw, GuardBreak }
 enum Attribute  { Head, Body, Foot, Projectile, Throw, Doll }
 enum HitEffect  { None, Launch, Crumple, WallBounce, GroundBounce, WallStick, Slide, Down, SpinFall, Crouch }
 enum StarterType { Very_Short, Short, Normal, Long}
-enum InvulType  { None, Strike, Throw, Projectile, Full }
+enum InvulType  { None, Head, Body, Foot, Throw, Projectile, Burst, Full, GuardPoint }
 
 # -----------------------------------------------------------------------------
 # Identity
@@ -176,14 +171,14 @@ enum InvulType  { None, Strike, Throw, Projectile, Full }
 # Invulnerability
 # -----------------------------------------------------------------------------
 @export_group("Invulnerability")
-@export var invul_type  : InvulType = InvulType.None   ## Bitmask
-@export var invul_start : int = -1   ## -1 = no invul
+@export var invul_type  : Array[InvulType] = []   ## Active invul types — empty = none
+@export var invul_start : int = -1
 @export var invul_end   : int = -1
 
-## Doll-specific invul (e.g. Ignis in Duo Bios) — handled character-side
+## Doll-specific invul
 @export var doll_invul_start : int = -1
 @export var doll_invul_end   : int = -1
-@export var doll_invul_type  : InvulType = InvulType.None
+@export var doll_invul_type  : Array[InvulType] = []
 
 # -----------------------------------------------------------------------------
 # Hitbox / Hurtbox shape data
@@ -366,5 +361,5 @@ func _total_active() -> int:
 # -----------------------------------------------------------------------------
 # Cancel query — pass to state machine cancel gate check
 # -----------------------------------------------------------------------------
-func can_cancel(window: CancelWindow, frame: int, hit: bool, blocked: bool, whiffed: bool) -> bool:
-	return window.is_available(frame, hit, blocked, whiffed)
+func can_cancel(window: CancelWindow, hit: bool, blocked: bool) -> bool:
+	return window.is_available(hit, blocked)

@@ -115,26 +115,70 @@ signal health_depleted
 signal burst_full
 signal flow_state_entered
 signal health_changed(cur_health: int, max_health: int)
+signal grey_health_changed(cur_grey: int)
 signal limit_changed(cur_limit: int, max_Limit: int)
 signal burst_changed(cur_burst: int, max_burst: int)
 signal flow_changed(curr_flow: int, max_flow: int)
 
-var curr_health: int = base_max_health : set = _on_health_set ## Characters Current Health Value
-var curr_Limit: int = 0: set = _on_limit_set ## Characters Current Limit Value
-var curr_burst: int = 0: set = _on_burst_set ## The Characters Burst Gauge
-var curr_flow: int = 0: set = _on_flow_set ## The characters Hidden Flow Gauge
+var curr_health      : int = base_max_health : set = _on_health_set
+var curr_grey_health : int = 0               : set = _on_grey_health_set
+var curr_Limit       : int = 0               : set = _on_limit_set
+var curr_burst       : int = 0               : set = _on_burst_set
+var curr_flow        : int = 0               : set = _on_flow_set
+
+## Decay rate — grey health lost per second while not in combo
+@export var grey_health_decay_rate : float = 20.0
 
 func _init() -> void:
 	pass
 
 func setup_char() -> void:
-	curr_health = base_max_health
+	curr_health      = base_max_health
+	curr_grey_health = 0
 
 func _on_health_set(new_value: int) -> void:
 	curr_health = clampi(new_value, 0, base_max_health)
 	health_changed.emit(curr_health, base_max_health)
 	if curr_health <= 0:
 		health_depleted.emit()
+
+func _on_grey_health_set(new_value: int) -> void:
+	# Grey health cannot exceed the damage taken (can't go above max - curr)
+	var max_grey : int = base_max_health - curr_health
+	curr_grey_health = clampi(new_value, 0, max_grey)
+	grey_health_changed.emit(curr_grey_health)
+
+## Add grey health — called by ComboManager on each hit
+func add_grey_health(amount: int) -> void:
+	curr_grey_health += amount
+
+## Wipe all grey health — called when new combo starts
+func wipe_grey_health() -> void:
+	curr_grey_health = 0
+
+## Recover grey health into red — called on Limit Break
+func recover_grey_health() -> void:
+	var recovered : int = curr_grey_health
+	curr_grey_health = 0
+	curr_health = mini(curr_health + recovered, base_max_health)
+
+## Tick grey health decay — call from Fighter._physics_process
+var _grey_decay_accumulator : float = 0.0
+
+func tick_grey_health_decay(delta: float, fighter : Fighter) -> void:
+	if curr_grey_health <= 0:
+		_grey_decay_accumulator = 0.0
+		return
+	# Only decay when not currently being comboed
+	var cm : ComboManager = Global.combo_manager
+	if cm != null and cm.is_active and cm.defender == fighter:
+		_grey_decay_accumulator = 0.0
+		return
+	_grey_decay_accumulator += grey_health_decay_rate * delta
+	var to_drain : int = int(_grey_decay_accumulator)
+	if to_drain > 0:
+		_grey_decay_accumulator -= float(to_drain)
+		curr_grey_health = maxi(0, curr_grey_health - to_drain)
 
 func _on_limit_set(new_value: int) -> void:
 	curr_Limit = clampi(new_value, 0, base_max_Limit)

@@ -1,4 +1,5 @@
 extends Node2D
+class_name Ui_Manager
 
 var current_Gui = null
 var UI_Node = null

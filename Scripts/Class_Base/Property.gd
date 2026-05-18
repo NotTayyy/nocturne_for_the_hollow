@@ -10,8 +10,9 @@ extends RefCounted
 enum Type {
 	# --- Physics / State ---
 	
-	Airborne, ## Marks the Player as Airborn
+	Airborne,    ## Marks the Player as Airborne
 	PAirborne,
+	Crouching,   ## Marks the Player as Crouching — applies crouching hitstun bonus
 
 	# --- Buffs (self-applied) ---
 	Cyclone,        ## Akihiko's Install
@@ -22,7 +23,7 @@ enum Type {
 	Stunned,        ## Stunned
 
 	# --- Meter / Resource ---
-	Flow_State,    ## FLow State
+	Flow_State,    ## Flow State
 
 	# --- System ---
 	HitStop,        ## both fighters frozen on hit
@@ -33,27 +34,29 @@ enum Type {
 
 ## Display name per type — used in debug overlay
 const TYPE_NAMES : Dictionary = {
-	Type.Airborne:     "Airborne",
-	Type.PAirborne: "Pseudo Airborne",
-	Type.Frozen:       "Frozen",
-	Type.Stunned:      "Stunned",
-	Type.HitStop:      "HitStop",
-	Type.BlockStop:    "BlockStop",
-	Type.Hitstun:      "Hitstun",
-	Type.Blockstun:    "Blockstun",
+	Type.Airborne:   "Airborne",
+	Type.PAirborne:  "Pseudo Airborne",
+	Type.Crouching:  "Crouching",
+	Type.Frozen:     "Frozen",
+	Type.Stunned:    "Stunned",
+	Type.HitStop:    "HitStop",
+	Type.BlockStop:  "BlockStop",
+	Type.Hitstun:    "Hitstun",
+	Type.Blockstun:  "Blockstun",
 }
 
 ## Debug colour per type
 const TYPE_COLORS : Dictionary = {
-	Type.Airborne:       Color(0.4, 0.8, 1.0),
-	Type.PAirborne:      Color(0.28, 0.154, 1.0, 1.0),
-	Type.Poisoned:       Color(0.5, 1.0, 0.3),
-	Type.Frozen:         Color(0.6, 0.9, 1.0),
-	Type.Stunned:        Color(1.0, 1.0, 0.3),
-	Type.HitStop:        Color(0.7, 0.7, 0.7),
-	Type.BlockStop:      Color(0.6, 0.6, 0.6),
-	Type.Hitstun:        Color(1.0, 0.3, 0.3),
-	Type.Blockstun:      Color(0.9, 0.5, 0.3),
+	Type.Airborne:   Color(0.4, 0.8, 1.0),
+	Type.PAirborne:  Color(0.28, 0.154, 1.0, 1.0),
+	Type.Crouching:  Color(0.4, 0.9, 0.4),
+	Type.Poisoned:   Color(0.5, 1.0, 0.3),
+	Type.Frozen:     Color(0.6, 0.9, 1.0),
+	Type.Stunned:    Color(1.0, 1.0, 0.3),
+	Type.HitStop:    Color(0.7, 0.7, 0.7),
+	Type.BlockStop:  Color(0.6, 0.6, 0.6),
+	Type.Hitstun:    Color(1.0, 0.3, 0.3),
+	Type.Blockstun:  Color(0.9, 0.5, 0.3),
 }
 
 ## The type of this property

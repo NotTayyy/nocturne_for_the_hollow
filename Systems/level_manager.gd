@@ -1,4 +1,5 @@
 extends Node2D
+class_name Level_Manager
 
 var Levels = G_LevelDB.get_level_names()
 var current_level: Node

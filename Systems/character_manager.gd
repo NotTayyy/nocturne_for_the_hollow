@@ -1,4 +1,5 @@
 extends Node2D
+class_name Character_Manager
 
 var player1
 var player2

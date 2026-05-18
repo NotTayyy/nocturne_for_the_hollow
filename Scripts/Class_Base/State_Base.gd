@@ -42,14 +42,15 @@ var gate_backdash  : bool = false
 var gate_burst     : bool = false   ## Burst always checked separately — bypasses most gates
 var gate_barrier   : bool = false   ## Barrier always available while blocking
 
-# Throw and burst invul flags — checked by hit resolution system
-var invul_throw      : bool = false
-var invul_burst      : bool = false
-var invul_strike     : bool = false
-var invul_all        : bool = false
-var invul_head       : bool = false
-var invul_foot       : bool = false
-var invul_projectile : bool = false
+# Invul flags — checked by hit resolution system
+var invul_head        : bool = false
+var invul_body        : bool = false
+var invul_foot        : bool = false
+var invul_throw       : bool = false
+var invul_projectile  : bool = false
+var invul_burst       : bool = false
+var invul_all         : bool = false
+var invul_guard_point : bool = false
 
 # -----------------------------------------------------------------------------
 # Frame counter — increments every update(), reset in enter()
@@ -90,13 +91,14 @@ func _reset_gates() -> void:
 	gate_backdash  = false
 	gate_burst     = false
 	gate_barrier   = false
-	invul_throw      = false
-	invul_burst      = false
-	invul_strike     = false
-	invul_all        = false
-	invul_head       = false
-	invul_foot       = false
-	invul_projectile = false
+	invul_head        = false
+	invul_body        = false
+	invul_foot        = false
+	invul_throw       = false
+	invul_projectile  = false
+	invul_burst       = false
+	invul_all         = false
+	invul_guard_point = false
 
 ## Opens all the Gates that should be open when In an Idle state for ease of use
 func _open_gate_neutral() -> void:
@@ -110,14 +112,14 @@ func _open_gate_neutral() -> void:
 	gate_barrier   = true
 
 func open_gate(move_data: MoveData, has_hit: bool, is_blocked: bool) -> void:
-	gate_self      = move_data.cancel_self.is_available(frame, has_hit, is_blocked, false)
-	gate_special   = move_data.cancel_special.is_available(frame, has_hit, is_blocked, false)
-	gate_drive     = move_data.cancel_drive.is_available(frame, has_hit, is_blocked, false)
-	gate_overdrive = move_data.cancel_overdrive.is_available(frame, has_hit, is_blocked, false)
-	gate_jump      = move_data.cancel_jump.is_available(frame, has_hit, is_blocked, false)
-	gate_rapid     = move_data.cancel_rapid.is_available(frame, has_hit, is_blocked, false)
-	gate_dash      = move_data.cancel_dash.is_available(frame, has_hit, is_blocked, false)
-	gate_backdash  = move_data.cancel_backdash.is_available(frame, has_hit, is_blocked, false)
+	gate_self      = move_data.cancel_self.is_available(has_hit, is_blocked)
+	gate_special   = move_data.cancel_special.is_available(has_hit, is_blocked)
+	gate_drive     = move_data.cancel_drive.is_available(has_hit, is_blocked)
+	gate_overdrive = move_data.cancel_overdrive.is_available(has_hit, is_blocked)
+	gate_jump      = move_data.cancel_jump.is_available(has_hit, is_blocked)
+	gate_rapid     = move_data.cancel_rapid.is_available(has_hit, is_blocked)
+	gate_dash      = move_data.cancel_dash.is_available(has_hit, is_blocked)
+	gate_backdash  = move_data.cancel_backdash.is_available(has_hit, is_blocked)
 
 ## Safe animation play — silently skips missing animations.
 ## Prints a warning in debug mode.
@@ -153,21 +155,17 @@ func _request_attack(command: Dictionary, hfd_path: String) -> bool:
 func _cancel_allowed(current_hfd : HitboxFrameData) -> bool:
 	if current_hfd == null or current_hfd.move_data == null:
 		return true
-	var md    : MoveData = current_hfd.move_data
-	var f     : int      = current_hfd._current_frame
-	# Never during startup
+	var md : MoveData = current_hfd.move_data
+	var f  : int      = current_hfd._current_frame
+	# Rule A — never during startup
 	if f <= md.startup:
 		return false
-	# Check cancel windows
+	# Rules B & C — check hit state against cancel windows
 	var hit   : bool = current_hfd.hit_state == HitboxFrameData.HitState.HIT
 	var block : bool = current_hfd.hit_state == HitboxFrameData.HitState.BLOCK
-	var whiff : bool = current_hfd.hit_state == HitboxFrameData.HitState.NONE
 	for window in md.cancel_windows:
-		if not window.is_available(f, hit, block, whiff):
-			continue
-		if hit   and window.on_hit:   return true
-		if block and window.on_block: return true
-		if whiff and window.on_whiff: return true
+		if window.is_available(hit, block):
+			return true
 	return false
 
 # -----------------------------------------------------------------------------

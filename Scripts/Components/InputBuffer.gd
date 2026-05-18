@@ -227,8 +227,8 @@ func _any_button_held() -> bool:
 func _match_commands(type: String, inputs_this_frame: Array) -> void:
 	var candidates : Array = []
 	var list := release_command_list if (type == "release" and neg_edge_enabled) \
-									 else command_list
-
+		else command_list
+	
 	for cmd in list:
 		if   "Held"   in cmd and _check_held_command(cmd, type):
 			candidates.append(cmd)
@@ -239,7 +239,7 @@ func _match_commands(type: String, inputs_this_frame: Array) -> void:
 		elif "Held" not in cmd and "Charge" not in cmd and "Combo" not in cmd \
 			 and _check_motion_command(cmd, type):
 			candidates.append(cmd)
-
+	
 	_resolve(candidates)
 
 # --- Held commands ---
@@ -386,9 +386,6 @@ func _resolve(candidates: Array) -> void:
 		if p > top_prio:
 			winner   = cmd
 			top_prio = p
-
-	if debug_mode:
-		print("Matched: %s (%s)" % [winner.get("Command","?"), winner.get("Priority","?")])
 
 	# Store as buffered command — will be attempted each tick until consumed or expired
 	_buffered_command       = winner
