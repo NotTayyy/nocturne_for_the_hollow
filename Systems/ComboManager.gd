@@ -55,7 +55,9 @@ signal combo_started(attacker: Fighter, defender: Fighter)
 signal combo_updated(hit_count: int)
 signal combo_ended(hit_count: int, total_damage: int)
 
-var _total_damage : int = 0
+var _total_damage   : int   = 0
+var _hitstop_timer  : int   = 0
+var _hitstop_fighters : Array[Fighter] = []
 
 func _ready() -> void:
 	Global.combo_manager = self
@@ -64,6 +66,13 @@ func _ready() -> void:
 # =============================================================================
 
 func _physics_process(_delta: float) -> void:
+	# Tick hitstop
+	if _hitstop_timer > 0:
+		_hitstop_timer -= 1
+		if _hitstop_timer <= 0:
+			_end_hitstop()
+		return
+	# Tick combo timer
 	if not is_active:
 		return
 	combo_duration_frames += 1
@@ -167,8 +176,30 @@ func register_hit(result : HitResult) -> void:
 	is_first_hit = false
 	emit_signal("combo_updated", hit_count)
 	result.defender.recieve_hit(result)
+	# Apply hitstop to both fighters
+	apply_hitstop(result.attacker, result.defender, result.hitstop)
 
-## Reset combo state — call when combo ends.
+## Apply hitstop to both fighters
+func apply_hitstop(atk: Fighter, def: Fighter, frames: int) -> void:
+	if frames <= 0:
+		return
+	_hitstop_timer   = frames
+	_hitstop_fighters = [atk, def]
+	for f : Fighter in _hitstop_fighters:
+		f.process_mode                 = Node.PROCESS_MODE_DISABLED
+		f.anim_player.pause()
+		# Keep InputBuffer alive so moves can be buffered during freeze
+		f.input_buffer.process_mode    = Node.PROCESS_MODE_ALWAYS
+
+func _end_hitstop() -> void:
+	for f in _hitstop_fighters:
+		if is_instance_valid(f):
+			f.process_mode              = Node.PROCESS_MODE_INHERIT
+			f.anim_player.play()
+			f.input_buffer.process_mode = Node.PROCESS_MODE_INHERIT
+	_hitstop_fighters.clear()
+
+## Reset combo state
 func reset() -> void:
 	if is_active:
 		emit_signal("combo_ended", hit_count, _total_damage)

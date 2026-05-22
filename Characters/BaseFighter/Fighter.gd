@@ -26,7 +26,7 @@ var facing_updated   : bool   = false
 ## All Active Properties
 var properties : Array[Property] = []
 
-# Input action strings
+# Input action strings — kept for any state that needs to query them directly
 var move_left  : String
 var move_right : String
 var move_up    : String
@@ -46,7 +46,6 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	update_facing()
-	_stage_input()
 	state_machine.tick(delta)
 	_tick_properties()
 	move_and_slide()
@@ -67,75 +66,6 @@ func update_facing() -> void:
 	input_buffer.flip_held_directions()
 	facing_updated = true
 	return
-
-# -----------------------------------------------------------------------------
-# Input staging — collect raw hardware inputs, pass to InputBuffer
-# Does NOT run command matching — that happens in State_Manager.tick()
-# -----------------------------------------------------------------------------
-func _stage_input() -> void:
-	var current_directions : Array = []
-	for action in [move_left, move_right, move_up, move_down]:
-		if Input.is_action_pressed(action):
-			current_directions.append(action)
-
-	# Direction just pressed — release previous, press new
-	for action in [move_left, move_right, move_up, move_down]:
-		if Input.is_action_just_pressed(action):
-			var prev := _held_to_numpad(current_directions.filter(func(a): return a != action))
-			var curr := _held_to_numpad(current_directions)
-			if prev != curr:
-				input_buffer.stage(prev, "release")
-			input_buffer.stage(curr, "press")
-			break
-
-	# Direction just released — release it, re-register what remains
-	for action in [move_left, move_right, move_up, move_down]:
-		if Input.is_action_just_released(action):
-			var released_dir := _held_to_numpad([action])
-			if released_dir != "":
-				input_buffer.stage(released_dir, "release")
-			current_directions = []
-			for a in [move_left, move_right, move_up, move_down]:
-				if Input.is_action_pressed(a):
-					current_directions.append(a)
-			var remaining := _held_to_numpad(current_directions)
-			input_buffer.stage(remaining, "press")
-			break
-
-	# Buttons — each independent
-	for pair in [[btn_a,"A"],[btn_b,"B"],[btn_c,"C"],[btn_d,"D"]]:
-		if   Input.is_action_just_pressed(pair[0]):
-			input_buffer.stage(pair[1], "press")
-		elif Input.is_action_just_released(pair[0]):
-			input_buffer.stage(pair[1], "release")
-
-func _held_to_numpad(held: Array) -> String:
-	var v := ""
-	var h := ""
-
-	if move_up in held and move_down in held:
-		v = ""
-	elif move_up in held:
-		v = "8"
-	elif move_down in held:
-		v = "2"
-
-	if move_left in held and move_right in held:
-		h = ""
-	elif dir_facing == "Right":
-		if   move_left  in held: h = "4"
-		elif move_right in held: h = "6"
-	else:
-		if   move_left  in held: h = "6"
-		elif move_right in held: h = "4"
-
-	if   v == "8" and h == "4": return "7"
-	elif v == "8" and h == "6": return "9"
-	elif v == "2" and h == "4": return "1"
-	elif v == "2" and h == "6": return "3"
-	elif v != "":                return v
-	elif h != "":                return h
-	return "5"
 
 # -----------------------------------------------------------------------------
 # Post-slide flags
@@ -184,6 +114,7 @@ func _setup_input_buffer() -> void:
 	input_buffer.character        = self
 	input_buffer.facing_right     = (dir_facing == "Right")
 	input_buffer.neg_edge_enabled = char_data.neg_edge
+	input_buffer.setup_actions(player_id)
 	input_buffer.set_commands(
 		char_data.command_list.command_list,
 		char_data.command_list.release_cmnd_list if char_data.neg_edge else []
@@ -197,9 +128,7 @@ func notify_proximity_block(_in_range : bool) -> void:
 	pass
 
 func recieve_hit(result : HitResult) -> void:
-	add_property(Property.new(Property.Type.HitStop, result.hitstop, "system"))
 	add_property(Property.new(Property.Type.Hitstun, result.hitstun, "system"))
-	# Apply pushback away from attacker
 	if result.pushback != 0.0 or result.air_pushback != 0.0:
 		var dir : float = 1.0 if result.attacker.global_position.x < global_position.x else -1.0
 		if is_airborne:
@@ -211,8 +140,6 @@ func recieve_hit(result : HitResult) -> void:
 func _is_actionable() -> bool:
 	return not has_property(Property.Type.Hitstun)  \
 		and not has_property(Property.Type.Blockstun) \
-		and not has_property(Property.Type.HitStop)   \
-		and not has_property(Property.Type.BlockStop) \
 		and not has_property(Property.Type.Frozen)    \
 		and not has_property(Property.Type.Stunned)
 
@@ -223,16 +150,19 @@ func _is_actionable() -> bool:
 ## Add a property. Respects stacking and refresh rules.
 func add_property(prop: Property) -> void:
 	if not prop.does_stack:
+		# Non-stacking — refresh duration if already exists, otherwise append
 		for p in properties:
 			if p.type == prop.type and p.sub_id == prop.sub_id:
 				p.duration = prop.duration
 				return
 		properties.append(prop)
 	else:
+		# Stacking — refresh existing OR append new, not both
 		if prop.refresh:
 			for p in properties:
 				if p.type == prop.type and p.sub_id == prop.sub_id:
 					p.duration = prop.duration
+					return
 		properties.append(prop)
  
 ## Remove all instances of a property by type.

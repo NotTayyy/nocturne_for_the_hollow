@@ -16,12 +16,12 @@ class_name MoveData
 # -----------------------------------------------------------------------------
 const LEVEL_TABLE : Array[Dictionary] = [
 	# Lvl 0
-	{ "hitstop": 5,  "hitstop_ch": 0, "hitstun": 10, "hitstun_ch": 4,
+	{ "hitstop": 200,  "hitstop_ch": 0, "hitstun": 10, "hitstun_ch": 4,
 	  "blockstun": 9,  "blockstop": 7,  "p1": 100, "p2": 75,
 	  "untechable": 12, "untechable_ch": 11,
 	  "crumple": 20, "crumple_fall": 53 },
 	# Lvl 1
-	{ "hitstop": 7,  "hitstop_ch": 0, "hitstun": 12, "hitstun_ch": 4,
+	{ "hitstop": 200,  "hitstop_ch": 0, "hitstun": 12, "hitstun_ch": 4,
 	  "blockstun": 11, "blockstop": 9,  "p1": 100, "p2": 80,
 	  "untechable": 12, "untechable_ch": 12,
 	  "crumple": 22, "crumple_fall": 55 },

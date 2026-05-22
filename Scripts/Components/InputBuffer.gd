@@ -3,8 +3,8 @@
 # Match-long event log + per-frame staged input + command matching.
 #
 # Flow per tick:
-#   Fighter._stage_input() calls stage() for each hardware event
-#   → appended to event_log (permanent) and _staged_this_frame (temp)
+#   InputBuffer._physics_process() reads raw hardware each frame (ALWAYS mode)
+#   → stages direction and button events
 #   State_Manager.tick() calls flush_staged() at end of frame
 #   → combo/motion/charge/held matching runs on staged inputs
 #   → command_matched fires
@@ -22,8 +22,8 @@ signal command_matched(command: Dictionary)
 # -----------------------------------------------------------------------------
 # Exports
 # -----------------------------------------------------------------------------
-@export var max_buffer_frames  : int  = 12
-@export var debug_mode         : bool = true
+@export var max_buffer_frames : int  = 12
+@export var debug_mode        : bool = true
 
 # -----------------------------------------------------------------------------
 # Constants
@@ -65,7 +65,7 @@ const PRIORITY : Dictionary = {
 }
 
 ## Input buffer window — frames a matched command stays buffered
-@export var BUFFER_WINDOW : int = 8
+@export var BUFFER_WINDOW : int = 1000
 
 # -----------------------------------------------------------------------------
 # Runtime state
@@ -90,44 +90,151 @@ var _buffered_command_frame : int        = -1
 var command_list         : Array = []
 var release_command_list : Array = []
 
-var facing_right : bool = true
-var character    : Node = null
-var neg_edge_enabled   : bool = false
+var facing_right     : bool    = true
+var character        : Fighter = null
+var neg_edge_enabled : bool    = false
+
+# Action strings — set via setup_actions()
+var _action_left  : String = ""
+var _action_right : String = ""
+var _action_up    : String = ""
+var _action_down  : String = ""
+var _action_a     : String = ""
+var _action_b     : String = ""
+var _action_c     : String = ""
+var _action_d     : String = ""
 
 @onready var label : Label = %Button_Label
 
 # -----------------------------------------------------------------------------
-# Public API — called by Fighter
+# Setup
 # -----------------------------------------------------------------------------
 
-## Called by Fighter._stage_input() for every hardware event this frame.
-## Appends to event_log AND _staged_this_frame. Does NOT run matching yet.
+func _ready() -> void:
+	# Always run so input is captured even during hitstop
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+## Called by Fighter._setup_input_buffer() — stores action strings and character ref
+func setup_actions(player_id: int) -> void:
+	var p      := "P%d_" % player_id
+	_action_left  = p + "Left"
+	_action_right = p + "Right"
+	_action_up    = p + "Up"
+	_action_down  = p + "Down"
+	_action_a     = p + "Btn_A"
+	_action_b     = p + "Btn_B"
+	_action_c     = p + "Btn_C"
+	_action_d     = p + "Btn_D"
+
+# -----------------------------------------------------------------------------
+# Input reading — always runs, owns all hardware input staging
+# -----------------------------------------------------------------------------
+
+var _flushed_this_frame : bool = false
+
+func _physics_process(_delta: float) -> void:
+	_flushed_this_frame = false
+	if _action_left == "":
+		return
+	_stage_input()
+
+func _stage_input() -> void:
+	var current_directions : Array = []
+	for action in [_action_left, _action_right, _action_up, _action_down]:
+		if Input.is_action_pressed(action):
+			current_directions.append(action)
+
+	# Direction just pressed — release previous numpad, press new
+	for action in [_action_left, _action_right, _action_up, _action_down]:
+		if Input.is_action_just_pressed(action):
+			var prev := _held_to_numpad(current_directions.filter(func(a): return a != action))
+			var curr := _held_to_numpad(current_directions)
+			if prev != curr:
+				stage(prev, "release")
+			stage(curr, "press")
+			break
+
+	# Direction just released — release it, re-register what remains
+	for action in [_action_left, _action_right, _action_up, _action_down]:
+		if Input.is_action_just_released(action):
+			var released_dir := _held_to_numpad([action])
+			if released_dir != "":
+				stage(released_dir, "release")
+			current_directions = []
+			for a in [_action_left, _action_right, _action_up, _action_down]:
+				if Input.is_action_pressed(a):
+					current_directions.append(a)
+			var remaining := _held_to_numpad(current_directions)
+			stage(remaining, "press")
+			break
+
+	# Buttons — each independent
+	for pair in [[_action_a,"A"],[_action_b,"B"],[_action_c,"C"],[_action_d,"D"]]:
+		if   Input.is_action_just_pressed(pair[0]):
+			stage(pair[1], "press")
+		elif Input.is_action_just_released(pair[0]):
+			stage(pair[1], "release")
+
+	# During hitstop, match immediately so commands get buffered
+	if character != null and character.process_mode == Node.PROCESS_MODE_DISABLED:
+		if not _flushed_this_frame:
+			flush_staged()
+
+## Converts held action strings to numpad notation
+func _held_to_numpad(held: Array) -> String:
+	var v := ""
+	var h := ""
+
+	if _action_up in held and _action_down in held:
+		v = ""
+	elif _action_up in held:
+		v = "8"
+	elif _action_down in held:
+		v = "2"
+
+	if _action_left in held and _action_right in held:
+		h = ""
+	elif facing_right:
+		if   _action_left  in held: h = "4"
+		elif _action_right in held: h = "6"
+	else:
+		if   _action_left  in held: h = "6"
+		elif _action_right in held: h = "4"
+
+	if   v == "8" and h == "4": return "7"
+	elif v == "8" and h == "6": return "9"
+	elif v == "2" and h == "4": return "1"
+	elif v == "2" and h == "6": return "3"
+	elif v != "":                return v
+	elif h != "":                return h
+	return "5"
+
+# -----------------------------------------------------------------------------
+# Public API
+# -----------------------------------------------------------------------------
+
+## Appends a hardware event to the log and staged list
 func stage(action: String, type: String) -> void:
 	var frame := Engine.get_physics_frames()
 
-	# Update held_inputs
 	_update_held(action, type, frame)
 
-	# Append to permanent log (skip duplicates)
 	var last = event_log.back() if not event_log.is_empty() else null
 	if last == null or last["action"] != action or last["type"] != type:
 		event_log.append({ "action": action, "frame": frame, "type": type })
 
-	# Append to this frame's staged list
 	_staged_this_frame.append({ "action": action, "type": type })
 
 	if label:
 		label.text = _to_arrow(action)
 
 ## Called by State_Manager.tick() at end of frame.
-## Runs all command matching against staged inputs, fires command_matched,
-## attempts buffered command, then clears staged list.
 func flush_staged() -> void:
+	_flushed_this_frame = true
 	if _staged_this_frame.is_empty():
 		_try_buffered_command()
 		return
 
-	# Collect what happened this frame
 	var pressed_this_frame  : Array[String] = []
 	var released_this_frame : Array[String] = []
 
@@ -137,22 +244,16 @@ func flush_staged() -> void:
 		else:
 			released_this_frame.append(entry["action"])
 
-	# Run matching for press events
 	if not pressed_this_frame.is_empty():
 		_match_commands("press", pressed_this_frame)
 
-	# Run matching for release events (negative edge)
 	if neg_edge_enabled and not released_this_frame.is_empty():
 		_match_commands("release", released_this_frame)
 
-	# Attempt buffered command from previous frames
 	_try_buffered_command()
-
-	# Clear staged list for next frame
 	_staged_this_frame.clear()
 
 ## Called by State_Manager when a command successfully executes.
-## Clears the buffer so it doesn't re-fire.
 func consume_buffer() -> void:
 	_buffered_command       = {}
 	_buffered_command_frame = -1
@@ -170,7 +271,7 @@ func reset() -> void:
 	_buffered_command       = {}
 	_buffered_command_frame = -1
 
-## Called by Fighter._update_facing() when character flips.
+## Called by Fighter.update_facing() when character flips.
 func flip_held_directions() -> void:
 	const MIRROR : Dictionary = {
 		"4": "6", "6": "4",
@@ -189,7 +290,7 @@ func flip_held_directions() -> void:
 		held_inputs[key] = to_add[key]
 
 # -----------------------------------------------------------------------------
-# State query API — called by states
+# State query API
 # -----------------------------------------------------------------------------
 func button_pressed_within(btn: String, window: int) -> bool:
 	return _find_event(btn, "press", window) != null
@@ -222,13 +323,13 @@ func _any_button_held() -> bool:
 	return false
 
 # -----------------------------------------------------------------------------
-# Command matching — runs on flush_staged()
+# Command matching
 # -----------------------------------------------------------------------------
 func _match_commands(type: String, inputs_this_frame: Array) -> void:
 	var candidates : Array = []
 	var list := release_command_list if (type == "release" and neg_edge_enabled) \
 		else command_list
-	
+
 	for cmd in list:
 		if   "Held"   in cmd and _check_held_command(cmd, type):
 			candidates.append(cmd)
@@ -239,10 +340,9 @@ func _match_commands(type: String, inputs_this_frame: Array) -> void:
 		elif "Held" not in cmd and "Charge" not in cmd and "Combo" not in cmd \
 			 and _check_motion_command(cmd, type):
 			candidates.append(cmd)
-	
+
 	_resolve(candidates)
 
-# --- Held commands ---
 func _check_held_command(cmd: Dictionary, type: String) -> bool:
 	var sequence : Array = cmd["Sequence"]
 	var required : Array = cmd["Held"]
@@ -257,16 +357,11 @@ func _check_held_command(cmd: Dictionary, type: String) -> bool:
 			return false
 	return true
 
-# --- Charge commands ---
-# Fixed: only counts a charge if the hold was uninterrupted —
-# finds most recent release, verifies no second press of charge_dir
-# between that release and its preceding press.
 func _check_charge_command(cmd: Dictionary, type: String) -> bool:
 	var sequence      : Array  = cmd["Sequence"]
 	var charge_dir    : String = cmd["Button"][0]
 	var charge_needed : int    = cmd["Charge"]
 
-	# Find most recent release of charge_dir
 	var charge_valid          := false
 	var charge_released_frame := -1
 
@@ -274,29 +369,23 @@ func _check_charge_command(cmd: Dictionary, type: String) -> bool:
 		var e = event_log[i]
 		if e["action"] == charge_dir and e["type"] == "release":
 			charge_released_frame = e["frame"]
-			# Scan back for the press — must be uninterrupted
-			# (no second press of charge_dir between them)
 			var interrupted := false
 			for j in range(i - 1, -1, -1):
 				var pe = event_log[j]
 				if pe["action"] == charge_dir:
 					if pe["type"] == "press":
-						# Found the press — check duration
 						if charge_released_frame - pe["frame"] >= charge_needed:
 							charge_valid = true
 					else:
-						# Another release before the press — interrupted
 						interrupted = true
 					break
 			if interrupted:
-				# This release is invalid — keep scanning for an earlier valid one
 				continue
 			break
 
 	if not charge_valid:
 		return false
 
-	# Match the sequence following the charge release
 	var seq_index  := sequence.size() - 1
 	var prev_frame := -1
 	var current    := Engine.get_physics_frames()
@@ -316,11 +405,8 @@ func _check_charge_command(cmd: Dictionary, type: String) -> bool:
 
 	return seq_index < 0
 
-# --- Combo commands (same-frame multi-button) ---
 func _check_combo_command(cmd: Dictionary, inputs_this_frame: Array) -> bool:
 	var required_buttons : Array = cmd["Buttons"]
-
-	# All required buttons must appear in this frame's staged inputs as presses
 	for btn in required_buttons:
 		var found := false
 		for entry in inputs_this_frame:
@@ -329,14 +415,10 @@ func _check_combo_command(cmd: Dictionary, inputs_this_frame: Array) -> bool:
 				break
 		if not found:
 			return false
-
-	# Optional directional sequence check
 	if "Sequence" in cmd and not cmd["Sequence"].is_empty():
 		return _check_motion_command(cmd, "press")
-
 	return true
 
-# --- Motion commands ---
 func _check_motion_command(cmd: Dictionary, type: String) -> bool:
 	var sequence  : Array = cmd["Sequence"]
 	var seq_index : int   = sequence.size() - 1
@@ -347,8 +429,6 @@ func _check_motion_command(cmd: Dictionary, type: String) -> bool:
 	if last == null or last["type"] != type:
 		return false
 
-	# Single step — allow diagonal equivalents (1/2/3 for crouch, 7/8/9 for jump)
-	# Multi step — exact match only so 236 can't be input as 233
 	if sequence.size() == 1:
 		var valid = CARDINAL_RELEASE_MAP.get(sequence[-1], [sequence[-1]])
 		if last["action"] not in valid:
@@ -379,7 +459,7 @@ func _resolve(candidates: Array) -> void:
 		return
 
 	var winner   : Dictionary = candidates[0]
-	var top_prio : int        = PRIORITY.get(winner.get("Priority", ""), -1) 
+	var top_prio : int        = PRIORITY.get(winner.get("Priority", ""), -1)
 
 	for cmd in candidates.slice(1):
 		var p : int = PRIORITY.get(cmd.get("Priority", ""), -1)
@@ -387,25 +467,27 @@ func _resolve(candidates: Array) -> void:
 			winner   = cmd
 			top_prio = p
 
-	# Store as buffered command — will be attempted each tick until consumed or expired
 	_buffered_command       = winner
 	_buffered_command_frame = Engine.get_physics_frames()
 
+	# Only emit immediately if fighter is NOT frozen (hitstop)
+	if character != null and character.process_mode == Node.PROCESS_MODE_DISABLED:
+		return
 	command_matched.emit(winner)
 
 # -----------------------------------------------------------------------------
-# Buffered command — attempted each tick until consumed or expired
+# Buffered command
 # -----------------------------------------------------------------------------
 func _try_buffered_command() -> void:
 	if _buffered_command.is_empty():
 		return
-	
+	if character != null and character.process_mode == Node.PROCESS_MODE_DISABLED:
+		return
 	var age := Engine.get_physics_frames() - _buffered_command_frame
 	if age > BUFFER_WINDOW:
 		_buffered_command       = {}
 		_buffered_command_frame = -1
 		return
-	# Re-emit so State_Manager can try again against current gates
 	command_matched.emit(_buffered_command)
 
 # -----------------------------------------------------------------------------

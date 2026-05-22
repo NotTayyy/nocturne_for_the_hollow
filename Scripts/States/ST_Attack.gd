@@ -164,5 +164,3 @@ func on_command(command: Dictionary) -> void:
 		fighter.input_buffer.consume_buffer()
 		_request_attack(command, route.hfd_path)
 		return
-	# No valid cancel route found — consume buffer so it doesn't leak to other states
-	fighter.input_buffer.consume_buffer()

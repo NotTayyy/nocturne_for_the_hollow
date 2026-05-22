@@ -128,11 +128,12 @@ func _request_attack(command: Dictionary, hfd_path: String) -> bool:
 	if hfd == null:
 		push_error("[%s] Could not find HFD at path: %s" % [state_id, hfd_path])
 		return false
-	if state_manager.active_state != null and state_manager.active_state.state_id == "Attack":
+	var in_attack : bool = state_manager.active_state != null \
+						   and state_manager.active_state.state_id == "Attack"
+	if in_attack:
 		var current_hfd : HitboxFrameData = (state_manager.active_state as ST_Attack).hfd
 		if not _cancel_allowed(current_hfd, command):
 			return false
-	if state_manager.active_state != null and state_manager.active_state.state_id == "Attack":
 		var old_hfd : HitboxFrameData = attack.hfd
 		attack._staged_hfd = hfd
 		attack.hfd         = old_hfd

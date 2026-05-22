@@ -11,6 +11,10 @@ var _p1_last_hfd : HitboxFrameData = null
 var _p2_last_md  : MoveData        = null
 var _p2_last_hfd : HitboxFrameData = null
 
+# Last executed command per player
+var _p1_last_command : Dictionary = {}
+var _p2_last_command : Dictionary = {}
+
 # Last combo cache
 var _last_combo_hits     : int           = 0
 var _last_combo_damage   : int           = 0
@@ -72,11 +76,13 @@ func _process(_delta: float) -> void:
 	ImGui.PushID("AttackP1")
 	ImGui.TextColored(Color.CYAN, "P1 Attack")
 	imgui_attack_info(P1)
+	imgui_buffered_command(P1)
 	ImGui.PopID()
 	ImGui.Separator()
 	ImGui.PushID("AttackP2")
 	ImGui.TextColored(Color.CYAN, "P2 Attack")
 	imgui_attack_info(P2)
+	imgui_buffered_command(P2)
 	ImGui.PopID()
 	ImGui.Separator()
 	imgui_combo_info()
@@ -324,6 +330,14 @@ func imgui_combo_info() -> void:
 		ImGui.TextDisabled("No ComboManager")
 		return
 
+	# Hitstop display — always show regardless of combo state
+	if cm._hitstop_timer > 0:
+		ImGui.TextColored(Color(1.0, 0.8, 0.0), "HITSTOP: %d" % cm._hitstop_timer)
+	else:
+		ImGui.TextColored(Color(0.4, 0.4, 0.4), "Hitstop: --")
+
+	ImGui.Spacing()
+
 	if not cm.is_active:
 		# Cache when combo ends
 		if cm.hit_count > 0 and _last_combo_hits != cm.hit_count:
@@ -367,6 +381,52 @@ func imgui_combo_info() -> void:
 
 	if not cm.move_history.is_empty():
 		ImGui.TextWrapped(" > ".join(cm.move_history))
+
+# =============================================================================
+# Input Buffer Queued Command
+# =============================================================================
+func imgui_buffered_command(player) -> void:
+	if player == null:
+		return
+	var buf        : InputBuffer = player.input_buffer
+	var is_p1      : bool        = player == P1
+	var last_cmd   : Dictionary  = _p1_last_command if is_p1 else _p2_last_command
+
+	# Buffered command
+	if buf._buffered_command.is_empty():
+		ImGui.TextColored(Color(0.4, 0.4, 0.4), "Buffer: --")
+	else:
+		var cmd   : String = buf._buffered_command.get("Command", "?")
+		var prio  : String = buf._buffered_command.get("Priority", "?")
+		var age   : int    = Engine.get_physics_frames() - buf._buffered_command_frame
+		var pct   : float  = clampf(1.0 - float(age) / float(buf.BUFFER_WINDOW), 0.0, 1.0)
+		var color : Color  = Color.ORANGE if pct > 0.5 else Color.YELLOW if pct > 0.25 else Color.RED
+		ImGui.TextColored(color, "Buffer: %s [%s]" % [cmd, prio])
+		ImGui.ProgressBar(pct, Vector2(-1, 6), "")
+
+	# Last executed command
+	if last_cmd.is_empty():
+		ImGui.TextColored(Color(0.4, 0.4, 0.4), "Last: --")
+	else:
+		ImGui.TextColored(Color(0.7, 0.9, 0.7), "Last: %s [%s]" % [
+			last_cmd.get("Command", "?"),
+			last_cmd.get("Priority", "?")
+		])
+
+	# Held inputs
+	var held : Array = buf.held_inputs.keys()
+	if held.is_empty():
+		ImGui.TextColored(Color(0.4, 0.4, 0.4), "Held: --")
+	else:
+		var dirs    : Array[String] = []
+		var buttons : Array[String] = []
+		for h in held:
+			if h in InputBuffer.BUTTONS:    buttons.append(h)
+			elif h in InputBuffer.DIRECTIONS: dirs.append(h)
+		var held_str : String = ""
+		if not dirs.is_empty():    held_str += "Dir:%s " % ",".join(dirs)
+		if not buttons.is_empty(): held_str += "Btn:%s" % ",".join(buttons)
+		ImGui.TextColored(Color(0.6, 0.8, 1.0), "Held: %s" % held_str.strip_edges())
 
 # =============================================================================
 # Input Buffer
@@ -538,3 +598,13 @@ func _btn_color(btn: String) -> Color:
 func set_vars() -> void:
 	P1 = Global.P1
 	P2 = Global.P2
+	if P1 and not P1.input_buffer.command_matched.is_connected(_on_p1_command):
+		P1.input_buffer.command_matched.connect(_on_p1_command)
+	if P2 and not P2.input_buffer.command_matched.is_connected(_on_p2_command):
+		P2.input_buffer.command_matched.connect(_on_p2_command)
+
+func _on_p1_command(cmd: Dictionary) -> void:
+	_p1_last_command = cmd
+
+func _on_p2_command(cmd: Dictionary) -> void:
+	_p2_last_command = cmd

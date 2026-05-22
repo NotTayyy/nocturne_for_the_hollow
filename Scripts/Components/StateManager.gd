@@ -122,7 +122,7 @@ func request(target_id: String, priority: int) -> void:
 
 func force_transition(target_id: String) -> void:
 	_pending.clear()
-	_do_transition(target_id)
+	_do_transition(target_id, false)
 
 func _request(target_id: String, priority: int) -> void:
 	request(target_id, priority)
@@ -131,9 +131,9 @@ func _flush_pending() -> void:
 	if _pending.is_empty(): return
 	var target : String = _pending["id"]
 	_pending.clear()
-	_do_transition(target)
+	_do_transition(target, true)
 
-func _do_transition(target_id: String) -> void:
+func _do_transition(target_id: String, player_initiated: bool = true) -> void:
 	if not states.has(target_id):
 		push_warning("State_Manager: cannot transition to '%s'" % target_id)
 		return
@@ -146,14 +146,15 @@ func _do_transition(target_id: String) -> void:
 	var prev_id := active_state.state_id if active_state else ""
 	if active_state:
 		active_state.exit()
-	_enter_state(target_id, prev_id)
+	_enter_state(target_id, prev_id, player_initiated)
 
-func _enter_state(target_id: String, prev_id: String) -> void:
+func _enter_state(target_id: String, prev_id: String, consume: bool = true) -> void:
 	active_state = states[target_id]
 	active_state.enter(prev_id)
 	State_Label.text = active_state.state_id
-	# Consume buffer on successful transition so it doesn't re-fire
-	fighter.input_buffer.consume_buffer()
+	# Only consume buffer on player-initiated transitions
+	if consume:
+		fighter.input_buffer.consume_buffer()
 
 # -----------------------------------------------------------------------------
 # Priority helpers
