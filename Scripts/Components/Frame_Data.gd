@@ -115,6 +115,41 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		area_entered.connect(_on_area_entered)
 
+func _on_area_entered(area : Area2D) -> void:
+	if not area is Hurtbox:
+		return
+	if area.owner == owner:
+		return
+	var h_index : int = _current_active_index
+	if already_hit(h_index, area.get_instance_id()):
+		return
+	register_hit(h_index, area.get_instance_id())
+	hit_state = HitState.HIT
+
+	var attacker : Fighter = owner as Fighter
+	var defender : Fighter = area.owner as Fighter
+	if attacker == null or defender == null:
+		return
+
+	var result         : HitResult = HitResult.new()
+	result.attacker    = attacker
+	result.defender    = defender
+	result.move_data   = move_data
+	result.hit_index   = h_index
+	result.is_airborne = defender.is_airborne
+	result.is_counter  = defender.state_machine.active_state != null \
+						 and defender.state_machine.active_state.state_id == "Attack"
+
+	if move_data != null:
+		var g_idx : int = min(h_index, move_data.guard.size() - 1)
+		var a_idx : int = min(h_index, move_data.attribute.size() - 1)
+		if not move_data.guard.is_empty():
+			result.guard_type = move_data.guard[g_idx]
+		if not move_data.attribute.is_empty():
+			result.attribute  = move_data.attribute[a_idx]
+
+	Global.combo_manager.register_hit(result)
+
 func _process(_delta: float) -> void:
 	if not Engine.is_editor_hint():
 		return
@@ -171,47 +206,6 @@ func _preview_disable_all() -> void:
 			(child as HitboxDataObject).disabled = true
 		elif child is HurtboxDataObject:
 			(child as HurtboxDataObject).disabled = true
-
-# =============================================================================
-# Hit detection (tmp)
-# =============================================================================
-
-func _on_area_entered(area : Area2D) -> void:
-	if not area is Hurtbox:
-		return
-	if area.owner == owner:
-		return
-	var h_index : int = _current_active_index
-	if already_hit(h_index, area.get_instance_id()):
-		return
-	register_hit(h_index, area.get_instance_id())
-	hit_state = HitState.HIT
-
-	var attacker : Fighter = owner as Fighter
-	var defender : Fighter = area.owner as Fighter
-	if attacker == null or defender == null:
-		return
-
-	var result          : HitResult = HitResult.new()
-	result.attacker     = attacker
-	result.defender     = defender
-	result.move_data    = move_data
-	result.hit_index    = h_index
-	result.is_airborne  = defender.is_airborne
-	result.is_counter   = defender.state_machine.active_state != null \
-						  and defender.state_machine.active_state.state_id == "Attack"
-
-	# Populate guard type and attribute from MoveData
-	if move_data != null:
-		var g_idx : int = min(h_index, move_data.guard.size() - 1)
-		var a_idx : int = min(h_index, move_data.attribute.size() - 1)
-		if not move_data.guard.is_empty():
-			result.guard_type = move_data.guard[g_idx]
-		if not move_data.attribute.is_empty():
-			result.attribute = move_data.attribute[a_idx]
-
-	# Pass to ComboManager to resolve damage, stun, effects
-	Global.combo_manager.register_hit(result)
 
 # =============================================================================
 # Collision layers

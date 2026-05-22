@@ -54,6 +54,10 @@ func tick(delta: float) -> void:
 	# 1. State logic
 	active_state.update(delta)
 
+	# Apply friction during hitstun/hitstop so pushback decays naturally
+	if not fighter._is_actionable():
+		fighter.velocity.x *= fighter.char_data.friction
+
 	# 2. Gravity
 	if active_state.apply_gravity:
 		active_state.tick_gravity(delta)
@@ -73,34 +77,37 @@ func tick(delta: float) -> void:
 # Command routing
 # -----------------------------------------------------------------------------
 func _on_command_matched(command: Dictionary) -> void:
-	var priority_name : String = command.get("Priority", "")
-
+	# During hitstun/hitstop — only burst gets through
 	if not fighter._is_actionable():
 		if command.get("Command", "") == "Burst" and active_state.gate_burst:
 			active_state.on_command(command)
 		return
 
-	if not _gate_open_for(priority_name):
+	# In attack state — bypass gate check, ST_Attack handles cancel validation
+	if active_state.state_id == "Attack":
+		active_state.on_command(command)
+		return
+
+	if not _gate_open_for(command.get("Priority", "")):
 		return
 
 	active_state.on_command(command)
 
 func _gate_open_for(priority_name: String) -> bool:
 	match priority_name:
-		"Standing":                        return true   # always
-		"Walking":                         return active_state.gate_self or active_state.gate_special
-		"Crouching":                       return active_state.gate_self or active_state.gate_special
+		"Standing":                        return true
+		"Walking":                         return active_state.gate_normal or active_state.gate_special
+		"Crouching":                       return active_state.gate_normal or active_state.gate_special
 		"Dash":                            return active_state.gate_dash
 		"Jump", "Super Jump":              return active_state.gate_jump
-		"Normal":                          return active_state.gate_self
-		"Command Normal":                  return active_state.gate_self
-		"Guard Crush":                     return active_state.gate_self
-		"Throw":                           return active_state.gate_self
+		"Normal":                          return active_state.gate_normal
+		"Command Normal":                  return active_state.gate_normal
+		"Guard Crush":                     return active_state.gate_normal
+		"Throw":                           return active_state.gate_normal
 		"Special", "EX Special":           return active_state.gate_special
 		"Rapid Cancel":                    return active_state.gate_rapid
 		"Ultimate Art":                    return active_state.gate_special
 		"Burst":                           return active_state.gate_burst
-		"Barrier":                         return active_state.gate_barrier
 		_:                                 return false
 
 # -----------------------------------------------------------------------------

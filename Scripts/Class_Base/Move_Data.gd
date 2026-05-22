@@ -10,61 +10,39 @@ class_name MoveData
 #   B. On hit or block — opens cancel window
 #   C. Whiff cancel only if on_whiff explicitly true
 # -----------------------------------------------------------------------------
-class CancelWindow:
-	var on_hit   : bool = false
-	var on_block : bool = false
-	var on_whiff : bool = false
-
-	func _init(
-		p_on_hit   : bool = false,
-		p_on_block : bool = false,
-		p_on_whiff : bool = false
-	) -> void:
-		on_hit   = p_on_hit
-		on_block = p_on_block
-		on_whiff = p_on_whiff
-
-	## Returns true if a cancel is allowed given current hit state.
-	## Phase check (no startup) is enforced externally by _cancel_allowed().
-	func is_available(hit: bool, blocked: bool) -> bool:
-		if hit     and on_hit:   return true
-		if blocked and on_block: return true
-		if on_whiff:             return true
-		return false
-
 # -----------------------------------------------------------------------------
 # Attack level table — all values derived from here unless overridden
 # Index = attack level (0–5)
 # -----------------------------------------------------------------------------
 const LEVEL_TABLE : Array[Dictionary] = [
 	# Lvl 0
-	{ "hitstop": 8,  "hitstop_ch": 0, "hitstun": 10, "hitstun_ch": 4,
-	  "blockstun": 9,  "blockstop": 8,  "p1": 100, "p2": 75,
+	{ "hitstop": 5,  "hitstop_ch": 0, "hitstun": 10, "hitstun_ch": 4,
+	  "blockstun": 9,  "blockstop": 7,  "p1": 100, "p2": 75,
 	  "untechable": 12, "untechable_ch": 11,
 	  "crumple": 20, "crumple_fall": 53 },
 	# Lvl 1
-	{ "hitstop": 9,  "hitstop_ch": 0, "hitstun": 12, "hitstun_ch": 4,
+	{ "hitstop": 7,  "hitstop_ch": 0, "hitstun": 12, "hitstun_ch": 4,
 	  "blockstun": 11, "blockstop": 9,  "p1": 100, "p2": 80,
 	  "untechable": 12, "untechable_ch": 12,
 	  "crumple": 22, "crumple_fall": 55 },
 	# Lvl 2
-	{ "hitstop": 10, "hitstop_ch": 1, "hitstun": 14, "hitstun_ch": 4,
+	{ "hitstop": 9, "hitstop_ch": 1, "hitstun": 14, "hitstun_ch": 4,
 	  "blockstun": 13, "blockstop": 10, "p1": 100, "p2": 85,
 	  "untechable": 14, "untechable_ch": 12,
 	  "crumple": 24, "crumple_fall": 57 },
 	# Lvl 3
 	{ "hitstop": 11, "hitstop_ch": 2, "hitstun": 17, "hitstun_ch": 5,
-	  "blockstun": 16, "blockstop": 11, "p1": 100, "p2": 89,
+	  "blockstun": 16, "blockstop": 12, "p1": 100, "p2": 89,
 	  "untechable": 17, "untechable_ch": 14,
 	  "crumple": 27, "crumple_fall": 60 },
 	# Lvl 4
-	{ "hitstop": 12, "hitstop_ch": 5, "hitstun": 19, "hitstun_ch": 5,
-	  "blockstun": 18, "blockstop": 12, "p1": 100, "p2": 92,
+	{ "hitstop": 13, "hitstop_ch": 4, "hitstun": 19, "hitstun_ch": 5,
+	  "blockstun": 18, "blockstop": 14, "p1": 100, "p2": 92,
 	  "untechable": 19, "untechable_ch": 15,
 	  "crumple": 29, "crumple_fall": 62 },
 	# Lvl 5
-	{ "hitstop": 13, "hitstop_ch": 8, "hitstun": 21, "hitstun_ch": 6,
-	  "blockstun": 20, "blockstop": 13, "p1": 100, "p2": 94,
+	{ "hitstop": 15, "hitstop_ch": 6, "hitstun": 21, "hitstun_ch": 6,
+	  "blockstun": 20, "blockstop": 18, "p1": 100, "p2": 94,
 	  "untechable": 21, "untechable_ch": 16,
 	  "crumple": 31, "crumple_fall": 64 },
 ]
@@ -143,16 +121,43 @@ enum InvulType  { None, Head, Body, Foot, Throw, Projectile, Burst, Full, GuardP
 @export_group("Attack Level")
 @export var attack_level : Array[int] = [1]   ## Per-hit attack level (0-5). Falls back to last entry.
 
-## Overrides — set to -1 to use table default
+## Overrides — set to -1 to use table default.[br]
+## [br]
+## override_hitstun:    Lvl0:10  Lvl1:12  Lvl2:14  Lvl3:17  Lvl4:19  Lvl5:21 [br]
+## Counter Hit Added:  Lvl0:+4  Lvl1:+4  Lvl2:+4  Lvl3:+5  Lvl4:+5  Lvl5:+6
 @export var override_hitstun   : int = -1
-@export var override_blockstun : int = -1
+## override_hitstop:    Lvl0:8   Lvl1:9   Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13 [br]
+## Counter Hit Added:  Lvl0:+0  Lvl1:+0  Lvl2:+1  Lvl3:+2  Lvl4:+5  Lvl5:+8
 @export var override_hitstop   : int = -1
+## override_blockstun:  Lvl0:9   Lvl1:11  Lvl2:13  Lvl3:16  Lvl4:18  Lvl5:20
+@export var override_blockstun : int = -1
+## override_blockstun:  Lvl0:8   Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13
+@export var override_blockstop : int = -1
 
-## Asymmetric blockstop/hitstop — per hit. Empty = symmetric (use table)
+## Asymmetric blockstop/hitstop — per hit. Empty = symmetric (use table)[br]
+## [br]
+## blockstop attacker/defender: Lvl0:8  Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13
 @export var override_blockstop_attacker : Array[int] = []
 @export var override_blockstop_defender : Array[int] = []
+## [br]
+## hitstop attacker/defender:   Lvl0:8  Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13 [br]
+## Counter Hit Added:           Lvl0:+0 Lvl1:+0 Lvl2:+1  Lvl3:+2  Lvl4:+5  Lvl5:+8
 @export var override_hitstop_attacker   : Array[int] = []
 @export var override_hitstop_defender   : Array[int] = []
+
+# -----------------------------------------------------------------------------
+# Cancel Windows
+# -----------------------------------------------------------------------------
+@export_group("Cancel Windows")
+@export var cancel_normal    : CancelWindow = CancelWindow.new()
+@export var cancel_special   : CancelWindow = CancelWindow.new()
+@export var cancel_drive     : CancelWindow = CancelWindow.new()
+@export var cancel_overdrive : CancelWindow = CancelWindow.new()
+@export var cancel_jump      : CancelWindow = CancelWindow.new()
+@export var cancel_rapid     : CancelWindow = CancelWindow.new()
+@export var cancel_dash      : CancelWindow = CancelWindow.new()
+@export var cancel_backdash  : CancelWindow = CancelWindow.new()
+@export var cancel_burst     : CancelWindow = CancelWindow.new()
 
 # -----------------------------------------------------------------------------
 # Hit effects
@@ -191,19 +196,24 @@ enum InvulType  { None, Head, Body, Foot, Throw, Projectile, Burst, Full, GuardP
 # falloff: velocity multiplier per frame (e.g. 0.85). 1.0 = no falloff.
 # -----------------------------------------------------------------------------
 @export_group("Physics Impulses")
-
-## Impulses applied to the attacker
-@export var self_impulses : Array[Dictionary] = []
+@export var impulse_x       : float = 0.0
+@export var impulse_y       : float = 0.0
+@export var impulse_start   : int   = -1
+@export var impulse_end     : int   = -1
+@export var impulse_falloff : float = 1.0
 
 # -----------------------------------------------------------------------------
 # Pushback
 # Applied along the X axis — positive = away from attacker.
 # Corner reversal handled by hit resolution system.
 # -1 = no pushback.
+# Attack Level 1 = 1500, 
 # -----------------------------------------------------------------------------
 @export_group("Pushback")
-@export var pushback     : Array[float] = []
-@export var air_pushback : Array[float] = []
+## Attack Level 1 = 1500, Atack Level 2 = 2000, 
+@export var pushback       : Array[float] = []   ## Ground pushback X per hit index
+@export var air_pushback_x : Array[float] = []   ## Air pushback X per hit index
+@export var air_pushback_y : Array[float] = []   ## Air pushback Y per hit index
 
 # -----------------------------------------------------------------------------
 # Counter hit
@@ -212,17 +222,12 @@ enum InvulType  { None, Head, Body, Foot, Throw, Projectile, Burst, Full, GuardP
 @export var is_counterhitable : bool = true
 
 # -----------------------------------------------------------------------------
-# Cancel windows
+# Cancel Routes — per-move cancel routing
+# Each entry maps a command string to an HFD node path.
+# Checked by ST_Attack.on_command() after cancel window validation.
 # -----------------------------------------------------------------------------
-@export_group("Cancel Windows")
-var cancel_self      : CancelWindow = CancelWindow.new()
-var cancel_special   : CancelWindow = CancelWindow.new()
-var cancel_drive     : CancelWindow = CancelWindow.new()
-var cancel_overdrive : CancelWindow = CancelWindow.new()
-var cancel_jump      : CancelWindow = CancelWindow.new()
-var cancel_rapid     : CancelWindow = CancelWindow.new()
-var cancel_dash      : CancelWindow = CancelWindow.new()
-var cancel_backdash  : CancelWindow = CancelWindow.new()
+@export_group("Cancel Routes")
+@export var cancel_routes : Array[CancelRoute] = []
 
 # -----------------------------------------------------------------------------
 # Table query API
@@ -247,6 +252,10 @@ func get_hitstun_ch(hit_index : int = 0) -> int:
 func get_blockstun(hit_index : int = 0) -> int:
 	return override_blockstun if override_blockstun != -1 \
 		else LEVEL_TABLE[_get_level(hit_index)]["blockstun"]
+
+func get_blockstop(hit_index : int = 0) -> int:
+	return override_blockstop if override_blockstop != -1 \
+		else LEVEL_TABLE[_get_level(hit_index)]["blockstop"]
 
 func get_blockstun_air(hit_index : int = 0) -> int:
 	return get_blockstun(hit_index) + 2
@@ -306,19 +315,13 @@ func calculate_damage(
 	if is_first_hit:
 		return int(base)
 
-	# Get this hit's P2 (as decimal)
-	var this_p2 := 1.0
-	if not p2_once or hit_index == 0:
-		var p2_index = min(hit_index, p2.size() - 1)
-		this_p2 = float(p2[p2_index]) / 100.0
-
 	# Bonus proration — only if not already applied this combo
 	var bonus := float(bonus_proration) / 100.0 if bonus_proration > 0 and not bonus_applied else 1.0
 
-	# Final damage = base × combo_rate × P1 × accumulated_P2 × this_P2 × bonus
-	var scaled := base * COMBO_RATE * first_hit_p1 * accumulated_p2 * this_p2 * bonus
+	# Final damage = base × combo_rate × P1 × accumulated_P2 (from previous hits only) × bonus
+	var scaled := base * COMBO_RATE * first_hit_p1 * accumulated_p2 * bonus
 
-	# Apply minimum damage floor — 5% of base if min_damage array is empty
+	# Apply minimum damage floor
 	var floor_val : float
 	if min_damage.is_empty():
 		floor_val = base * 0.05
@@ -328,12 +331,11 @@ func calculate_damage(
 
 	return int(scaled)
 
-## Returns the new accumulated_p2 after this hit.
-## Pass hit_index = 0 for the first hit of this move.
+## Returns the new accumulated_p2 after this hit — includes this hit's P2 for next hit.
 func next_accumulated_p2(current: float, hit_index: int) -> float:
 	if p2_once and hit_index > 0:
-		return current   # multi-hit with p2_once — only first hit of move contributes
-	var p2_index = min(hit_index, p2.size() - 1)
+		return current
+	var p2_index : int = min(hit_index, p2.size() - 1)
 	return current * (float(p2[p2_index]) / 100.0)
 
 # -----------------------------------------------------------------------------

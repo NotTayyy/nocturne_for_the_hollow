@@ -1314,8 +1314,6 @@ metadata/_custom_type_script = "uid://dfpausy7mwbh7"
 
 [node name="ST_Attack" type="Node" parent="Components/State_Manager" unique_id=1851673900]
 script = ExtResource("18_42ihw")
-proximity_box_width = 525.0
-proximity_box_height = 75.0
 
 [node name="FrameData" type="Node2D" parent="Components" unique_id=403102285]
 

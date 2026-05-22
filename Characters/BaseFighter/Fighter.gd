@@ -42,7 +42,7 @@ func _ready() -> void:
 	_setup_input_buffer()
 	state_machine.initialise(self)
 	char_data.health_depleted.connect(_on_health_depleted)
-	anim_player.play("Idle")
+	anim_player.play("Idle/Idle")
 
 func _physics_process(delta: float) -> void:
 	update_facing()
@@ -192,9 +192,21 @@ func _setup_input_buffer() -> void:
 func _on_health_depleted() -> void:
 	knocked_out.emit()
 
+func notify_proximity_block(_in_range : bool) -> void:
+	# Placeholder — wire to block state when built
+	pass
+
 func recieve_hit(result : HitResult) -> void:
 	add_property(Property.new(Property.Type.HitStop, result.hitstop, "system"))
 	add_property(Property.new(Property.Type.Hitstun, result.hitstun, "system"))
+	# Apply pushback away from attacker
+	if result.pushback != 0.0 or result.air_pushback != 0.0:
+		var dir : float = 1.0 if result.attacker.global_position.x < global_position.x else -1.0
+		if is_airborne:
+			velocity.x += result.pushback * dir
+			velocity.y += result.air_pushback
+		else:
+			velocity.x += result.pushback * dir
 
 func _is_actionable() -> bool:
 	return not has_property(Property.Type.Hitstun)  \

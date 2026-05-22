@@ -91,16 +91,15 @@ func register_hit(result : HitResult) -> void:
 	hit_count += 1
 
 	if md != null:
-		# --- Damage --- applied as grey health during combo
+		# --- Damage ---
 		result.damage = md.calculate_damage(
 			hi, is_first_hit, first_hit_p1, accumulated_p2, bonus_applied
 		)
 		_total_damage += result.damage
-		# Real health drops immediately, grey health tracks the recoverable portion
 		result.defender.char_data.curr_health -= result.damage
 		result.defender.char_data.add_grey_health(result.damage)
 
-		# Update accumulated_p2
+		# Accumulate P2 AFTER damage — applies to next hit
 		accumulated_p2 = md.next_accumulated_p2(accumulated_p2, hi)
 
 		if md.bonus_proration > 0 and not bonus_applied:
@@ -141,15 +140,21 @@ func register_hit(result : HitResult) -> void:
 				result.hit_duration = _apply_decay(result.hit_duration)
 
 		# --- Pushback ---
-		var pb_arr : Array = md.air_pushback if result.is_airborne else md.pushback
-		if not pb_arr.is_empty():
-			var pb_idx : int    = min(hi, pb_arr.size() - 1)
-			result.pushback     = pb_arr[pb_idx]
-			result.air_pushback = pb_arr[pb_idx]
+		var pb_idx : int = min(hi, md.pushback.size() - 1)
+		if result.is_airborne:
+			if not md.air_pushback_x.is_empty():
+				var ax_idx : int = min(hi, md.air_pushback_x.size() - 1)
+				result.pushback = md.air_pushback_x[ax_idx]
+			if not md.air_pushback_y.is_empty():
+				var ay_idx : int = min(hi, md.air_pushback_y.size() - 1)
+				result.air_pushback = md.air_pushback_y[ay_idx]
+		else:
+			if not md.pushback.is_empty():
+				result.pushback = md.pushback[pb_idx]
 
 		# --- Impulse ---
-		if not md.self_impulses.is_empty():
-			result.impulse = md.self_impulses[min(hi, md.self_impulses.size() - 1)]
+		if md.impulse_x != 0.0 or md.impulse_y != 0.0:
+			result.impulse = { "x": md.impulse_x, "y": md.impulse_y, "start": md.impulse_start, "end": md.impulse_end, "falloff": md.impulse_falloff }
 
 		# --- Limit ---
 		result.limit_contribution = _calc_limit(md, hi)
@@ -157,7 +162,7 @@ func register_hit(result : HitResult) -> void:
 
 		# --- Move history [optional — see header comment] ---
 		if md.move_id != "":
-			move_history.append(md.move_id)
+			move_history.append("%s(%d)" % [md.move_id, result.damage])
 
 	is_first_hit = false
 	emit_signal("combo_updated", hit_count)

@@ -25,16 +25,15 @@ func enter(_prev: String) -> void:
 	# Do NOT touch velocity — carry dash momentum in
 
 	# All gates open except block — barrier is the only path to block
-	gate_self      = true
+	gate_normal    = true
 	gate_special   = true
 	gate_drive     = true
 	gate_overdrive = true
 	gate_jump      = true
 	gate_rapid     = true
-	gate_dash      = true    # re-dash allowed
+	gate_dash      = true
 	gate_backdash  = true
 	gate_burst     = true
-	gate_barrier   = true    # Barrier Brake — only path to blocking
 
 	ap.play("Dash/Dash_Skid")
 

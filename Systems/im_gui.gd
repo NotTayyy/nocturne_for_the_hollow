@@ -162,7 +162,7 @@ func imgui_state_info(player) -> void:
 	# Gates
 	ImGui.Text("Gates:")
 	ImGui.SameLine()
-	_gate_inline("Self",      st.gate_self)
+	_gate_inline("Normal",    st.gate_normal)
 	_gate_inline("Special",   st.gate_special)
 	_gate_inline("Drive",     st.gate_drive)
 	_gate_inline("Overdrive", st.gate_overdrive)
@@ -174,7 +174,6 @@ func imgui_state_info(player) -> void:
 	_gate_inline("Dash",      st.gate_dash)
 	_gate_inline("Backdash",  st.gate_backdash)
 	_gate_inline("Burst",     st.gate_burst)
-	_gate_inline("Barrier",   st.gate_barrier)
 
 	# Invul
 	ImGui.NewLine()

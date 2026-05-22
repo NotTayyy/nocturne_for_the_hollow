@@ -32,7 +32,6 @@ func AddBoxToIndex() -> void:
 	new_box.owner = get_tree().edited_scene_root
 
 func RemoveThisBox() -> void:
-	var hfd : HitboxFrameData = get_parent() as HitboxFrameData
 	queue_free()
 
 func InsertBefore() -> void:

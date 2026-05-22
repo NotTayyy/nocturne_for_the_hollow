@@ -28,7 +28,7 @@ func _ready() -> void:
 # Health signals
 # =============================================================================
 
-func _on_health_changed(current: int, max_hp: int) -> void:
+func _on_health_changed(current: int, _max_hp: int) -> void:
 	_kill_tweens()
 
 	var is_damage : bool = current < bar_front.value

@@ -21,7 +21,6 @@ func enter(prev: String) -> void:
 	else:
 		lockout_timer = 0
 	_reset_gates()
-	gate_barrier = true
 	_play_jump_anim()
 	if hfd_node != null:
 		hfd_node.begin(null)
@@ -100,8 +99,7 @@ func _update_gates() -> void:
 	gate_special   = true
 	gate_drive     = true
 	gate_overdrive = true
-	gate_self      = true
-	gate_barrier   = true
+	gate_normal    = true
 
 # -----------------------------------------------------------------------------
 # Air jump

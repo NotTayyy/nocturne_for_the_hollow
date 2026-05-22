@@ -17,12 +17,11 @@ func enter(_prev: String) -> void:
 	fighter.velocity.y = 0.0
 	_reset_gates()
 	
-	gate_self      = true
+	gate_normal    = true
 	gate_special   = true
 	gate_drive     = true
 	gate_overdrive = true
 	gate_dash      = true
-	gate_barrier   = true
 
 	fighter.remove_property(Property.Type.Airborne)
 

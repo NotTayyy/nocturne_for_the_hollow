@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://cokb0iqd71uhc"]
-
-[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="1_wm1cc"]
-
-[resource]
-script = ExtResource("1_wm1cc")
-move_name = "5C"
-move_id = "Nml_5C"
-metadata/_custom_type_script = "uid://c1ie505730ew"

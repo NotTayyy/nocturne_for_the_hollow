@@ -18,11 +18,10 @@ func enter(_prev: String) -> void:
 	_standing_up    = false
 	fighter.velocity.x = 0.0
 	fighter.velocity.y = 0.0
-	gate_self      = true
+	gate_normal    = true
 	gate_special   = true
 	gate_drive     = true
 	gate_overdrive = true
-	gate_barrier   = true
 	gate_jump      = true
 	ap.play("Crouch/Crouch_Start")
 	fighter.add_property(Property.new(Property.Type.Crouching, -1, "system"))

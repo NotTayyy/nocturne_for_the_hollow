@@ -67,16 +67,13 @@
 [ext_resource type="Texture2D" uid="uid://b8v06fr03ni3i" path="res://Characters/Tmp_Byakuya/Byakuya/067.png" id="51_qx7ff"]
 [ext_resource type="Texture2D" uid="uid://cimhxl5r50e4d" path="res://Characters/Tmp_Byakuya/Byakuya/136.png" id="52_0nxco"]
 [ext_resource type="Texture2D" uid="uid://bvxkx1aueqb2b" path="res://Characters/Tmp_Byakuya/Byakuya/137.png" id="53_auw0f"]
-[ext_resource type="Script" uid="uid://u6lkkiwrap7c" path="res://Scripts/Components/Hurtbox.gd" id="55_g4p22"]
+[ext_resource type="Script" uid="uid://bswh74kuon3br" path="res://Scripts/Components/Hurtbox.gd" id="55_g4p22"]
 [ext_resource type="Script" uid="uid://vdot3es4dinw" path="res://Scripts/Components/Pushbox.gd" id="56_16c4u"]
 [ext_resource type="Texture2D" uid="uid://sp0hrpt8mc6e" path="res://Characters/Tmp_Byakuya/Byakuya/019.png" id="57_8xdls"]
 [ext_resource type="Texture2D" uid="uid://gbivvrww6gb2" path="res://Characters/Tmp_Byakuya/Byakuya/020.png" id="58_v0jc5"]
 [ext_resource type="Texture2D" uid="uid://djkex5q6rer4s" path="res://Characters/Tmp_Byakuya/Byakuya/021.png" id="59_im3f6"]
 [ext_resource type="Texture2D" uid="uid://bew2fbblph0mf" path="res://Characters/Tmp_Byakuya/Byakuya/022.png" id="60_jp7oo"]
 [ext_resource type="Texture2D" uid="uid://crr6eywexy31k" path="res://Characters/Tmp_Byakuya/Byakuya/023.png" id="61_cy0jj"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_16c4u"]
-size = Vector2(114, 348)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8xdls"]
 size = Vector2(100, 187)
@@ -309,12 +306,6 @@ texture = ExtResource("3_kdqph")
 collision_layer = 17
 collision_mask = 17
 script = ExtResource("55_g4p22")
-metadata/_custom_type_script = "uid://u6lkkiwrap7c"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Hurtbox" unique_id=176718547]
-position = Vector2(1, -79)
-shape = SubResource("RectangleShape2D_16c4u")
-debug_color = Color(0, 0.28627452, 0.8862745, 0.41960785)
 
 [node name="Pushbox" type="Area2D" parent="Components" unique_id=1159210761]
 script = ExtResource("56_16c4u")

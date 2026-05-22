@@ -1,18 +1,78 @@
-[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://cr7o70g342blg"]
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://tlfcgmxjk4um"]
 
-[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="1_uhntl"]
+[ext_resource type="Script" uid="uid://coqvqgr4ov570" path="res://Scripts/Class_Base/CancelRoute.gd" id="1_l5goq"]
+[ext_resource type="Script" uid="uid://8gbv7m3jiy6a" path="res://Scripts/Class_Base/CancelWindow.gd" id="2_l5goq"]
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="3_75bxn"]
+
+[sub_resource type="Resource" id="Resource_yfi0k"]
+script = ExtResource("2_l5goq")
+
+[sub_resource type="Resource" id="Resource_7ovv0"]
+script = ExtResource("2_l5goq")
+
+[sub_resource type="Resource" id="Resource_vwdmo"]
+script = ExtResource("2_l5goq")
+
+[sub_resource type="Resource" id="Resource_75bxn"]
+script = ExtResource("2_l5goq")
+on_hit = true
+on_block = true
+metadata/_custom_type_script = "uid://8gbv7m3jiy6a"
+
+[sub_resource type="Resource" id="Resource_leup8"]
+script = ExtResource("2_l5goq")
+on_hit = true
+on_block = true
+
+[sub_resource type="Resource" id="Resource_a63i6"]
+script = ExtResource("2_l5goq")
+on_hit = true
+on_block = true
+metadata/_custom_type_script = "uid://8gbv7m3jiy6a"
+
+[sub_resource type="Resource" id="Resource_kad6o"]
+script = ExtResource("2_l5goq")
+
+[sub_resource type="Resource" id="Resource_ex1cr"]
+script = ExtResource("2_l5goq")
+on_hit = true
+on_block = true
+
+[sub_resource type="Resource" id="Resource_l5goq"]
+script = ExtResource("1_l5goq")
+command = "Button A"
+hfd_path = "Components/FrameData/Nml_5A"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_5o8v2"]
+script = ExtResource("1_l5goq")
+command = "Button B"
+hfd_path = "Components/FrameData/Nml_5B"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_l6lcx"]
+script = ExtResource("2_l5goq")
+on_hit = true
+on_block = true
 
 [resource]
-script = ExtResource("1_uhntl")
+script = ExtResource("3_75bxn")
 move_name = "5A"
 move_id = "Nml_5A"
 startup = 4
 active = Array[int]([3])
 recovery = 9
 damage = Array[int]([300])
-min_damage = Array[int]([15])
 p2 = Array[int]([80])
-p2_once = true
-override_hitstun = 100000
-pushback = Array[float]([100.0])
+cancel_normal = SubResource("Resource_a63i6")
+cancel_special = SubResource("Resource_l6lcx")
+cancel_drive = SubResource("Resource_75bxn")
+cancel_overdrive = SubResource("Resource_kad6o")
+cancel_jump = SubResource("Resource_leup8")
+cancel_rapid = SubResource("Resource_ex1cr")
+cancel_dash = SubResource("Resource_vwdmo")
+cancel_backdash = SubResource("Resource_yfi0k")
+cancel_burst = SubResource("Resource_7ovv0")
+pushback = Array[float]([1500.0])
+cancel_routes = Array[ExtResource("1_l5goq")]([SubResource("Resource_l5goq"), SubResource("Resource_5o8v2")])
 metadata/_custom_type_script = "uid://c1ie505730ew"
