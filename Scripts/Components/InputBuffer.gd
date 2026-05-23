@@ -54,8 +54,8 @@ const PRIORITY : Dictionary = {
 	"Super Jump"     : 5,
 	"Normal"         : 6,
 	"Command Normal" : 7,
-	"Guard Crush"    : 8,
-	"Throw"          : 9,
+	"Throw"          : 8,
+	"Guard Break"    : 9,
 	"Special"        : 10,
 	"EX Special"     : 11,
 	"Rapid Cancel"   : 12,
@@ -65,7 +65,7 @@ const PRIORITY : Dictionary = {
 }
 
 ## Input buffer window — frames a matched command stays buffered
-@export var BUFFER_WINDOW : int = 1000
+@export var BUFFER_WINDOW : int = 8
 
 # -----------------------------------------------------------------------------
 # Runtime state
@@ -406,17 +406,27 @@ func _check_charge_command(cmd: Dictionary, type: String) -> bool:
 	return seq_index < 0
 
 func _check_combo_command(cmd: Dictionary, inputs_this_frame: Array) -> bool:
-	var required_buttons : Array = cmd["Buttons"]
-	for btn in required_buttons:
-		var found := false
-		for entry in inputs_this_frame:
-			if entry == btn:
-				found = true
-				break
-		if not found:
+	var sequence : Array = cmd["Sequence"]
+
+	# Split sequence into directions (must be held) and buttons (must be pressed this frame)
+	var required_dirs    : Array[String] = []
+	var required_buttons : Array[String] = []
+	for entry in sequence:
+		if entry in DIRECTIONS:
+			required_dirs.append(entry)
+		else:
+			required_buttons.append(entry)
+
+	# Check all required directions are currently held
+	for dir in required_dirs:
+		if dir not in held_inputs:
 			return false
-	if "Sequence" in cmd and not cmd["Sequence"].is_empty():
-		return _check_motion_command(cmd, "press")
+
+	# Check all required buttons were pressed this frame
+	for btn in required_buttons:
+		if btn not in inputs_this_frame:
+			return false
+
 	return true
 
 func _check_motion_command(cmd: Dictionary, type: String) -> bool:
@@ -487,6 +497,10 @@ func _try_buffered_command() -> void:
 	if age > BUFFER_WINDOW:
 		_buffered_command       = {}
 		_buffered_command_frame = -1
+		return
+	# Barrier is sustained by held inputs — only emit once on the frame it was matched
+	# Re-emission would cause it to toggle, _tick_barrier_held handles sustaining it
+	if _buffered_command.get("Command", "") == "Barrier":
 		return
 	command_matched.emit(_buffered_command)
 

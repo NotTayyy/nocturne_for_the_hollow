@@ -118,12 +118,14 @@ signal health_changed(cur_health: int, max_health: int)
 signal grey_health_changed(cur_grey: int)
 signal limit_changed(cur_limit: int, max_Limit: int)
 signal burst_changed(cur_burst: int, max_burst: int)
+signal barrier_changed(cur_barrier: int, max_barrier: int)
 signal flow_changed(curr_flow: int, max_flow: int)
 
 var curr_health      : int = base_max_health : set = _on_health_set
 var curr_grey_health : int = 0               : set = _on_grey_health_set
 var curr_Limit       : int = 0               : set = _on_limit_set
 var curr_burst       : int = 0               : set = _on_burst_set
+var curr_barrier     : int = base_max_barrier: set = _on_barrier_set
 var curr_flow        : int = 0               : set = _on_flow_set
 
 ## Decay rate — grey health lost per second while not in combo
@@ -135,6 +137,8 @@ func _init() -> void:
 func setup_char() -> void:
 	curr_health      = base_max_health
 	curr_grey_health = 0
+	curr_barrier     = base_max_barrier
+	in_broken        = false
 
 func _on_health_set(new_value: int) -> void:
 	curr_health = clampi(new_value, 0, base_max_health)
@@ -179,6 +183,57 @@ func tick_grey_health_decay(delta: float, fighter : Fighter) -> void:
 	if to_drain > 0:
 		_grey_decay_accumulator -= float(to_drain)
 		curr_grey_health = maxi(0, curr_grey_health - to_drain)
+
+func _on_barrier_set(new_value: int) -> void:
+	curr_barrier = clampi(new_value, 0, base_max_barrier)
+	barrier_changed.emit(curr_barrier, base_max_barrier)
+
+## Drain rate — barrier lost per second while barrier_active is held
+@export var barrier_drain_rate  : float = 25.0
+## Regen rate — barrier gained per second while not using barrier
+@export var barrier_regen_rate  : float = 8.0
+## Regen rate while Broken — much slower
+@export var barrier_danger_regen_rate : float = 5.0
+
+var in_broken          : bool  = false
+var _barrier_drain_acc : float = 0.0
+var _barrier_regen_acc : float = 0.0
+
+## Call from Fighter._physics_process — drains while barrier active, regens otherwise
+func tick_barrier(delta: float, barrier_active: bool) -> void:
+	# Broken — barrier locked at 0, slow regen only
+	if in_broken:
+		_barrier_drain_acc = 0.0
+		_barrier_regen_acc += barrier_danger_regen_rate * delta
+		var to_regen : int = int(_barrier_regen_acc)
+		if to_regen > 0:
+			_barrier_regen_acc -= float(to_regen)
+			curr_barrier = mini(base_max_barrier, curr_barrier + to_regen)
+		if curr_barrier >= base_max_barrier:
+			in_broken = false
+		return
+
+	if barrier_active:
+		_barrier_regen_acc = 0.0
+		_barrier_drain_acc += barrier_drain_rate * delta
+		var to_drain : int = int(_barrier_drain_acc)
+		if to_drain > 0:
+			_barrier_drain_acc -= float(to_drain)
+			curr_barrier = maxi(0, curr_barrier - to_drain)
+		if curr_barrier <= 0:
+			in_broken = true
+	else:
+		_barrier_drain_acc = 0.0
+		_barrier_regen_acc += barrier_regen_rate * delta
+		var to_regen : int = int(_barrier_regen_acc)
+		if to_regen > 0:
+			_barrier_regen_acc -= float(to_regen)
+			curr_barrier = mini(base_max_barrier, curr_barrier + to_regen)
+
+func drain_barrier_from_hit(amount: int) -> void:
+	curr_barrier = maxi(0, curr_barrier - amount)
+	if curr_barrier <= 0:
+		in_broken = true
 
 func _on_limit_set(new_value: int) -> void:
 	curr_Limit = clampi(new_value, 0, base_max_Limit)

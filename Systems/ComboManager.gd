@@ -105,8 +105,9 @@ func register_hit(result : HitResult) -> void:
 			hi, is_first_hit, first_hit_p1, accumulated_p2, bonus_applied
 		)
 		_total_damage += result.damage
-		result.defender.char_data.curr_health -= result.damage
-		result.defender.char_data.add_grey_health(result.damage)
+		if not result.is_blocked:
+			result.defender.char_data.curr_health -= result.damage
+			result.defender.char_data.add_grey_health(result.damage)
 
 		# Accumulate P2 AFTER damage — applies to next hit
 		accumulated_p2 = md.next_accumulated_p2(accumulated_p2, hi)
@@ -176,8 +177,11 @@ func register_hit(result : HitResult) -> void:
 	is_first_hit = false
 	emit_signal("combo_updated", hit_count)
 	result.defender.recieve_hit(result)
-	# Apply hitstop to both fighters
-	apply_hitstop(result.attacker, result.defender, result.hitstop)
+	# Apply hitstop or blockstop to both fighters
+	if result.is_blocked:
+		apply_hitstop(result.attacker, result.defender, result.blockstop)
+	else:
+		apply_hitstop(result.attacker, result.defender, result.hitstop)
 
 ## Apply hitstop to both fighters
 func apply_hitstop(atk: Fighter, def: Fighter, frames: int) -> void:

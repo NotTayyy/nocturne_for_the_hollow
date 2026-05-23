@@ -23,6 +23,12 @@ var jumps_remaining  : int    = 0
 var dashes_remaining : int    = 0
 var facing_updated   : bool   = false
 
+# Block tracking
+var wants_to_block          : bool = false
+var wants_to_block_frame    : int  = -1   ## Physics frame block intent started — for perfect defense
+var block_carryover         : bool = false ## Auto-block during blockstun regardless of direction
+var crossup_protection_timer : int = 0    ## Frames of leniency after opponent swaps sides
+
 ## All Active Properties
 var properties : Array[Property] = []
 
@@ -46,6 +52,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	update_facing()
+	_update_block_state()
 	state_machine.tick(delta)
 	_tick_properties()
 	move_and_slide()
@@ -58,14 +65,71 @@ func _physics_process(delta: float) -> void:
 func update_facing() -> void:
 	var target := "Right" if global_position.x <= opponent.global_position.x else "Left"
 	if target == dir_facing or is_airborne or is_on_wall_left or is_on_wall_right:
+		if crossup_protection_timer > 0:
+			crossup_protection_timer -= 1
 		facing_updated = false
-		return 
+		return
 	dir_facing = target
 	char_sprite.scale.x = 1.0 if dir_facing == "Right" else -1.0
 	input_buffer.facing_right = (dir_facing == "Right")
 	input_buffer.flip_held_directions()
+	crossup_protection_timer = 3   ## 3 frames of leniency after side swap
 	facing_updated = true
 	return
+
+# -----------------------------------------------------------------------------
+# Block state — updated every frame from held inputs
+# -----------------------------------------------------------------------------
+func _update_block_state() -> void:
+	var held := input_buffer.held_inputs
+
+	# Crossup protection — treat forward as back for block purposes
+	var back_held : bool
+	if crossup_protection_timer > 0:
+		back_held = "4" in held or "6" in held or "1" in held or "7" in held
+	else:
+		back_held = "4" in held or "1" in held or "7" in held
+
+	# wants_to_block only activates in neutral states
+	# Not during: attack, blockstun, hitstun, or any non-neutral state
+	var state_id   : String = state_machine.active_state.state_id if state_machine.active_state else ""
+	var is_neutral : bool   = state_id in ["Idle", "Walk", "Airborne", "Crouch"]
+
+	if back_held and is_neutral:
+		if not wants_to_block:
+			wants_to_block       = true
+			wants_to_block_frame = Engine.get_physics_frames()
+	else:
+		wants_to_block       = false
+		wants_to_block_frame = -1
+
+	if block_carryover and not has_property(Property.Type.Blockstun):
+		block_carryover = false
+
+## Determine which block type is valid given current held inputs
+## Returns "Stand", "Crouch", "Air", or "" if not blocking
+func get_block_type() -> String:
+	if is_airborne:
+		var air_back : bool
+		if crossup_protection_timer > 0:
+			air_back = "4" in input_buffer.held_inputs or "1" in input_buffer.held_inputs \
+				or "7" in input_buffer.held_inputs or "6" in input_buffer.held_inputs
+		else:
+			air_back = "4" in input_buffer.held_inputs or "1" in input_buffer.held_inputs \
+				or "7" in input_buffer.held_inputs
+		return "Air" if air_back else ""
+	# Crouch block — must have 1 (back + down)
+	if "1" in input_buffer.held_inputs:
+		return "Crouch"
+	# Stand block — 4 held but not 1
+	if "4" in input_buffer.held_inputs:
+		return "Stand"
+	# Crossup protection — 6 (forward) treated as 4
+	if crossup_protection_timer > 0 and "6" in input_buffer.held_inputs:
+		if "2" in input_buffer.held_inputs or "3" in input_buffer.held_inputs:
+			return "Crouch"
+		return "Stand"
+	return ""
 
 # -----------------------------------------------------------------------------
 # Post-slide flags
@@ -128,14 +192,33 @@ func notify_proximity_block(_in_range : bool) -> void:
 	pass
 
 func recieve_hit(result : HitResult) -> void:
-	add_property(Property.new(Property.Type.Hitstun, result.hitstun, "system"))
-	if result.pushback != 0.0 or result.air_pushback != 0.0:
-		var dir : float = 1.0 if result.attacker.global_position.x < global_position.x else -1.0
-		if is_airborne:
+	if result.is_blocked:
+		add_property(Property.new(Property.Type.Blockstun, result.blockstun, "system"))
+		block_carryover = true
+		# Chip damage — specials only
+		if result.move_data != null and result.move_data.chip_damage_percent > 0:
+			var chip : int = int(float(result.damage) * (result.move_data.chip_damage_percent / 100.0))
+			char_data.curr_health = max(1, char_data.curr_health - chip)
+		# Pushback on block
+		if result.pushback != 0.0:
+			var dir : float = 1.0 if result.attacker.global_position.x < global_position.x else -1.0
 			velocity.x += result.pushback * dir
-			velocity.y += result.air_pushback
-		else:
-			velocity.x += result.pushback * dir
+		# Route to correct block state
+		var block_type : String = get_block_type()
+		match block_type:
+			"Stand":  state_machine.force_transition("StandBlock")
+			"Crouch": state_machine.force_transition("CrouchBlock")
+			"Air":    state_machine.force_transition("AirBlock")
+			_:        state_machine.force_transition("StandBlock")  # carryover fallback
+	else:
+		add_property(Property.new(Property.Type.Hitstun, result.hitstun, "system"))
+		if result.pushback != 0.0 or result.air_pushback != 0.0:
+			var dir : float = 1.0 if result.attacker.global_position.x < global_position.x else -1.0
+			if is_airborne:
+				velocity.x += result.pushback * dir
+				velocity.y += result.air_pushback
+			else:
+				velocity.x += result.pushback * dir
 
 func _is_actionable() -> bool:
 	return not has_property(Property.Type.Hitstun)  \

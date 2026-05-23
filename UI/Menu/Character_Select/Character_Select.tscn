@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://qc740g57332h"]
+[gd_scene format=3 uid="uid://qc740g57332h"]
 
 [ext_resource type="Script" uid="uid://b6xroxj44bof1" path="res://UI/Menu/Character_Select/character_select_ui.gd" id="1_4ubts"]
 
-[node name="MainMenu" type="Control"]
+[node name="Character_Select" type="Control" unique_id=1957231389]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,23 +11,23 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4ubts")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1066583179]
 
-[node name="P2_Char_select" type="OptionButton" parent="CanvasLayer"]
+[node name="P2_Char_select" type="OptionButton" parent="CanvasLayer" unique_id=334438413]
 offset_left = 1057.0
 offset_top = 358.0
 offset_right = 1453.0
 offset_bottom = 494.0
 theme_override_font_sizes/font_size = 36
 
-[node name="P1_Char_select" type="OptionButton" parent="CanvasLayer"]
+[node name="P1_Char_select" type="OptionButton" parent="CanvasLayer" unique_id=1253953460]
 offset_left = 410.0
 offset_top = 366.0
 offset_right = 804.0
 offset_bottom = 502.0
 theme_override_font_sizes/font_size = 36
 
-[node name="p1" type="Label" parent="CanvasLayer"]
+[node name="p1" type="Label" parent="CanvasLayer" unique_id=123938533]
 offset_left = 486.0
 offset_top = 260.0
 offset_right = 671.0
@@ -35,7 +35,7 @@ offset_bottom = 327.0
 theme_override_font_sizes/font_size = 48
 text = "Player 1"
 
-[node name="p2" type="Label" parent="CanvasLayer"]
+[node name="p2" type="Label" parent="CanvasLayer" unique_id=1668958683]
 offset_left = 1170.0
 offset_top = 284.0
 offset_right = 1355.0
@@ -43,7 +43,7 @@ offset_bottom = 351.0
 theme_override_font_sizes/font_size = 48
 text = "Player 2"
 
-[node name="Level_Select" type="Button" parent="CanvasLayer"]
+[node name="Level_Select" type="Button" parent="CanvasLayer" unique_id=1373106628]
 offset_left = 1495.0
 offset_top = 903.0
 offset_right = 1824.0
@@ -52,7 +52,7 @@ theme_override_font_sizes/font_size = 48
 text = "Level Select
 "
 
-[node name="Back_Btn" type="Button" parent="CanvasLayer"]
+[node name="Back_Btn" type="Button" parent="CanvasLayer" unique_id=1229843274]
 offset_left = 66.0
 offset_top = 913.0
 offset_right = 353.0

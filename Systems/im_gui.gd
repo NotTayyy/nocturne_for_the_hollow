@@ -77,12 +77,14 @@ func _process(_delta: float) -> void:
 	ImGui.TextColored(Color.CYAN, "P1 Attack")
 	imgui_attack_info(P1)
 	imgui_buffered_command(P1)
+	imgui_block_info(P1)
 	ImGui.PopID()
 	ImGui.Separator()
 	ImGui.PushID("AttackP2")
 	ImGui.TextColored(Color.CYAN, "P2 Attack")
 	imgui_attack_info(P2)
 	imgui_buffered_command(P2)
+	imgui_block_info(P2)
 	ImGui.PopID()
 	ImGui.Separator()
 	imgui_combo_info()
@@ -504,6 +506,74 @@ func imgui_input_info(player) -> void:
 
 		ImGui.SameLine()
 		ImGui.TextDisabled("%d" % r["duration"])
+
+# =============================================================================
+# Block Info
+# =============================================================================
+func imgui_block_info(player) -> void:
+	if player == null:
+		return
+
+	var state_id    : String = player.state_machine.active_state.state_id if player.state_machine.active_state else ""
+	var in_block    : bool   = state_id in ["StandBlock", "CrouchBlock", "AirBlock"]
+	var block_color : Color  = Color.LIME_GREEN if in_block else Color(0.4, 0.4, 0.4)
+
+	# Current block state
+	ImGui.TextColored(block_color, "Block: %s" % (state_id if in_block else "--"))
+
+	# Wants to block + frame
+	if player.wants_to_block:
+		var held_frames : int = Engine.get_physics_frames() - player.wants_to_block_frame
+		ImGui.TextColored(Color(0.4, 0.9, 1.0), "Want Block: YES  [held %df]" % held_frames)
+	else:
+		ImGui.TextColored(Color(0.4, 0.4, 0.4), "Want Block: --")
+
+	# Block type
+	var block_type : String = player.get_block_type()
+	if block_type != "":
+		ImGui.TextColored(Color(0.8, 0.8, 0.2), "Type: %s" % block_type)
+	else:
+		ImGui.TextColored(Color(0.4, 0.4, 0.4), "Type: --")
+
+	# Block carryover
+	_gate_inline("Carryover", player.block_carryover)
+
+	# Crossup protection
+	_gate_inline("Crossup:%df" % player.crossup_protection_timer, player.crossup_protection_timer > 0)
+	ImGui.NewLine()
+
+	# Blockstun remaining
+	var blockstun_prop = null
+	for p in player.properties:
+		if p.type == Property.Type.Blockstun:
+			blockstun_prop = p
+			break
+	if blockstun_prop != null:
+		ImGui.TextColored(Color.ORANGE, "Blockstun: %df" % blockstun_prop.duration)
+	else:
+		ImGui.TextColored(Color(0.4, 0.4, 0.4), "Blockstun: --")
+
+	# Barrier meter
+	var cd          : CharacterData = player.char_data
+	var barrier_pct : float         = float(cd.curr_barrier) / float(cd.base_max_barrier)
+	var is_active   : bool          = "barrier_active" in player.state_machine.active_state \
+									  and player.state_machine.active_state.barrier_active
+	var bar_color   : Color
+	if cd.in_broken:
+		bar_color = Color(1.0, 0.0, 0.0)
+	elif is_active:
+		bar_color = Color(0.3, 0.7, 1.0)
+	else:
+		bar_color = Color(0.2, 0.8, 0.5)
+
+	if cd.in_broken:
+		ImGui.TextColored(Color.RED, "Barrier: BROKEN  %d/%d" % [cd.curr_barrier, cd.base_max_barrier])
+	else:
+		ImGui.TextColored(bar_color, "Barrier: %d/%d%s" % [
+			cd.curr_barrier, cd.base_max_barrier,
+			"  [ACTIVE]" if is_active else ""
+		])
+	ImGui.ProgressBar(barrier_pct, Vector2(-1, 8), "")
 
 # =============================================================================
 # Timescale / Frame Step

@@ -16,35 +16,30 @@ class_name MoveData
 # -----------------------------------------------------------------------------
 const LEVEL_TABLE : Array[Dictionary] = [
 	# Lvl 0
-	{ "hitstop": 200,  "hitstop_ch": 0, "hitstun": 10, "hitstun_ch": 4,
-	  "blockstun": 9,  "blockstop": 7,  "p1": 100, "p2": 75,
-	  "untechable": 12, "untechable_ch": 11,
-	  "crumple": 20, "crumple_fall": 53 },
+	{ "hitstop": 8,  "hitstop_ch": 0, "hitstun": 10, "hitstun_ch": 4,
+	  "blockstun": 9,  "blockstop": 8,  "p1": 100, "p2": 75,
+	  "airhit": 12, "airhit_ch": 11,
+	},
 	# Lvl 1
-	{ "hitstop": 200,  "hitstop_ch": 0, "hitstun": 12, "hitstun_ch": 4,
+	{ "hitstop": 9,  "hitstop_ch": 0, "hitstun": 12, "hitstun_ch": 4,
 	  "blockstun": 11, "blockstop": 9,  "p1": 100, "p2": 80,
-	  "untechable": 12, "untechable_ch": 12,
-	  "crumple": 22, "crumple_fall": 55 },
+	  "airhit": 12, "airhit_ch": 12,
+	},
 	# Lvl 2
-	{ "hitstop": 9, "hitstop_ch": 1, "hitstun": 14, "hitstun_ch": 4,
+	{ "hitstop": 10, "hitstop_ch": 1, "hitstun": 14, "hitstun_ch": 4,
 	  "blockstun": 13, "blockstop": 10, "p1": 100, "p2": 85,
-	  "untechable": 14, "untechable_ch": 12,
-	  "crumple": 24, "crumple_fall": 57 },
+	  "airhit": 14, "airhit_ch": 12,
+	},
 	# Lvl 3
 	{ "hitstop": 11, "hitstop_ch": 2, "hitstun": 17, "hitstun_ch": 5,
-	  "blockstun": 16, "blockstop": 12, "p1": 100, "p2": 89,
-	  "untechable": 17, "untechable_ch": 14,
-	  "crumple": 27, "crumple_fall": 60 },
+	  "blockstun": 16, "blockstop": 11, "p1": 100, "p2": 89,
+	  "airhit": 17, "airhit_ch": 14,
+	},
 	# Lvl 4
-	{ "hitstop": 13, "hitstop_ch": 4, "hitstun": 19, "hitstun_ch": 5,
-	  "blockstun": 18, "blockstop": 14, "p1": 100, "p2": 92,
-	  "untechable": 19, "untechable_ch": 15,
-	  "crumple": 29, "crumple_fall": 62 },
-	# Lvl 5
-	{ "hitstop": 15, "hitstop_ch": 6, "hitstun": 21, "hitstun_ch": 6,
-	  "blockstun": 20, "blockstop": 18, "p1": 100, "p2": 94,
-	  "untechable": 21, "untechable_ch": 16,
-	  "crumple": 31, "crumple_fall": 64 },
+	{ "hitstop": 12, "hitstop_ch": 5, "hitstun": 19, "hitstun_ch": 5,
+	  "blockstun": 18, "blockstop": 12, "p1": 100, "p2": 92,
+	  "airhit": 19, "airhit_ch": 15,
+	},
 ]
 
 # Combo rate — system constant, everyone shares this
@@ -125,14 +120,22 @@ enum InvulType  { None, Head, Body, Foot, Throw, Projectile, Burst, Full, GuardP
 ## [br]
 ## override_hitstun:    Lvl0:10  Lvl1:12  Lvl2:14  Lvl3:17  Lvl4:19  Lvl5:21 [br]
 ## Counter Hit Added:  Lvl0:+4  Lvl1:+4  Lvl2:+4  Lvl3:+5  Lvl4:+5  Lvl5:+6
-@export var override_hitstun   : int = -1
+@export var override_hitstun   : Array[int] = []   ## Per hit index. Empty = use table.
+## [br]
 ## override_hitstop:    Lvl0:8   Lvl1:9   Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13 [br]
 ## Counter Hit Added:  Lvl0:+0  Lvl1:+0  Lvl2:+1  Lvl3:+2  Lvl4:+5  Lvl5:+8
-@export var override_hitstop   : int = -1
+@export var override_hitstop   : Array[int] = []   ## Per hit index. Empty = use table.
+## [br]
 ## override_blockstun:  Lvl0:9   Lvl1:11  Lvl2:13  Lvl3:16  Lvl4:18  Lvl5:20
-@export var override_blockstun : int = -1
-## override_blockstun:  Lvl0:8   Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13
-@export var override_blockstop : int = -1
+@export var override_blockstun : Array[int] = []   ## Per hit index. Empty = use table.
+## [br]
+## override_blockstop:  Lvl0:8   Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13
+@export var override_blockstop : Array[int] = []   ## Per hit index. Empty = use table.
+## [br]
+## override_airhit:     Lvl0:12  Lvl1:12  Lvl2:14  Lvl3:17  Lvl4:19  Lvl5:21 [br]
+## Counter Hit Added:  Lvl0:+0  Lvl1:+0  Lvl2:+0  Lvl3:+3  Lvl4:+4  Lvl5:+6
+@export var override_airhit    : Array[int] = []   ## Per hit index. Empty = use table.
+@export var override_airhit_ch : Array[int] = []   ## Per hit index. Empty = use table.
 
 ## Asymmetric blockstop/hitstop — per hit. Empty = symmetric (use table)[br]
 ## [br]
@@ -210,7 +213,9 @@ enum InvulType  { None, Head, Body, Foot, Throw, Projectile, Burst, Full, GuardP
 # Attack Level 1 = 1500, 
 # -----------------------------------------------------------------------------
 @export_group("Pushback")
-## Attack Level 1 = 1500, Atack Level 2 = 2000, 
+## Empty = use attack level default (to be added). Positive = away from attacker.[br]
+## Ground defaults by level: Lvl0:800  Lvl1:1000  Lvl2:1200  Lvl3:1400  Lvl4:1600  Lvl5:1800[br]
+## Air defaults by level:    Lvl0:600  Lvl1:800   Lvl2:1000  Lvl3:1200  Lvl4:1400  Lvl5:1600
 @export var pushback       : Array[float] = []   ## Ground pushback X per hit index
 @export var air_pushback_x : Array[float] = []   ## Air pushback X per hit index
 @export var air_pushback_y : Array[float] = []   ## Air pushback Y per hit index
@@ -240,8 +245,9 @@ func _get_level(hit_index : int) -> int:
 	return attack_level[min(hit_index, attack_level.size() - 1)]
 
 func get_hitstun(hit_index : int = 0) -> int:
-	return override_hitstun if override_hitstun != -1 \
-		else LEVEL_TABLE[_get_level(hit_index)]["hitstun"]
+	if not override_hitstun.is_empty():
+		return override_hitstun[min(hit_index, override_hitstun.size() - 1)]
+	return LEVEL_TABLE[_get_level(hit_index)]["hitstun"]
 
 func get_hitstun_crouch(hit_index : int = 0) -> int:
 	return get_hitstun(hit_index) + 2
@@ -250,37 +256,32 @@ func get_hitstun_ch(hit_index : int = 0) -> int:
 	return get_hitstun(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["hitstun_ch"]
 
 func get_blockstun(hit_index : int = 0) -> int:
-	return override_blockstun if override_blockstun != -1 \
-		else LEVEL_TABLE[_get_level(hit_index)]["blockstun"]
+	if not override_blockstun.is_empty():
+		return override_blockstun[min(hit_index, override_blockstun.size() - 1)]
+	return LEVEL_TABLE[_get_level(hit_index)]["blockstun"]
 
 func get_blockstop(hit_index : int = 0) -> int:
-	return override_blockstop if override_blockstop != -1 \
-		else LEVEL_TABLE[_get_level(hit_index)]["blockstop"]
-
-func get_blockstun_air(hit_index : int = 0) -> int:
-	return get_blockstun(hit_index) + 2
-
-func get_blockstun_instant_block(hit_index : int = 0) -> int:
-	return get_blockstun(hit_index) - 3
-
-func get_blockstun_instant_block_air(hit_index : int = 0) -> int:
-	return get_blockstun_air(hit_index) - 6
-
-func get_blockstun_barrier(hit_index : int = 0) -> int:
-	return get_blockstun(hit_index) + 1
+	if not override_blockstop.is_empty():
+		return override_blockstop[min(hit_index, override_blockstop.size() - 1)]
+	return LEVEL_TABLE[_get_level(hit_index)]["blockstop"]
 
 func get_hitstop(hit_index : int = 0) -> int:
-	return override_hitstop if override_hitstop != -1 \
-		else LEVEL_TABLE[_get_level(hit_index)]["hitstop"]
+	if not override_hitstop.is_empty():
+		return override_hitstop[min(hit_index, override_hitstop.size() - 1)]
+	return LEVEL_TABLE[_get_level(hit_index)]["hitstop"]
 
 func get_hitstop_ch(hit_index : int = 0) -> int:
 	return get_hitstop(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["hitstop_ch"]
 
-func get_untechable(hit_index : int = 0) -> int:
-	return LEVEL_TABLE[_get_level(hit_index)]["untechable"]
+func get_airhit(hit_index : int = 0) -> int:
+	if not override_airhit.is_empty():
+		return override_airhit[min(hit_index, override_airhit.size() - 1)]
+	return LEVEL_TABLE[_get_level(hit_index)]["airhit"]
 
-func get_untechable_ch(hit_index : int = 0) -> int:
-	return get_untechable(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["untechable_ch"]
+func get_airhit_ch(hit_index : int = 0) -> int:
+	if not override_airhit_ch.is_empty():
+		return override_airhit_ch[min(hit_index, override_airhit_ch.size() - 1)]
+	return get_airhit(hit_index) + LEVEL_TABLE[_get_level(hit_index)]["airhit_ch"]
 
 func get_blockstop_attacker(hit_index: int) -> int:
 	if override_blockstop_attacker.size() > hit_index:

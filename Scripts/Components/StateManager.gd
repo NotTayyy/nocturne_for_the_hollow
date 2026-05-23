@@ -3,9 +3,10 @@
 # Tick order:
 #   1. active_state.update()
 #   2. Apply gravity
-#   3. get_transition()        ← physics only (landing, falling)
+#   3. get_transition()           ← physics only (landing, falling)
 #   4. input_buffer.flush_staged() ← command matching, fires command_matched
-#   5. _flush_pending()        ← execute highest priority transition
+#   5. _tick_barrier_held()       ← barrier meter
+#   6. _flush_pending()           ← execute highest priority transition
 # =============================================================================
 extends Node
 class_name State_Manager
@@ -65,18 +66,62 @@ func tick(delta: float) -> void:
 	# 3. Physics-driven transitions
 	var state_request := active_state.get_transition()
 	if state_request != "":
-		_request(state_request, _state_priority(state_request))
+		request(state_request, _state_priority(state_request))
 
 	# 4. Flush staged inputs — runs command matching, fires command_matched
 	fighter.input_buffer.flush_staged()
 
-	# 5. Execute highest priority pending transition
+	# 5. Barrier — sync active state and tick meter
+	_tick_barrier_held(delta)
+
+	# 6. Execute highest priority pending transition
 	_flush_pending()
+
+func _tick_barrier_held(delta: float) -> void:
+	var held        := fighter.input_buffer.held_inputs
+	var in_block    : bool = active_state.state_id in ["StandBlock", "CrouchBlock", "AirBlock"]
+	var back_held   : bool = "4" in held or "1" in held or "7" in held
+	var can_barrier : bool = back_held and "A" in held and "B" in held \
+		and in_block and not fighter.char_data.in_broken
+
+	if "barrier_active" in active_state:
+		active_state.barrier_active = can_barrier
+
+	fighter.char_data.tick_barrier(delta, can_barrier)
+
+	# Switch between Stand and Crouch barrier based on held direction
+	if in_block and can_barrier and not fighter.is_airborne:
+		var want_crouch : bool = "1" in held
+		if want_crouch and active_state.state_id == "StandBlock":
+			force_transition("CrouchBlock")
+			if "barrier_active" in active_state:
+				active_state.barrier_active = true
+		elif not want_crouch and active_state.state_id == "CrouchBlock":
+			force_transition("StandBlock")
+			if "barrier_active" in active_state:
+				active_state.barrier_active = true
 
 # -----------------------------------------------------------------------------
 # Command routing
 # -----------------------------------------------------------------------------
 func _on_command_matched(command: Dictionary) -> void:
+	# Barrier — only allowed when already blocking or wants_to_block
+	if command.get("Command", "") == "Barrier":
+		if fighter.char_data.in_broken:
+			return
+		if fighter.wants_to_block and fighter._is_actionable():
+			var block_type : String = fighter.get_block_type()
+			var target     : String
+			if fighter.is_airborne:
+				target = "AirBlock"
+			elif block_type == "Crouch":
+				target = "CrouchBlock"
+			else:
+				target = "StandBlock"
+			force_transition(target)
+			_pending.clear()
+		return
+
 	# During hitstun/hitstop — only burst gets through
 	if not fighter._is_actionable():
 		if command.get("Command", "") == "Burst" and active_state.gate_burst:
@@ -123,9 +168,6 @@ func request(target_id: String, priority: int) -> void:
 func force_transition(target_id: String) -> void:
 	_pending.clear()
 	_do_transition(target_id, false)
-
-func _request(target_id: String, priority: int) -> void:
-	request(target_id, priority)
 
 func _flush_pending() -> void:
 	if _pending.is_empty(): return

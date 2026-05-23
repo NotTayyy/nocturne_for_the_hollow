@@ -11,7 +11,7 @@ func _on_single_player_pressed() -> void:
 	Global.audio_manager.play_rndm_bgm("Match")
 
 func _on_training_pressed() -> void:
-	Global.ui_manager.Change_Gui_scene("Character_Select")
+	Global.ui_manager.Change_Gui_scene("Character_Select", true)
 
 func _on_options_pressed() -> void:
 	Global.ui_manager.Change_Gui_scene("MM_Options")

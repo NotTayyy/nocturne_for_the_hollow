@@ -131,8 +131,24 @@ command_list = [{
 "Priority": "Special",
 "Sequence": ["4", "2", "1"]
 }, {
+"Combo": true,
 "Command": "Throw",
 "Priority": "Throw",
 "Sequence": ["B", "C"]
+}, {
+"Combo": true,
+"Command": "Throw_B",
+"Priority": "Throw",
+"Sequence": ["4", "B", "C"]
+}, {
+"Combo": true,
+"Command": "Barrier",
+"Priority": "Barrier",
+"Sequence": ["4", "A", "B"]
+}, {
+"Combo": true,
+"Command": "Guard Break",
+"Priority": "Guard Break",
+"Sequence": ["A", "B"]
 }]
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

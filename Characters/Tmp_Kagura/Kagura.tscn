@@ -25,12 +25,15 @@
 [ext_resource type="Texture2D" uid="uid://cgt6if60cxugx" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_00.png" id="18_v36ip"]
 [ext_resource type="Texture2D" uid="uid://wqtl0ok0awn0" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_01.png" id="19_28xpp"]
 [ext_resource type="Texture2D" uid="uid://b3penaay72wng" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_04.png" id="19_dxgwu"]
+[ext_resource type="Script" uid="uid://ckwyl1j65v7yb" path="res://Scripts/States/ST_AirBlock.gd" id="19_rxlxj"]
 [ext_resource type="Texture2D" uid="uid://cndfldvopgux8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_02.png" id="20_667k5"]
+[ext_resource type="Script" uid="uid://d12r3c2r86qh" path="res://Scripts/States/ST_CrouchBlock.gd" id="20_lx7m0"]
 [ext_resource type="Resource" uid="uid://tlfcgmxjk4um" path="res://Characters/Tmp_Kagura/Moves/Kag_Nml_5A.tres" id="20_m4s7g"]
 [ext_resource type="Texture2D" uid="uid://djs4e2p455dii" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_02.png" id="20_tglwn"]
 [ext_resource type="Texture2D" uid="uid://bbw8qm78ctlw8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_06.png" id="20_vvkhf"]
 [ext_resource type="Resource" uid="uid://dxrjbm3k2o05b" path="res://Characters/Tmp_Kagura/Moves/Kag_Nml_5B.tres" id="21_06sb7"]
 [ext_resource type="Texture2D" uid="uid://caj6yn7rxg4al" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_05.png" id="21_7nql1"]
+[ext_resource type="Script" uid="uid://cbwxaakj7kt6j" path="res://Scripts/States/ST_StandBlock.gd" id="21_a3ux8"]
 [ext_resource type="Texture2D" uid="uid://b14f6uq0e730j" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/kg000_07.png" id="21_c4vh0"]
 [ext_resource type="Texture2D" uid="uid://dafxa4waigoec" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_03.png" id="21_dwlsq"]
 [ext_resource type="Texture2D" uid="uid://b04dx8kx8bhmy" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/ABDash/kg036_00.png" id="21_rp8v4"]
@@ -52,9 +55,11 @@
 [ext_resource type="Texture2D" uid="uid://b46sk0hef4ytt" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/AFDash/kg035_03.png" id="24_hfsi5"]
 [ext_resource type="Texture2D" uid="uid://bqb4secbacbvf" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_07.png" id="25_42ihw"]
 [ext_resource type="Texture2D" uid="uid://0mtg726j6aqs" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_07.png" id="25_lwon6"]
+[ext_resource type="Resource" uid="uid://cokb0iqd71uhc" path="res://Characters/Tmp_Kagura/Moves/Kag_Nml_5C.tres" id="25_lx7m0"]
 [ext_resource type="Texture2D" uid="uid://caeyvejjt8d58" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/Idle_Taunt/kg001_01.png" id="25_uehhx"]
 [ext_resource type="Texture2D" uid="uid://b381knp0hgax8" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_08.png" id="26_0bp7s"]
 [ext_resource type="Texture2D" uid="uid://c6cq5p1duyk30" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/Idle_Taunt/kg001_02.png" id="26_7ghyn"]
+[ext_resource type="Resource" uid="uid://xfbmd5mebt42" path="res://Characters/Tmp_Kagura/Moves/Kag_Cmd_6A.tres" id="26_a3ux8"]
 [ext_resource type="Texture2D" uid="uid://bw1iy7wfn03jh" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Dash/BDash/kg033_08.png" id="26_ocx4e"]
 [ext_resource type="Texture2D" uid="uid://dnv7fv0gkdxg7" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Crouch/kg010_09.png" id="27_0lcrl"]
 [ext_resource type="Texture2D" uid="uid://dx4yp714gg68l" path="res://Characters/Tmp_Kagura/Kagura Mutsuki/Idle/Idle_Taunt/kg001_03.png" id="27_i5ti6"]
@@ -1317,6 +1322,15 @@ script = ExtResource("18_42ihw")
 proximity_box_width = 525.0
 proximity_box_height = 75.0
 
+[node name="ST_AirBlock" type="Node" parent="Components/State_Manager" unique_id=1318316969]
+script = ExtResource("19_rxlxj")
+
+[node name="ST_CrouchBlock" type="Node" parent="Components/State_Manager" unique_id=1350463255]
+script = ExtResource("20_lx7m0")
+
+[node name="ST_StandBlock" type="Node" parent="Components/State_Manager" unique_id=1422982182]
+script = ExtResource("21_a3ux8")
+
 [node name="FrameData" type="Node2D" parent="Components" unique_id=403102285]
 
 [node name="Nml_5A" type="Area2D" parent="Components/FrameData" unique_id=840545490]
@@ -1845,6 +1859,7 @@ metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 [node name="Nml_5C" type="Area2D" parent="Components/FrameData" unique_id=1429759579]
 collision_layer = 16
 script = ExtResource("18_3x780")
+move_data = ExtResource("25_lx7m0")
 valid_animations = Array[String](["Normals/Nml_5C"])
 hitbox_data = Array[Dictionary]([{
 "end_frame": -1,
@@ -1956,15 +1971,10 @@ hitbox_data_backup = Array[Dictionary]([{
 active_set = "Normals/Nml_5C"
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
-[node name="Nml_5D" type="Area2D" parent="Components/FrameData" unique_id=864882906]
-collision_layer = 16
-script = ExtResource("18_3x780")
-active_set = ""
-metadata/_custom_type_script = "uid://lsrl3hjuitwo"
-
 [node name="Cmd_6A" type="Area2D" parent="Components/FrameData" unique_id=217675790]
 collision_layer = 16
 script = ExtResource("18_3x780")
+move_data = ExtResource("26_a3ux8")
 mode = 1
 valid_animations = Array[String](["Normals/Cmd_6A"])
 hitbox_data = Array[Dictionary]([{

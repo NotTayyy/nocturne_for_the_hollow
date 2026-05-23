@@ -124,7 +124,6 @@ func _on_area_entered(area : Area2D) -> void:
 	if already_hit(h_index, area.get_instance_id()):
 		return
 	register_hit(h_index, area.get_instance_id())
-	hit_state = HitState.HIT
 
 	var attacker : Fighter = owner as Fighter
 	var defender : Fighter = area.owner as Fighter
@@ -148,7 +147,64 @@ func _on_area_entered(area : Area2D) -> void:
 		if not move_data.attribute.is_empty():
 			result.attribute  = move_data.attribute[a_idx]
 
+	# --- Block check ---
+	result.is_blocked = _check_block(defender, result.guard_type)
+
+	# Set hit state on HFD
+	hit_state = HitState.BLOCK if result.is_blocked else HitState.HIT
+
 	Global.combo_manager.register_hit(result)
+
+## Check if the defender is blocking this attack correctly
+func _check_block(defender : Fighter, guard_type : MoveData.GuardType) -> bool:
+	# Carryover — auto-block regardless of direction or state
+	if defender.block_carryover:
+		return _check_guard_type(defender, guard_type, true)
+	# Normal block — must be holding back AND in a neutral state
+	if not defender.wants_to_block:
+		return false
+	var state_id   : String = defender.state_machine.active_state.state_id if defender.state_machine.active_state else ""
+	var is_neutral : bool   = state_id in ["Idle", "Walk", "Airborne", "Crouch"]
+	if not is_neutral:
+		return false
+	return _check_guard_type(defender, guard_type, false)
+
+## Check if the held direction is correct for the guard type
+func _check_guard_type(defender : Fighter, guard_type : MoveData.GuardType, carryover : bool) -> bool:
+	var held       := defender.input_buffer.held_inputs
+	var block_type : String = defender.get_block_type()
+
+	# Carryover with no explicit block direction — auto-block high/mid, check low
+	if carryover and block_type == "":
+		if guard_type == MoveData.GuardType.Low:
+			var low_held : bool = "1" in held or "2" in held or "3" in held
+			if not low_held:
+				print("[BLOCK] %s wrong block — Low attack needs downward direction (carryover)" % defender.name)
+				return false
+		print("[BLOCK] %s blocked via carryover" % defender.name)
+		return true
+
+	match guard_type:
+		MoveData.GuardType.Low:
+			if block_type == "Crouch" or (carryover and ("1" in held or "2" in held or "3" in held)):
+				print("[BLOCK] %s blocked Low" % defender.name)
+				return true
+			print("[BLOCK] %s wrong block — Low requires Crouch (1)" % defender.name)
+			return false
+		MoveData.GuardType.High:
+			if block_type == "Stand" or block_type == "Crouch" or block_type == "Air":
+				print("[BLOCK] %s blocked High" % defender.name)
+				return true
+			print("[BLOCK] %s wrong block — High requires back direction" % defender.name)
+			return false
+		MoveData.GuardType.Mid:
+			if block_type != "":
+				print("[BLOCK] %s blocked Mid" % defender.name)
+				return true
+			print("[BLOCK] %s wrong block — Mid requires back direction" % defender.name)
+			return false
+		_:
+			return false
 
 func _process(_delta: float) -> void:
 	if not Engine.is_editor_hint():
