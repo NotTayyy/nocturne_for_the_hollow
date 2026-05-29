@@ -1,24 +1,85 @@
 [gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://dxrjbm3k2o05b"]
 
-[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Characters/BaseFighter/Move_Data.gd" id="1_v6gwd"]
+[ext_resource type="Script" uid="uid://8gbv7m3jiy6a" path="res://Scripts/Class_Base/CancelWindow.gd" id="1_5yy71"]
+[ext_resource type="Script" uid="uid://coqvqgr4ov570" path="res://Scripts/Class_Base/CancelRoute.gd" id="1_y7i5b"]
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="2_5yy71"]
+
+[sub_resource type="Resource" id="Resource_g4rs3"]
+script = ExtResource("1_5yy71")
+
+[sub_resource type="Resource" id="Resource_5yy71"]
+script = ExtResource("1_5yy71")
+
+[sub_resource type="Resource" id="Resource_acc0j"]
+script = ExtResource("1_5yy71")
+
+[sub_resource type="Resource" id="Resource_g1kq6"]
+script = ExtResource("1_5yy71")
+
+[sub_resource type="Resource" id="Resource_ru50k"]
+script = ExtResource("1_5yy71")
+
+[sub_resource type="Resource" id="Resource_e4ukd"]
+script = ExtResource("1_5yy71")
+on_hit = true
+on_block = true
+
+[sub_resource type="Resource" id="Resource_isvn1"]
+script = ExtResource("1_5yy71")
+
+[sub_resource type="Resource" id="Resource_exgao"]
+script = ExtResource("1_5yy71")
+on_hit = true
+on_block = true
+
+[sub_resource type="Resource" id="Resource_yp0ix"]
+script = ExtResource("1_y7i5b")
+command = "Button C"
+hfd_path = "Components/FrameData/Nml_5C"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_xvch6"]
+script = ExtResource("1_y7i5b")
+command = "2B"
+hfd_path = "Components/FrameData/Nml_2B"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_utwt4"]
+script = ExtResource("1_y7i5b")
+command = "Button B"
+hfd_path = "Components/FrameData/Cmd_6B"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_t4vcw"]
+script = ExtResource("1_y7i5b")
+command = "6B"
+hfd_path = "Components/FrameData/Cmd_6B"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_2i463"]
+script = ExtResource("1_5yy71")
+on_hit = true
+on_block = true
 
 [resource]
-script = ExtResource("1_v6gwd")
+script = ExtResource("2_5yy71")
 move_name = "5B"
 move_id = "Nml_5B"
 startup = 7
 active = Array[int]([3])
 recovery = 11
-damage = Array[int]([480])
-p1 = 90
+damage = Array[int]([600])
 p2 = Array[int]([85])
-starter = 3
-guard = Array[int]([2])
-attribute = Array[int]([2])
-air_hit_effect = Array[int]([4])
-air_hit_duration = Array[int]([4])
-air_ch_effect = Array[int]([4])
-air_ch_duration = Array[int]([1])
-pushback = null
-air_pushback = null
+attack_level = Array[int]([2])
+cancel_normal = SubResource("Resource_e4ukd")
+cancel_special = SubResource("Resource_2i463")
+cancel_drive = SubResource("Resource_g1kq6")
+cancel_overdrive = SubResource("Resource_isvn1")
+cancel_jump = SubResource("Resource_ru50k")
+cancel_rapid = SubResource("Resource_exgao")
+cancel_dash = SubResource("Resource_acc0j")
+cancel_backdash = SubResource("Resource_g4rs3")
+cancel_burst = SubResource("Resource_5yy71")
+pushback = Array[float]([2000.0])
+cancel_routes = Array[ExtResource("1_y7i5b")]([SubResource("Resource_yp0ix"), SubResource("Resource_xvch6"), SubResource("Resource_utwt4"), SubResource("Resource_t4vcw")])
 metadata/_custom_type_script = "uid://c1ie505730ew"

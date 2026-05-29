@@ -23,10 +23,16 @@ var jumps_remaining  : int    = 0
 var dashes_remaining : int    = 0
 var facing_updated   : bool   = false
 
+# Block tracking
+var wants_to_block          : bool = false
+var wants_to_block_frame    : int  = -1   ## Physics frame block intent started — for perfect defense
+var block_carryover         : bool = false ## Auto-block during blockstun regardless of direction
+var crossup_protection_timer : int = 0    ## Frames of leniency after opponent swaps sides
+
 ## All Active Properties
 var properties : Array[Property] = []
 
-# Input action strings
+# Input action strings — kept for any state that needs to query them directly
 var move_left  : String
 var move_right : String
 var move_up    : String
@@ -42,15 +48,16 @@ func _ready() -> void:
 	_setup_input_buffer()
 	state_machine.initialise(self)
 	char_data.health_depleted.connect(_on_health_depleted)
-	anim_player.play("Idle")
+	anim_player.play("Idle/Idle")
 
 func _physics_process(delta: float) -> void:
 	update_facing()
-	_stage_input()
+	_update_block_state()
 	state_machine.tick(delta)
 	_tick_properties()
 	move_and_slide()
 	_update_post_slide_flags()
+	char_data.tick_grey_health_decay(delta, self)
 
 # -----------------------------------------------------------------------------
 # Facing
@@ -58,83 +65,71 @@ func _physics_process(delta: float) -> void:
 func update_facing() -> void:
 	var target := "Right" if global_position.x <= opponent.global_position.x else "Left"
 	if target == dir_facing or is_airborne or is_on_wall_left or is_on_wall_right:
+		if crossup_protection_timer > 0:
+			crossup_protection_timer -= 1
 		facing_updated = false
-		return 
+		return
 	dir_facing = target
 	char_sprite.scale.x = 1.0 if dir_facing == "Right" else -1.0
 	input_buffer.facing_right = (dir_facing == "Right")
 	input_buffer.flip_held_directions()
+	crossup_protection_timer = 3   ## 3 frames of leniency after side swap
 	facing_updated = true
 	return
 
 # -----------------------------------------------------------------------------
-# Input staging — collect raw hardware inputs, pass to InputBuffer
-# Does NOT run command matching — that happens in State_Manager.tick()
+# Block state — updated every frame from held inputs
 # -----------------------------------------------------------------------------
-func _stage_input() -> void:
-	var current_directions : Array = []
-	for action in [move_left, move_right, move_up, move_down]:
-		if Input.is_action_pressed(action):
-			current_directions.append(action)
+func _update_block_state() -> void:
+	var held := input_buffer.held_inputs
 
-	# Direction just pressed — release previous, press new
-	for action in [move_left, move_right, move_up, move_down]:
-		if Input.is_action_just_pressed(action):
-			var prev := _held_to_numpad(current_directions.filter(func(a): return a != action))
-			var curr := _held_to_numpad(current_directions)
-			if prev != curr:
-				input_buffer.stage(prev, "release")
-			input_buffer.stage(curr, "press")
-			break
-
-	# Direction just released — release it, re-register what remains
-	for action in [move_left, move_right, move_up, move_down]:
-		if Input.is_action_just_released(action):
-			var released_dir := _held_to_numpad([action])
-			if released_dir != "":
-				input_buffer.stage(released_dir, "release")
-			current_directions = []
-			for a in [move_left, move_right, move_up, move_down]:
-				if Input.is_action_pressed(a):
-					current_directions.append(a)
-			var remaining := _held_to_numpad(current_directions)
-			input_buffer.stage(remaining, "press")
-			break
-
-	# Buttons — each independent
-	for pair in [[btn_a,"A"],[btn_b,"B"],[btn_c,"C"],[btn_d,"D"]]:
-		if   Input.is_action_just_pressed(pair[0]):
-			input_buffer.stage(pair[1], "press")
-		elif Input.is_action_just_released(pair[0]):
-			input_buffer.stage(pair[1], "release")
-
-func _held_to_numpad(held: Array) -> String:
-	var v := ""
-	var h := ""
-
-	if move_up in held and move_down in held:
-		v = ""
-	elif move_up in held:
-		v = "8"
-	elif move_down in held:
-		v = "2"
-
-	if move_left in held and move_right in held:
-		h = ""
-	elif dir_facing == "Right":
-		if   move_left  in held: h = "4"
-		elif move_right in held: h = "6"
+	# Crossup protection — treat forward as back for block purposes
+	var back_held : bool
+	if crossup_protection_timer > 0:
+		back_held = "4" in held or "6" in held or "1" in held or "7" in held
 	else:
-		if   move_left  in held: h = "6"
-		elif move_right in held: h = "4"
+		back_held = "4" in held or "1" in held or "7" in held
 
-	if   v == "8" and h == "4": return "7"
-	elif v == "8" and h == "6": return "9"
-	elif v == "2" and h == "4": return "1"
-	elif v == "2" and h == "6": return "3"
-	elif v != "":                return v
-	elif h != "":                return h
-	return "5"
+	# wants_to_block only activates in neutral states
+	# Not during: attack, blockstun, hitstun, or any non-neutral state
+	var state_id   : String = state_machine.active_state.state_id if state_machine.active_state else ""
+	var is_neutral : bool   = state_id in ["Idle", "Walk", "Airborne", "Crouch"]
+
+	if back_held and is_neutral:
+		if not wants_to_block:
+			wants_to_block       = true
+			wants_to_block_frame = Engine.get_physics_frames()
+	else:
+		wants_to_block       = false
+		wants_to_block_frame = -1
+
+	if block_carryover and not has_property(Property.Type.Blockstun):
+		block_carryover = false
+
+## Determine which block type is valid given current held inputs
+## Returns "Stand", "Crouch", "Air", or "" if not blocking
+func get_block_type() -> String:
+	if is_airborne:
+		var air_back : bool
+		if crossup_protection_timer > 0:
+			air_back = "4" in input_buffer.held_inputs or "1" in input_buffer.held_inputs \
+				or "7" in input_buffer.held_inputs or "6" in input_buffer.held_inputs
+		else:
+			air_back = "4" in input_buffer.held_inputs or "1" in input_buffer.held_inputs \
+				or "7" in input_buffer.held_inputs
+		return "Air" if air_back else ""
+	# Crouch block — must have 1 (back + down)
+	if "1" in input_buffer.held_inputs:
+		return "Crouch"
+	# Stand block — 4 held but not 1
+	if "4" in input_buffer.held_inputs:
+		return "Stand"
+	# Crossup protection — 6 (forward) treated as 4
+	if crossup_protection_timer > 0 and "6" in input_buffer.held_inputs:
+		if "2" in input_buffer.held_inputs or "3" in input_buffer.held_inputs:
+			return "Crouch"
+		return "Stand"
+	return ""
 
 # -----------------------------------------------------------------------------
 # Post-slide flags
@@ -183,6 +178,7 @@ func _setup_input_buffer() -> void:
 	input_buffer.character        = self
 	input_buffer.facing_right     = (dir_facing == "Right")
 	input_buffer.neg_edge_enabled = char_data.neg_edge
+	input_buffer.setup_actions(player_id)
 	input_buffer.set_commands(
 		char_data.command_list.command_list,
 		char_data.command_list.release_cmnd_list if char_data.neg_edge else []
@@ -191,6 +187,45 @@ func _setup_input_buffer() -> void:
 func _on_health_depleted() -> void:
 	knocked_out.emit()
 
+func notify_proximity_block(_in_range : bool) -> void:
+	# Placeholder — wire to block state when built
+	pass
+
+func recieve_hit(result : HitResult) -> void:
+	if result.is_blocked:
+		add_property(Property.new(Property.Type.Blockstun, result.blockstun, "system"))
+		block_carryover = true
+		# Chip damage — specials only
+		if result.move_data != null and result.move_data.chip_damage_percent > 0:
+			var chip : int = int(float(result.damage) * (result.move_data.chip_damage_percent / 100.0))
+			char_data.curr_health = max(1, char_data.curr_health - chip)
+		# Pushback on block
+		if result.pushback != 0.0:
+			var dir : float = 1.0 if result.attacker.global_position.x < global_position.x else -1.0
+			velocity.x += result.pushback * dir
+		# Route to correct block state
+		var block_type : String = get_block_type()
+		match block_type:
+			"Stand":  state_machine.force_transition("StandBlock")
+			"Crouch": state_machine.force_transition("CrouchBlock")
+			"Air":    state_machine.force_transition("AirBlock")
+			_:        state_machine.force_transition("StandBlock")  # carryover fallback
+	else:
+		add_property(Property.new(Property.Type.Hitstun, result.hitstun, "system"))
+		if result.pushback != 0.0 or result.air_pushback != 0.0:
+			var dir : float = 1.0 if result.attacker.global_position.x < global_position.x else -1.0
+			if is_airborne:
+				velocity.x += result.pushback * dir
+				velocity.y += result.air_pushback
+			else:
+				velocity.x += result.pushback * dir
+
+func _is_actionable() -> bool:
+	return not has_property(Property.Type.Hitstun)  \
+		and not has_property(Property.Type.Blockstun) \
+		and not has_property(Property.Type.Frozen)    \
+		and not has_property(Property.Type.Stunned)
+
 # =============================================================================
 # Property system
 # =============================================================================
@@ -198,16 +233,19 @@ func _on_health_depleted() -> void:
 ## Add a property. Respects stacking and refresh rules.
 func add_property(prop: Property) -> void:
 	if not prop.does_stack:
+		# Non-stacking — refresh duration if already exists, otherwise append
 		for p in properties:
 			if p.type == prop.type and p.sub_id == prop.sub_id:
 				p.duration = prop.duration
 				return
 		properties.append(prop)
 	else:
+		# Stacking — refresh existing OR append new, not both
 		if prop.refresh:
 			for p in properties:
 				if p.type == prop.type and p.sub_id == prop.sub_id:
 					p.duration = prop.duration
+					return
 		properties.append(prop)
  
 ## Remove all instances of a property by type.

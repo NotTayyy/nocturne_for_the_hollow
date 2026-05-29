@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://cokb0iqd71uhc"]
+
+[ext_resource type="Script" uid="uid://8gbv7m3jiy6a" path="res://Scripts/Class_Base/CancelWindow.gd" id="1_orici"]
+[ext_resource type="Script" uid="uid://coqvqgr4ov570" path="res://Scripts/Class_Base/CancelRoute.gd" id="2_ta7md"]
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="3_yxqtq"]
+
+[sub_resource type="Resource" id="Resource_88631"]
+script = ExtResource("1_orici")
+
+[sub_resource type="Resource" id="Resource_vyato"]
+script = ExtResource("1_orici")
+
+[sub_resource type="Resource" id="Resource_b80a8"]
+script = ExtResource("1_orici")
+
+[sub_resource type="Resource" id="Resource_hvifk"]
+script = ExtResource("1_orici")
+
+[sub_resource type="Resource" id="Resource_8cx4g"]
+script = ExtResource("1_orici")
+
+[sub_resource type="Resource" id="Resource_3hic7"]
+script = ExtResource("1_orici")
+on_hit = true
+on_block = true
+
+[sub_resource type="Resource" id="Resource_eeb67"]
+script = ExtResource("1_orici")
+
+[sub_resource type="Resource" id="Resource_l7gf3"]
+script = ExtResource("1_orici")
+on_hit = true
+on_block = true
+
+[sub_resource type="Resource" id="Resource_bydvg"]
+script = ExtResource("1_orici")
+on_hit = true
+on_block = true
+
+[resource]
+script = ExtResource("3_yxqtq")
+move_name = "5C"
+move_id = "Nml_5C"
+startup = 18
+active = Array[int]([4])
+recovery = 23
+damage = Array[int]([1100])
+p2 = Array[int]([92])
+starter = 3
+attack_level = Array[int]([4])
+cancel_normal = SubResource("Resource_3hic7")
+cancel_special = SubResource("Resource_bydvg")
+cancel_drive = SubResource("Resource_hvifk")
+cancel_overdrive = SubResource("Resource_eeb67")
+cancel_jump = SubResource("Resource_8cx4g")
+cancel_rapid = SubResource("Resource_l7gf3")
+cancel_dash = SubResource("Resource_b80a8")
+cancel_backdash = SubResource("Resource_88631")
+cancel_burst = SubResource("Resource_vyato")
+impulse_x = 100.0
+impulse_start = 15
+impulse_end = 20
+metadata/_custom_type_script = "uid://c1ie505730ew"

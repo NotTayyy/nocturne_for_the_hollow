@@ -17,10 +17,6 @@ command_list = [{
 "Priority": "Walking",
 "Sequence": ["4"]
 }, {
-"Command": "Crouch",
-"Priority": "Crouching",
-"Sequence": ["2"]
-}, {
 "Command": "Dash",
 "Priority": "Dash",
 "Sequence": ["6", "5", "6"]
@@ -75,15 +71,33 @@ command_list = [{
 }, {
 "Button": ["2"],
 "Charge": 45,
-"Command": "Flash Kick A",
+"Command": "Dragons Ascent B",
 "Priority": "Special",
-"Sequence": ["2", "8", "A"]
+"Sequence": ["2", "8", "B"]
+}, {
+"Button": ["2"],
+"Charge": 45,
+"Command": "Dragons Ascent C",
+"Priority": "Special",
+"Sequence": ["2", "8", "C"]
+}, {
+"Button": ["8"],
+"Charge": 20,
+"Command": "Dragons Dance",
+"Priority": "Special",
+"Sequence": ["8", "2", "C"]
 }, {
 "Button": ["4"],
 "Charge": 45,
-"Command": "Back Charge A",
+"Command": "Dragon Spirit A",
 "Priority": "Special",
 "Sequence": ["4", "6", "A"]
+}, {
+"Button": ["4"],
+"Charge": 45,
+"Command": "Dragon Spirit B",
+"Priority": "Special",
+"Sequence": ["4", "6", "B"]
 }, {
 "Command": "22A",
 "Priority": "Special",
@@ -123,6 +137,26 @@ command_list = [{
 "Priority": "Normal",
 "Sequence": ["D"]
 }, {
+"Command": "2A",
+"Held": ["2"],
+"Priority": "Command Normal",
+"Sequence": ["2", "A"]
+}, {
+"Command": "2B",
+"Held": ["2"],
+"Priority": "Command Normal",
+"Sequence": ["2", "B"]
+}, {
+"Command": "2C",
+"Held": ["2"],
+"Priority": "Command Normal",
+"Sequence": ["2", "C"]
+}, {
+"Command": "2D",
+"Held": ["2"],
+"Priority": "Command Normal",
+"Sequence": ["2", "D"]
+}, {
 "Command": "Tiger Knee",
 "Priority": "Special",
 "Sequence": ["6", "2", "3", "A"]
@@ -131,8 +165,24 @@ command_list = [{
 "Priority": "Special",
 "Sequence": ["4", "2", "1"]
 }, {
+"Combo": true,
 "Command": "Throw",
 "Priority": "Throw",
 "Sequence": ["B", "C"]
+}, {
+"Combo": true,
+"Command": "Throw_B",
+"Priority": "Throw",
+"Sequence": ["4", "B", "C"]
+}, {
+"Combo": true,
+"Command": "Barrier",
+"Priority": "Barrier",
+"Sequence": ["A", "B"]
+}, {
+"Combo": true,
+"Command": "Guard Break",
+"Priority": "Guard Break",
+"Sequence": ["A", "B"]
 }]
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

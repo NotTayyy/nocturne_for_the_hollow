@@ -30,7 +30,7 @@ func _on_level_select_pressed() -> void:
 	Global.ui_manager.Change_Gui_scene("Level_Select")
 
 func _on_back_btn_pressed() -> void:
-	Global.ui_manager.Change_Gui_scene("Main_menu")
+	Global.ui_manager.Change_Gui_scene("Main_menu", true)
 
 func _on_p_2_char_select_item_selected(index) -> void:
 	Global.P2_Select = p2_dropdown.get_item_text(index)

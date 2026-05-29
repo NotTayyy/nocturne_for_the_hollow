@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b2mbt1fgs1aks" path="res://Characters/Tmp_Kokonoe/char_kokonoe.gd" id="1_rskdy"]
 [ext_resource type="Texture2D" uid="uid://d3112jh4qthyl" path="res://Characters/Tmp_Kokonoe/Kokonoe/kk001_02.png" id="2_tyfk6"]
-[ext_resource type="Script" uid="uid://u6lkkiwrap7c" path="res://Scripts/Components/Hurtbox.gd" id="4_7ln3g"]
+[ext_resource type="Script" uid="uid://bswh74kuon3br" path="res://Scripts/Components/Hurtbox.gd" id="4_7ln3g"]
 [ext_resource type="Script" uid="uid://spdxybg7602" path="res://Scripts/Components/InputBuffer.gd" id="5_d06yc"]
 [ext_resource type="Script" uid="uid://vdot3es4dinw" path="res://Scripts/Components/Pushbox.gd" id="5_sgtre"]
 [ext_resource type="Script" uid="uid://b8tx1i4237rpu" path="res://Scripts/Components/StateManager.gd" id="6_pqj33"]
@@ -16,9 +16,6 @@
 [ext_resource type="Script" uid="uid://blm750vbmsiwl" path="res://Scripts/States/ST_AirDash.gd" id="14_2nsfe"]
 [ext_resource type="Script" uid="uid://d2sj6mu5yuibb" path="res://Scripts/States/ST_AirBackDash.gd" id="15_2nsfe"]
 [ext_resource type="Script" uid="uid://ti55t61ri376" path="res://Scripts/States/ST_RunSkid.gd" id="16_ymlut"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sgtre"]
-size = Vector2(124, 328)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3m5cc"]
 size = Vector2(100, 188)
@@ -40,12 +37,6 @@ offset = Vector2(0, -83)
 
 [node name="Hurtbox" type="Area2D" parent="Components" unique_id=1067985688]
 script = ExtResource("4_7ln3g")
-metadata/_custom_type_script = "uid://u6lkkiwrap7c"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Hurtbox" unique_id=91291333]
-position = Vector2(3, -70)
-shape = SubResource("RectangleShape2D_sgtre")
-debug_color = Color(0, 0.28627452, 0.8862745, 0.41960785)
 
 [node name="Pushbox" type="Area2D" parent="Components" unique_id=151935432]
 script = ExtResource("5_sgtre")

@@ -10,7 +10,7 @@ func enter(_prev: String) -> void:
 	frame         = 0
 	apply_gravity = false
 	fighter.velocity.y = 0.0
-	gate_self      = true
+	gate_normal    = true
 	gate_special   = true
 	gate_drive     = true
 	gate_overdrive = true

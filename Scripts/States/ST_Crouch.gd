@@ -18,13 +18,13 @@ func enter(_prev: String) -> void:
 	_standing_up    = false
 	fighter.velocity.x = 0.0
 	fighter.velocity.y = 0.0
-	gate_self      = true
+	gate_normal    = true
 	gate_special   = true
 	gate_drive     = true
 	gate_overdrive = true
-	gate_barrier   = true
 	gate_jump      = true
 	ap.play("Crouch/Crouch_Start")
+	fighter.add_property(Property.new(Property.Type.Crouching, -1, "system"))
 	if hfd_node != null:
 		hfd_node.begin(null)
 
@@ -32,6 +32,7 @@ func exit() -> void:
 	_reset_gates()
 	_standing_up    = false
 	_stand_up_timer = 0
+	fighter.remove_property(Property.Type.Crouching)
 	if hfd_node != null:
 		hfd_node.stop()
 
@@ -62,8 +63,12 @@ func on_command(command: Dictionary) -> void:
 	var cmd   : String = command.get("Command", "")
 	var _prio : int    = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	match cmd:
-		"Button A":
-			_request_attack(command, "Components/FrameData/Nml_2A")
+		"Button B":
+			_request_attack(command, "Components/FrameData/Nml_5B")
+		"2B":
+			_request_attack(command, "Components/FrameData/Nml_2B")
+		"6B":
+			_request_attack(command, "Components/FrameData/Cmd_6B")
 		_ when cmd in JUMP_COMMANDS:
 			_request_SuperJump(cmd, _prio)
 			

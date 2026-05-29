@@ -6,12 +6,12 @@ func _ready() -> void:
 func _on_single_player_pressed() -> void:
 	Global.Level_Select = ""
 	Global.P1_Select = "Kagura"
-	Global.P2_Select = "Byakuya"
+	Global.P2_Select = "Kagura"
 	Global.game_manager.change_Gamemode(Global.game_manager.GameState.MID_MATCH)
 	Global.audio_manager.play_rndm_bgm("Match")
 
 func _on_training_pressed() -> void:
-	Global.ui_manager.Change_Gui_scene("Character_Select")
+	Global.ui_manager.Change_Gui_scene("Character_Select", true)
 
 func _on_options_pressed() -> void:
 	Global.ui_manager.Change_Gui_scene("MM_Options")

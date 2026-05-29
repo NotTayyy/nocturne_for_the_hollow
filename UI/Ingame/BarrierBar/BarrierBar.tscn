@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://barrier_bar_scene"]
+
+[ext_resource type="Script" path="res://UI/Ingame/BarrierBar/barrier_bar.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cfjyhpi7j62og" path="res://UI/Ingame/Meter/Meter_Back.png" id="2_back"]
+[ext_resource type="Texture2D" uid="uid://dgj473pw1q05i" path="res://UI/Ingame/Meter/Meter_Border.png" id="3_border"]
+[ext_resource type="Texture2D" uid="uid://d136rxhxgb41s" path="res://UI/Ingame/Meter/Meter_Bar.png" id="4_bar"]
+
+[node name="BarrierBar" type="Control" node_paths=PackedStringArray("bar_back", "bar_front", "bar_border")]
+custom_minimum_size = Vector2(200, 16)
+script = ExtResource("1_script")
+bar_back   = NodePath("Back")
+bar_front  = NodePath("Front")
+bar_border = NodePath("Border")
+
+[node name="Back" type="TextureProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture_under = ExtResource("2_back")
+texture_progress = ExtResource("2_back")
+value = 100.0
+
+[node name="Front" type="TextureProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture_under = ExtResource("2_back")
+texture_progress = ExtResource("4_bar")
+modulate = Color(0.20, 0.85, 0.45, 1.0)
+value = 100.0
+
+[node name="Border" type="TextureProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture_under = ExtResource("3_border")
+texture_progress = ExtResource("3_border")
+mouse_filter = 2
+value = 100.0

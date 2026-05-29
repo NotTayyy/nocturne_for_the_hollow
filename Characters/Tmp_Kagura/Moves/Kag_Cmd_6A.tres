@@ -1,19 +1,72 @@
-[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://cbpgp2etnox1h"]
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://xfbmd5mebt42"]
 
-[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Characters/BaseFighter/Move_Data.gd" id="1_ka1hv"]
+[ext_resource type="Script" uid="uid://8gbv7m3jiy6a" path="res://Scripts/Class_Base/CancelWindow.gd" id="1_8da5e"]
+[ext_resource type="Script" uid="uid://coqvqgr4ov570" path="res://Scripts/Class_Base/CancelRoute.gd" id="2_612t7"]
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="3_na7xq"]
+
+[sub_resource type="Resource" id="Resource_8da5e"]
+script = ExtResource("1_8da5e")
+
+[sub_resource type="Resource" id="Resource_612t7"]
+script = ExtResource("1_8da5e")
+metadata/_custom_type_script = "uid://8gbv7m3jiy6a"
+
+[sub_resource type="Resource" id="Resource_na7xq"]
+script = ExtResource("1_8da5e")
+
+[sub_resource type="Resource" id="Resource_qm1h2"]
+script = ExtResource("1_8da5e")
+
+[sub_resource type="Resource" id="Resource_os0s7"]
+script = ExtResource("1_8da5e")
+
+[sub_resource type="Resource" id="Resource_0ykk7"]
+script = ExtResource("1_8da5e")
+on_hit = true
+on_block = true
+
+[sub_resource type="Resource" id="Resource_odijq"]
+script = ExtResource("1_8da5e")
+
+[sub_resource type="Resource" id="Resource_qf6d2"]
+script = ExtResource("1_8da5e")
+
+[sub_resource type="Resource" id="Resource_36226"]
+script = ExtResource("2_612t7")
+command = "Button C"
+hfd_path = "Components/FrameData/Nml_5C"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_x0pkp"]
+script = ExtResource("1_8da5e")
+on_hit = true
+on_block = true
 
 [resource]
-script = ExtResource("1_ka1hv")
+script = ExtResource("3_na7xq")
 move_name = "6A"
-move_id = "Cmd Normal 6A"
+move_id = "Cmd_6A"
 startup = 21
 active = Array[int]([3])
 recovery = 19
 damage = Array[int]([800])
 p1 = 80
 p2 = Array[int]([92])
-bonus_proration = 110
 guard = Array[int]([0])
+attack_level = Array[int]([4])
+override_hitstun = Array[int]([27])
+cancel_normal = SubResource("Resource_0ykk7")
+cancel_special = SubResource("Resource_x0pkp")
+cancel_drive = SubResource("Resource_qm1h2")
+cancel_overdrive = SubResource("Resource_odijq")
+cancel_jump = SubResource("Resource_os0s7")
+cancel_rapid = SubResource("Resource_qf6d2")
+cancel_dash = SubResource("Resource_na7xq")
+cancel_backdash = SubResource("Resource_8da5e")
+cancel_burst = SubResource("Resource_612t7")
 ground_hit_effect = Array[int]([9])
 air_hit_effect = Array[int]([4])
+air_ch_effect = Array[int]([4])
+invul_type = Array[int]([1])
+cancel_routes = Array[ExtResource("2_612t7")]([SubResource("Resource_36226")])
 metadata/_custom_type_script = "uid://c1ie505730ew"

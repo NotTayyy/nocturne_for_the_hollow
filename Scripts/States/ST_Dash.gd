@@ -25,12 +25,11 @@ func enter(prev: String) -> void:
 			return
 		CharacterData.DashType.Dash:
 			_phase = Phase.ACTIVE
-			gate_self      = true
+			gate_normal    = true
 			gate_special   = true
 			gate_drive     = true
 			gate_overdrive = true
 			gate_jump      = true
-			gate_barrier   = true
 			ap.play("Dash/DashF_Start")
 		CharacterData.DashType.Step:
 			_phase = Phase.STARTUP

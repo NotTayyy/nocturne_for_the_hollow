@@ -13,14 +13,13 @@ func enter(_prev: String) -> void:
 	fighter.velocity.y = 0.0
 
 	# Cancellable into everything except burst and barrier
-	gate_self      = true
+	gate_normal    = true
 	gate_special   = true
 	gate_drive     = true
 	gate_overdrive = true
 	gate_jump      = true
 	gate_dash      = true
 	gate_backdash  = true
-	gate_barrier   = false
 	ap.play("Airdash/BAirDash")
 
 func exit() -> void:

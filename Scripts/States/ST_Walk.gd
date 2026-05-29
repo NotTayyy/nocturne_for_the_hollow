@@ -14,14 +14,13 @@ func enter(_prev: String) -> void:
 	apply_gravity = false
 	fighter.velocity.y = 0.0
 	_last_forward  = "6" in input_buffer.held_inputs
-	gate_self      = true
+	gate_normal    = true
 	gate_special   = true
 	gate_drive     = true
 	gate_overdrive = true
 	gate_jump      = true
 	gate_dash      = true
 	gate_backdash  = true
-	gate_barrier   = true
 	_play_walk_anim()
 	if hfd_node != null:
 		hfd_node.begin(null)
@@ -68,6 +67,8 @@ func on_command(command: Dictionary) -> void:
 			_request_attack(command, "Components/FrameData/Nml_5D")
 		"6A":
 			_request_attack(command, "Components/FrameData/Cmd_6A")
+		"6B":
+			_request_attack(command, "Components/FrameData/Cmd_6B")
 		"Button A":
 			_request_attack(command, "Components/FrameData/Nml_5A")
 		"Crouch":

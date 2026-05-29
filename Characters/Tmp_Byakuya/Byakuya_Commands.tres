@@ -136,8 +136,9 @@ command_list = [{
 "Priority": "Special",
 "Sequence": ["4", "2", "1"]
 }, {
+"Buttons": ["B", "C"],
+"Combo": true,
 "Command": "Throw",
-"Priority": "Throw",
-"Sequence": ["B", "C"]
+"Priority": "Throw"
 }]
 metadata/_custom_type_script = "uid://bhoay45i4tsn"

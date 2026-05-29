@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://dhkq1boea6ng6"]
+
+[ext_resource type="Script" uid="uid://cfos7wponcp3v" path="res://UI/Ingame/Meter/meter_bar.gd" id="1_grujf"]
+[ext_resource type="Texture2D" uid="uid://cfjyhpi7j62og" path="res://UI/Ingame/Meter/Meter_Back.png" id="1_hcmuo"]
+[ext_resource type="Texture2D" uid="uid://dgj473pw1q05i" path="res://UI/Ingame/Meter/Meter_Border.png" id="1_osjqh"]
+[ext_resource type="Texture2D" uid="uid://d136rxhxgb41s" path="res://UI/Ingame/Meter/Meter_Bar.png" id="2_hcmuo"]
+
+[node name="MeterBar" type="Control" unique_id=902667034 node_paths=PackedStringArray("bar_value")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1920.0
+offset_bottom = -1080.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_grujf")
+bar_value = NodePath("TextureProgressBar")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="." unique_id=2063199765]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 1.0
+offset_right = 686.0
+offset_bottom = 50.0
+texture_under = ExtResource("1_hcmuo")
+texture_over = ExtResource("1_osjqh")
+texture_progress = ExtResource("2_hcmuo")
+
+[node name="Number" type="RichTextLabel" parent="." unique_id=404386679]
+layout_mode = 0
+offset_left = 63.0
+offset_top = 1.0
+offset_right = 107.44444
+offset_bottom = 27.666666
+scale = Vector2(2.25, 2.25)
+text = "100"

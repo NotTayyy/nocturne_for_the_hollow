@@ -1,91 +1,70 @@
 extends Control
 
-@export var bar_back: TextureProgressBar
-@export var bar_front: TextureProgressBar
-@export var is_health: bool = false
-@export var is_P1: bool = false
+@export var bar_back  : TextureProgressBar   ## Empty bar background
+@export var bar_grey  : TextureProgressBar   ## Grey health (recoverable)
+@export var bar_front : TextureProgressBar   ## Red health (current)
+@export var is_P1     : bool = false
 
 var Player
 
-var pending_back_value: float =  -1.0
-var current_health_pct : float = 1.0
-var front_tween: Tween
-var back_tween: Tween
-var combo_drop_timer: Timer
+var front_tween : Tween
+var back_tween  : Tween
 
 func _ready() -> void:
 	Player = Global.P1 if is_P1 else Global.P2
-	
-	var max_health : int = Player.char_data.base_max_health
-	bar_front.max_value = max_health
-	bar_back.max_value = max_health
-	bar_front.value = max_health
-	bar_back.value = max_health
-	
-	Player.char_data.health_changed.connect(update_bar)
-	
-	#Combo Timer
-	combo_drop_timer = Timer.new()
-	combo_drop_timer.wait_time = 1
-	combo_drop_timer.one_shot = true
-	combo_drop_timer.timeout.connect(_on_combo_drop)
-	add_child(combo_drop_timer)
 
-func update_bar(current: float, max_value: float):
-	var pct = clamp(current / max_value, 0.0, 1.0)
-	
-	var is_damage = pct < current_health_pct
-	var is_heal = pct > current_health_pct
-	
-	#We want to make this Go down if Combo is Dropped, And stay still if combo is ongoing
+	var max_hp : int = Player.char_data.base_max_health
+	bar_back.max_value  = max_hp
+	bar_grey.max_value  = max_hp
+	bar_front.max_value = max_hp
+	bar_back.value  = max_hp
+	bar_grey.value  = max_hp
+	bar_front.value = max_hp
+
+	Player.char_data.health_changed.connect(_on_health_changed)
+	Player.char_data.grey_health_changed.connect(_on_grey_health_changed)
+
+# =============================================================================
+# Health signals
+# =============================================================================
+
+func _on_health_changed(current: int, _max_hp: int) -> void:
+	_kill_tweens()
+
+	var is_damage : bool = current < bar_front.value
+
+	# Red bar updates immediately
+	bar_front.value = current
+
 	if is_damage:
-		_kill_tweens()
+		_flash(Color(0.873, 0.048, 0.284, 1.0))
+	else:
+		# Healing — snap grey bar down too
+		bar_grey.value = current + Player.char_data.curr_grey_health
+		_flash(Color(0.0, 0.844, 0.529, 1.0))
 
-		# Front bar updates immediately
-		bar_front.value = current
-		_on_damage()
+func _on_grey_health_changed(curr_grey: int) -> void:
+	var curr_hp   : int   = Player.char_data.curr_health
+	var target    : float = float(curr_hp + curr_grey)
 
-		# Store final value for delayed drain
-		pending_back_value = current
-		combo_drop_timer.stop()
-		combo_drop_timer.start()
-		
-	elif is_heal:
-		_kill_tweens()
-		
-		combo_drop_timer.stop()
-		pending_back_value = -1.0
-		
-		front_tween = create_tween().set_parallel()
-		front_tween.tween_property(bar_front, "value", current, 0.25)
-		front_tween.tween_property(bar_back, "value", current, 0.25)
-		_on_heal()
-	
-	current_health_pct = pct
+	_kill_tweens()
 
-func _on_combo_drop():
-	if pending_back_value < 0.0:
-		return
+	if curr_grey == 0:
+		# Grey wiped instantly (new combo or Limit Break)
+		bar_grey.value = bar_front.value
+	else:
+		# Grey bar sits above red bar — no tween, just track it
+		bar_grey.value = target
 
-	back_tween = create_tween()
-	back_tween.tween_property(bar_back, "value", pending_back_value, 0.45)
+# =============================================================================
+# Helpers
+# =============================================================================
 
-	pending_back_value = -1.0
-
-#Temp Functions
 func _kill_tweens() -> void:
-	if front_tween and front_tween.is_running():
-		front_tween.kill()
-	if back_tween and back_tween.is_running():
-		back_tween.kill()
+	if front_tween and front_tween.is_running(): front_tween.kill()
+	if back_tween  and back_tween.is_running():  back_tween.kill()
 
-func _Flash(flash_color: Color):
+func _flash(flash_color: Color) -> void:
 	modulate = flash_color
-	var t = create_tween()
-	t.tween_property(self, "modulate", Color(1,1,1), 0.25)
-
-func _on_damage():
-	_Flash(Color(0.873, 0.048, 0.284, 1.0))
-
-func _on_heal():
-	_Flash(Color(0.0, 0.844, 0.529, 1.0))
+	var t := create_tween()
+	t.tween_property(self, "modulate", Color(1, 1, 1), 0.25)

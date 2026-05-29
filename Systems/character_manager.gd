@@ -1,4 +1,5 @@
 extends Node2D
+class_name Character_Manager
 
 var player1
 var player2
@@ -49,11 +50,11 @@ func spawn_character(char_name: String, player_id: int, spawn_pos: Vector2):
 	else:
 		Global.P2 = fighter
 	
-	fighter.char_data = data
+	fighter.char_data = data.duplicate(true)
 	fighter.player_id = player_id
 	fighter.position = spawn_pos
 	add_child(fighter)
-	
+	fighter.name = "%s_P%d" % [char_name, player_id]
 	return fighter
 
 func Opponent_Setup() -> void:

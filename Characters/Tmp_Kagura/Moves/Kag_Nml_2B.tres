@@ -1,0 +1,77 @@
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://cdjf7536ip8me"]
+
+[ext_resource type="Script" uid="uid://8gbv7m3jiy6a" path="res://Scripts/Class_Base/CancelWindow.gd" id="1_hdr6g"]
+[ext_resource type="Script" uid="uid://coqvqgr4ov570" path="res://Scripts/Class_Base/CancelRoute.gd" id="2_q5qfw"]
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="3_kvrt7"]
+
+[sub_resource type="Resource" id="Resource_ivnxb"]
+script = ExtResource("1_hdr6g")
+
+[sub_resource type="Resource" id="Resource_pk4t6"]
+script = ExtResource("1_hdr6g")
+
+[sub_resource type="Resource" id="Resource_1f2vq"]
+script = ExtResource("1_hdr6g")
+
+[sub_resource type="Resource" id="Resource_6jk6y"]
+script = ExtResource("1_hdr6g")
+
+[sub_resource type="Resource" id="Resource_27e5b"]
+script = ExtResource("1_hdr6g")
+
+[sub_resource type="Resource" id="Resource_ibb8v"]
+script = ExtResource("1_hdr6g")
+on_hit = true
+on_block = true
+metadata/_custom_type_script = "uid://8gbv7m3jiy6a"
+
+[sub_resource type="Resource" id="Resource_id26s"]
+script = ExtResource("1_hdr6g")
+
+[sub_resource type="Resource" id="Resource_s0x0n"]
+script = ExtResource("1_hdr6g")
+on_hit = true
+on_block = true
+
+[sub_resource type="Resource" id="Resource_q5qfw"]
+script = ExtResource("2_q5qfw")
+command = "Button B"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_kvrt7"]
+script = ExtResource("2_q5qfw")
+command = "Button C"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_hdr6g"]
+script = ExtResource("1_hdr6g")
+on_hit = true
+on_block = true
+metadata/_custom_type_script = "uid://8gbv7m3jiy6a"
+
+[resource]
+script = ExtResource("3_kvrt7")
+move_name = "2B"
+move_id = "Nml_2B"
+startup = 9
+active = Array[int]([3])
+recovery = 14
+damage = Array[int]([500])
+p1 = 90
+p2 = Array[int]([85])
+starter = 3
+guard = Array[int]([2])
+attribute = Array[int]([2])
+attack_level = Array[int]([2])
+cancel_normal = SubResource("Resource_ibb8v")
+cancel_special = SubResource("Resource_hdr6g")
+cancel_drive = SubResource("Resource_6jk6y")
+cancel_overdrive = SubResource("Resource_id26s")
+cancel_jump = SubResource("Resource_27e5b")
+cancel_rapid = SubResource("Resource_s0x0n")
+cancel_dash = SubResource("Resource_1f2vq")
+cancel_backdash = SubResource("Resource_ivnxb")
+cancel_burst = SubResource("Resource_pk4t6")
+pushback = Array[float]([2150.0])
+cancel_routes = Array[ExtResource("2_q5qfw")]([SubResource("Resource_q5qfw"), SubResource("Resource_kvrt7")])
+metadata/_custom_type_script = "uid://c1ie505730ew"
