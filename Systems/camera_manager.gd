@@ -52,7 +52,8 @@ func _physics_process(_delta: float) -> void:
 	
 	midpoint.y = highest_y if highest_y < cam_top_move else cam_floor + target_offset.y
 
-	Walls.global_position.x = lerpf(Walls.global_position.x, midpoint.x, wall_speed * _delta)
+	var dynamic_wall_speed : float = lerpf(wall_speed, wall_speed * 4.0, t)
+	Walls.global_position.x = lerpf(Walls.global_position.x, midpoint.x, dynamic_wall_speed * _delta)
 	Foreground_camera.global_position.y = lerpf(Foreground_camera.global_position.y, midpoint.y, move_speed * _delta)
 	Foreground_camera.global_position.x = lerpf(Foreground_camera.global_position.x, midpoint.x, move_speed * _delta)
 	Foreground_camera.zoom = Foreground_camera.zoom.lerp(target_zoom, zoom_speed * _delta)

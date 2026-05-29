@@ -35,7 +35,6 @@ var is_first_hit          : bool    = true
 var first_hit_p1          : float   = 1.0
 var accumulated_p2        : float   = 1.0
 var bonus_applied         : bool    = false
-var limit_built           : float   = 0.0
 var combo_duration_frames : int     = 0   ## Counts UP — drives hitstun decay
 var combo_timer           : int     = 0   ## Counts DOWN from hitstun — combo ends at -1
 
@@ -72,6 +71,10 @@ func _physics_process(_delta: float) -> void:
 		if _hitstop_timer <= 0:
 			_end_hitstop()
 		return
+	# Tick heat cooldowns every frame regardless of combo state
+	_tick_heat_cooldowns()
+	# Auto heat gain for low HP — works outside combos too
+	_tick_auto_heat()
 	# Tick combo timer
 	if not is_active:
 		return
@@ -166,13 +169,12 @@ func register_hit(result : HitResult) -> void:
 		if md.impulse_x != 0.0 or md.impulse_y != 0.0:
 			result.impulse = { "x": md.impulse_x, "y": md.impulse_y, "start": md.impulse_start, "end": md.impulse_end, "falloff": md.impulse_falloff }
 
-		# --- Limit ---
-		result.limit_contribution = _calc_limit(md, hi)
-		limit_built += result.limit_contribution
-
 		# --- Move history [optional — see header comment] ---
 		if md.move_id != "":
 			move_history.append("%s(%d)" % [md.move_id, result.damage])
+
+		# --- Heat gains ---
+		_apply_heat_gains(result)
 
 	is_first_hit = false
 	emit_signal("combo_updated", hit_count)
@@ -187,13 +189,12 @@ func register_hit(result : HitResult) -> void:
 func apply_hitstop(atk: Fighter, def: Fighter, frames: int) -> void:
 	if frames <= 0:
 		return
-	_hitstop_timer   = frames
+	_hitstop_timer    = frames
 	_hitstop_fighters = [atk, def]
 	for f : Fighter in _hitstop_fighters:
-		f.process_mode                 = Node.PROCESS_MODE_DISABLED
+		f.process_mode              = Node.PROCESS_MODE_DISABLED
 		f.anim_player.pause()
-		# Keep InputBuffer alive so moves can be buffered during freeze
-		f.input_buffer.process_mode    = Node.PROCESS_MODE_ALWAYS
+		f.input_buffer.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func _end_hitstop() -> void:
 	for f in _hitstop_fighters:
@@ -215,7 +216,6 @@ func reset() -> void:
 	first_hit_p1          = 1.0
 	accumulated_p2        = 1.0
 	bonus_applied         = false
-	limit_built           = 0.0
 	combo_duration_frames = 0
 	combo_timer           = 0
 	_total_damage         = 0
@@ -237,7 +237,6 @@ func _start_combo(result : HitResult) -> void:
 	is_first_hit   = true
 	accumulated_p2 = 1.0
 	bonus_applied  = false
-	limit_built    = 0.0
 	_total_damage  = 0
 	move_history.clear()
 	# Wipe all existing grey health — previous combo's grey is gone
@@ -265,9 +264,110 @@ func _apply_decay(base_frames : int) -> int:
 			return maxi(1, base_frames + decay)
 	return base_frames
 
-func _calc_limit(md : MoveData, hi : int) -> float:
-	var base_dmg : float = float(md.damage[min(hi, md.damage.size() - 1)])
-	return base_dmg * 0.05
+# =============================================================================
+# Heat (Limit) Gain System
+# Heat Gauge = 10,000 units. 100 units = 1 Heat displayed.
+# All values truncated (floor) after calculation.
+# =============================================================================
+
+## Multiplier: attacker gains heat from scaled damage dealt
+@export var heat_on_hit_mult           : float = 0.72
+## Multiplier: defender gains heat from scaled damage taken (before combo scale)
+@export var heat_on_damage_mult        : float = 0.50
+## Multiplier: attacker gains heat when attack is blocked
+@export var heat_on_blocked_mult       : float = 0.18
+## Multiplier: defender gains heat from normal block
+@export var heat_on_block_mult         : float = 0.10
+## Multiplier: defender gains heat from instant block
+@export var heat_on_instant_block_mult : float = 0.20
+## Flat bonus units for instant block
+@export var heat_instant_block_bonus   : int   = 100
+## After spending Heat — reduced gain duration in frames
+@export var heat_cooldown_frames       : int   = 60
+## Heat gain reduction during cooldown (0.75 = 75% less)
+@export var heat_cooldown_reduction    : float = 0.75
+## Auto Heat gain per frame when HP < 35%
+@export var heat_auto_gain_per_frame   : int   = 1
+## HP threshold for auto heat gain (0.35 = 35%)
+@export var heat_auto_hp_threshold     : float = 0.35
+
+## Combo length scale table for defender heat gain
+const HEAT_COMBO_SCALE_TABLE : Array[Dictionary] = [
+	{ "threshold": 660, "scale": 2.6 },
+	{ "threshold": 480, "scale": 2.0 },
+	{ "threshold": 300, "scale": 1.6 },
+	{ "threshold": 120, "scale": 1.2 },
+	{ "threshold": 0,   "scale": 0.6 },
+]
+
+## Per-fighter cooldown timers — keyed by fighter instance
+var _heat_cooldown_timers : Dictionary = {}  ## Fighter -> int
+
+func _get_combo_heat_scale() -> float:
+	for entry : Dictionary in HEAT_COMBO_SCALE_TABLE:
+		if combo_duration_frames >= entry["threshold"]:
+			return entry["scale"]
+	return 0.6
+
+func _is_in_heat_cooldown(fighter : Fighter) -> bool:
+	return _heat_cooldown_timers.get(fighter, 0) > 0
+
+func start_heat_cooldown(fighter : Fighter) -> void:
+	_heat_cooldown_timers[fighter] = heat_cooldown_frames
+
+func _grant_heat(fighter : Fighter, amount_f : float) -> void:
+	if fighter == null:
+		return
+	var amount : int = int(amount_f)  ## Truncate — no rounding
+	if amount <= 0:
+		return
+	if _is_in_heat_cooldown(fighter):
+		amount = int(float(amount) * (1.0 - heat_cooldown_reduction))
+	if amount <= 0:
+		return
+	fighter.char_data.curr_Limit = mini(
+		fighter.char_data.base_max_Limit,
+		fighter.char_data.curr_Limit + amount
+	)
+
+func _apply_heat_gains(result : HitResult) -> void:
+	var md        : MoveData = result.move_data
+	var scaled    : int      = result.damage
+	var base      : int      = md.damage[min(result.hit_index, md.damage.size() - 1)] if md != null else scaled
+
+	if result.is_blocked:
+		# Attacker blocked — gains from base damage
+		_grant_heat(result.attacker, float(base) * heat_on_blocked_mult)
+		if result.is_instant_block:
+			# Defender instant blocked — bonus heat
+			_grant_heat(result.defender, float(base) * heat_on_instant_block_mult + float(heat_instant_block_bonus))
+		else:
+			# Defender normal blocked
+			_grant_heat(result.defender, float(base) * heat_on_block_mult)
+	else:
+		# Attacker hit — gains from scaled damage
+		_grant_heat(result.attacker, float(scaled) * heat_on_hit_mult)
+		# Defender takes damage — gains with combo length scale
+		var combo_scale : float = _get_combo_heat_scale()
+		_grant_heat(result.defender, float(scaled) * heat_on_damage_mult * combo_scale)
+
+func _tick_heat_cooldowns() -> void:
+	for fighter in _heat_cooldown_timers.keys():
+		_heat_cooldown_timers[fighter] -= 1
+		if _heat_cooldown_timers[fighter] <= 0:
+			_heat_cooldown_timers.erase(fighter)
+
+func _tick_auto_heat() -> void:
+	var fighters : Array = [Global.P1, Global.P2]
+	for fighter in fighters:
+		if fighter == null:
+			continue
+		if _is_in_heat_cooldown(fighter):
+			continue
+		var cd  : CharacterData = fighter.char_data
+		var pct : float         = float(cd.curr_health) / float(cd.base_max_health)
+		if pct < heat_auto_hp_threshold:
+			_grant_heat(fighter, float(heat_auto_gain_per_frame))
 
 func _decay_tier_label() -> String:
 	if combo_duration_frames >= 660: return "1f (max decay)"

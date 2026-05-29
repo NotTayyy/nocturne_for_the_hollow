@@ -74,6 +74,22 @@ func update(_delta: float) -> void:
 
 	if hfd.move_data != null and frame >= hfd.move_data.total_frames():
 		state_manager.force_transition("Idle")
+		return
+
+	# Physics-based jump cancel — held 7/8/9 detected every frame
+	# Super jumps handled via on_command since 2+8 = 5 (neutral)
+	if _cancel_allowed(hfd, {"Priority": "Jump"}):
+		var held := fighter.input_buffer.held_inputs
+		var jump_cmd : String = ""
+		if "9" in held: jump_cmd = "JumpFwd"
+		elif "7" in held: jump_cmd = "JumpBack"
+		elif "8" in held: jump_cmd = "Jump"
+		if jump_cmd != "":
+			var prejump : ST_Prejump = state_manager.states.get("Prejump") as ST_Prejump
+			if prejump != null:
+				prejump.jump_command = jump_cmd
+			fighter.input_buffer.consume_buffer()
+			state_manager.force_transition("Prejump")
 
 # =============================================================================
 # Proximity Block Box
@@ -155,12 +171,25 @@ func _apply_self_impulses() -> void:
 func on_command(command: Dictionary) -> void:
 	if hfd == null or hfd.move_data == null:
 		return
-	var cmd : String = command.get("Command", "")
+	var cmd      : String = command.get("Command", "")
+	var priority : String = command.get("Priority", "")
+
+	# Jump cancel — checked against cancel_jump window
+	if priority in ["Jump", "Super Jump"]:
+		if _cancel_allowed(hfd, command):
+			var prejump : ST_Prejump = state_manager.states.get("Prejump") as ST_Prejump
+			if prejump != null:
+				prejump.jump_command = cmd
+			fighter.input_buffer.consume_buffer()
+			state_manager.force_transition("Prejump")
+		return
+
+	# Cancel routes
 	for route : CancelRoute in hfd.move_data.cancel_routes:
-		if route == null or route.command != cmd or route.hfd_path == "":
+		if route == null or route.command != cmd or route.path == "":
 			continue
 		if not _cancel_allowed(hfd, command):
 			break
-		fighter.input_buffer.consume_buffer()
-		_request_attack(command, route.hfd_path)
+		_request_from_route(command, route.path)
 		return
+	# No valid cancel — leave command in buffer so it executes when attack ends

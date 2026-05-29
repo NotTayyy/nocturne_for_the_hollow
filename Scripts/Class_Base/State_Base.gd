@@ -147,6 +147,23 @@ func _request_attack(command: Dictionary, hfd_path: String) -> bool:
 		state_manager.request("Attack", prio)
 	return true
 
+func _request_from_route(command: Dictionary, path: String) -> bool:
+	# HFD path — contains "/" — go to Attack state
+	if "/" in path:
+		return _request_attack(command, path)
+	# State ID — transition directly
+	if not state_manager.states.has(path):
+		push_error("[%s] CancelRoute state '%s' not found" % [state_id, path])
+		return false
+	var current_hfd : HitboxFrameData = null
+	if state_manager.active_state != null and state_manager.active_state.state_id == "Attack":
+		current_hfd = (state_manager.active_state as ST_Attack).hfd
+	if current_hfd != null and not _cancel_allowed(current_hfd, command):
+		return false
+	fighter.input_buffer.consume_buffer()
+	state_manager.force_transition(path)
+	return true
+
 func _cancel_allowed(current_hfd : HitboxFrameData, command : Dictionary = {}) -> bool:
 	if current_hfd == null or current_hfd.move_data == null:
 		return true

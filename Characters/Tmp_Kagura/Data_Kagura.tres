@@ -10,7 +10,6 @@ character_name = "Kagura Mitsuki"
 fighter_scene = ExtResource("1_1gwx2")
 command_list = ExtResource("1_ydg2p")
 charge_moves = true
-friction = 0.85
 backdash_distance = 1700
 barrier_drain_rate = 6.0
 barrier_regen_rate = 5.0

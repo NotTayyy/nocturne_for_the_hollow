@@ -22,8 +22,8 @@ enum BackDashType { Step, Dash, Teleport}
 ## and thinner characters to be down at 1100
 @export var base_max_health: int = 12500 
 
-##The Characters Base Limit
-@export var base_max_Limit: int = 100 
+## The Characters Base Limit — 10,000 units, 100 units = 1 Heat displayed
+@export var base_max_Limit: int = 10000
 
 ## The Characters Burst Buildup, Functionally the same thing as Burst.
 @export var base_max_burst: int = 100

@@ -1,20 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://d1842be6dcijx"]
+[gd_scene format=3 uid="uid://d1842be6dcijx"]
 
 [ext_resource type="Texture2D" uid="uid://cieet12mpwjwb" path="res://Assets/UI/Tmp_Screen.png" id="1_gsg2s"]
 [ext_resource type="Script" uid="uid://byjtvox1tct1l" path="res://UI/Ingame/ingame_ui.gd" id="1_qqp84"]
 [ext_resource type="PackedScene" uid="uid://lxcbq02j2sga" path="res://UI/Ingame/HealthBar/HealthBar.tscn" id="3_nbhc3"]
+[ext_resource type="PackedScene" uid="uid://dhkq1boea6ng6" path="res://UI/Ingame/Meter/MeterBar.tscn" id="4_33y7q"]
+[ext_resource type="PackedScene" path="res://UI/Ingame/BarrierBar/BarrierBar.tscn" id="5_74hi5"]
 
-[node name="Control" type="CanvasLayer"]
+[node name="Control" type="CanvasLayer" unique_id=419332270]
 script = ExtResource("1_qqp84")
 
-[node name="P1_Bar" parent="." instance=ExtResource("3_nbhc3")]
+[node name="P1_Bar" parent="." unique_id=873980329 instance=ExtResource("3_nbhc3")]
 offset_left = 35.0
 offset_top = 65.0
 offset_right = 35.0
 offset_bottom = 65.0
 is_P1 = true
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1271632348]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -30,7 +32,7 @@ grow_vertical = 2
 texture = ExtResource("1_gsg2s")
 expand_mode = 1
 
-[node name="P1_Name" type="Label" parent="."]
+[node name="P1_Name" type="Label" parent="." unique_id=608339661]
 offset_left = 491.0
 offset_top = -8.0
 offset_right = 782.0
@@ -38,7 +40,7 @@ offset_bottom = 89.0
 theme_override_font_sizes/font_size = 71
 text = "Byakuya"
 
-[node name="P2_Name" type="Label" parent="."]
+[node name="P2_Name" type="Label" parent="." unique_id=1719601744]
 offset_left = 1146.0
 offset_top = -8.0
 offset_right = 1437.0
@@ -46,7 +48,7 @@ offset_bottom = 89.0
 theme_override_font_sizes/font_size = 71
 text = "Byakuya"
 
-[node name="P2_Bar" parent="." instance=ExtResource("3_nbhc3")]
+[node name="P2_Bar" parent="." unique_id=2006271880 instance=ExtResource("3_nbhc3")]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -56,3 +58,35 @@ offset_right = -35.0
 offset_bottom = 65.0
 grow_horizontal = 0
 scale = Vector2(-1, 1)
+
+[node name="P2_Mater" parent="." unique_id=594058877 instance=ExtResource("4_33y7q")]
+offset_left = 1978.0
+offset_top = 926.0
+offset_right = 58.0
+offset_bottom = -154.0
+scale = Vector2(-1.2, 1.8)
+
+[node name="P1_Mater" parent="." unique_id=902667034 instance=ExtResource("4_33y7q")]
+offset_left = -57.0
+offset_top = 929.0
+offset_right = -1977.0
+offset_bottom = -151.0
+scale = Vector2(1.2, 1.8)
+is_P1 = true
+
+[node name="BarrierBar" parent="." unique_id=1968023678 instance=ExtResource("5_74hi5")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 479.0
+offset_top = 197.0
+offset_right = 679.0
+offset_bottom = 213.0
+is_P1 = true
+
+[node name="BarrierBar2" parent="." unique_id=86797155 instance=ExtResource("5_74hi5")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1238.0
+offset_top = 200.0
+offset_right = 1438.0
+offset_bottom = 216.0

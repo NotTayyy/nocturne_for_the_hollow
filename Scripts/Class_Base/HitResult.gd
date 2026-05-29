@@ -9,7 +9,8 @@ var move_data   : MoveData = null   ## Full move reference — for anything not 
 var hit_index   : int      = 0
 var is_counter  : bool     = false
 var is_airborne : bool     = false
-var is_blocked  : bool     = false  ## Was defender airborne at moment of hit
+var is_blocked       : bool = false
+var is_instant_block : bool = false  ## Placeholder — wire when instant block is implemented
 
 # =============================================================================
 # Damage

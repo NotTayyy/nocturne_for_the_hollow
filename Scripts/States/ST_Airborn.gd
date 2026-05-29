@@ -3,9 +3,10 @@ class_name ST_Airborne
 
 enum JumpPhase { ASCENT, APEX, DESCENT }
 
-var APEX_THRESHOLD : float = 300
-var _jump_phase    : int   = JumpPhase.ASCENT
-var from_ground    : bool
+var APEX_THRESHOLD  : float = 300
+var _jump_phase     : int   = JumpPhase.ASCENT
+var from_ground     : bool
+var _jump_8_released : bool = false  ## Must release 8 before a new air jump direction registers
 
 func _ready() -> void:
 	state_id = "Airborne"
@@ -21,6 +22,7 @@ func enter(prev: String) -> void:
 	else:
 		lockout_timer = 0
 	_reset_gates()
+	_jump_8_released = false  ## Must release 8 before new air jump registers
 	_play_jump_anim()
 	if hfd_node != null:
 		hfd_node.begin(null)
@@ -45,6 +47,10 @@ func update(_delta: float) -> void:
 		_update_gates()
 	
 	_update_jump_phase()
+
+	# Track 8 release for deliberate air jump inputs
+	if not _jump_8_released and "8" not in fighter.input_buffer.held_inputs:
+		_jump_8_released = true
 
 func get_transition() -> String:
 	if fighter.is_on_floor() and fighter.velocity.y >= 0.0:
@@ -106,8 +112,10 @@ func _update_gates() -> void:
 # -----------------------------------------------------------------------------
 func _request_airjump(cmd: String) -> void:
 	if not _can_airjump(): return
+	if not _jump_8_released: return  ## Must release 8 since last jump
 	_spend_aerial_stock()
 	_update_gates()
+	_jump_8_released = false  ## Reset — must release 8 again for next air jump
 	fighter.input_buffer.consume_buffer()
 	
 	if not from_ground:

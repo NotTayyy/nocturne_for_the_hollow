@@ -63,6 +63,12 @@ func on_command(command: Dictionary) -> void:
 	var cmd   : String = command.get("Command", "")
 	var _prio : int    = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	match cmd:
+		"Button B":
+			_request_attack(command, "Components/FrameData/Nml_5B")
+		"2B":
+			_request_attack(command, "Components/FrameData/Nml_2B")
+		"6B":
+			_request_attack(command, "Components/FrameData/Cmd_6B")
 		_ when cmd in JUMP_COMMANDS:
 			_request_SuperJump(cmd, _prio)
 			

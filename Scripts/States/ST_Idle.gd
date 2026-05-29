@@ -69,10 +69,12 @@ func on_command(command: Dictionary) -> void:
 			_request_attack(command, "Components/FrameData/Nml_5B")
 		"Button C":
 			_request_attack(command, "Components/FrameData/Nml_5C")
-		"Button D":
-			_request_attack(command, "Components/FrameData/Nml_5D")
+		"2B":
+			_request_attack(command, "Components/FrameData/Nml_2B")
 		"6A":
 			_request_attack(command, "Components/FrameData/Cmd_6A")
+		"6B":
+			_request_attack(command, "Components/FrameData/Cmd_6B")
 		"Walk", "WalkBack":
 			state_manager.request("Walk", prio)
 		"Crouch":

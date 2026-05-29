@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="MoveData" format=3 uid="uid://c505jj1hqugog"]
+
+[ext_resource type="Script" uid="uid://8gbv7m3jiy6a" path="res://Scripts/Class_Base/CancelWindow.gd" id="1_dtpyd"]
+[ext_resource type="Script" uid="uid://coqvqgr4ov570" path="res://Scripts/Class_Base/CancelRoute.gd" id="2_deqov"]
+[ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="3_v5k3b"]
+
+[sub_resource type="Resource" id="Resource_00mlf"]
+script = ExtResource("1_dtpyd")
+
+[sub_resource type="Resource" id="Resource_elyx2"]
+script = ExtResource("1_dtpyd")
+
+[sub_resource type="Resource" id="Resource_n4puk"]
+script = ExtResource("1_dtpyd")
+
+[sub_resource type="Resource" id="Resource_t60cq"]
+script = ExtResource("1_dtpyd")
+
+[sub_resource type="Resource" id="Resource_563ac"]
+script = ExtResource("1_dtpyd")
+
+[sub_resource type="Resource" id="Resource_ijsrv"]
+script = ExtResource("1_dtpyd")
+
+[sub_resource type="Resource" id="Resource_s4ucl"]
+script = ExtResource("1_dtpyd")
+
+[sub_resource type="Resource" id="Resource_x7td6"]
+script = ExtResource("1_dtpyd")
+
+[sub_resource type="Resource" id="Resource_sqwxn"]
+script = ExtResource("1_dtpyd")
+
+[resource]
+script = ExtResource("3_v5k3b")
+move_name = "Throw"
+move_id = "Forward Throw"
+startup = 10
+active = Array[int]([3])
+recovery = 23
+damage = Array[int]([1500])
+min_damage = Array[int]([100])
+guard = Array[int]([4])
+attribute = Array[int]([4])
+attack_level = Array[int]([0])
+cancel_normal = SubResource("Resource_ijsrv")
+cancel_special = SubResource("Resource_sqwxn")
+cancel_drive = SubResource("Resource_t60cq")
+cancel_overdrive = SubResource("Resource_s4ucl")
+cancel_jump = SubResource("Resource_563ac")
+cancel_rapid = SubResource("Resource_x7td6")
+cancel_dash = SubResource("Resource_n4puk")
+cancel_backdash = SubResource("Resource_00mlf")
+cancel_burst = SubResource("Resource_elyx2")
+metadata/_custom_type_script = "uid://c1ie505730ew"

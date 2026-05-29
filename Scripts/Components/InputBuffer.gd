@@ -468,22 +468,43 @@ func _resolve(candidates: Array) -> void:
 	if candidates.is_empty():
 		return
 
-	var winner   : Dictionary = candidates[0]
-	var top_prio : int        = PRIORITY.get(winner.get("Priority", ""), -1)
+	var winner     : Dictionary = candidates[0]
+	var top_prio   : int        = PRIORITY.get(winner.get("Priority", ""), -1)
+	var top_spec   : int        = _held_specificity(winner)
 
 	for cmd in candidates.slice(1):
-		var p : int = PRIORITY.get(cmd.get("Priority", ""), -1)
-		if p > top_prio:
+		var p    : int = PRIORITY.get(cmd.get("Priority", ""), -1)
+		var spec : int = _held_specificity(cmd)
+		if p > top_prio or (p == top_prio and spec > top_spec):
 			winner   = cmd
 			top_prio = p
+			top_spec = spec
 
 	_buffered_command       = winner
 	_buffered_command_frame = Engine.get_physics_frames()
 
-	# Only emit immediately if fighter is NOT frozen (hitstop)
 	if character != null and character.process_mode == Node.PROCESS_MODE_DISABLED:
 		return
 	command_matched.emit(winner)
+
+## Specificity score for tiebreaking equal-priority held commands.
+## Down beats back when holding a down-diagonal (1 or 3).
+## Up beats back when holding an up-diagonal (7 or 9).
+## Diagonal exact match beats cardinal expansion.
+func _held_specificity(cmd: Dictionary) -> int:
+	if "Held" not in cmd:
+		return 0
+	var score : int = 0
+	for h in cmd["Held"]:
+		if h in ["1","3","7","9"] and h in held_inputs:
+			score += 3   # exact diagonal match
+		elif h == "2" and ("1" in held_inputs or "3" in held_inputs):
+			score += 2   # down preferred on down-diagonal
+		elif h == "8" and ("7" in held_inputs or "9" in held_inputs):
+			score += 2   # up preferred on up-diagonal
+		elif h in held_inputs:
+			score += 1   # plain cardinal match
+	return score
 
 # -----------------------------------------------------------------------------
 # Buffered command

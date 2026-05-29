@@ -18,22 +18,22 @@ const LEVEL_TABLE : Array[Dictionary] = [
 	# Lvl 0
 	{ "hitstop": 8,  "hitstop_ch": 0, "hitstun": 10, "hitstun_ch": 4,
 	  "blockstun": 9,  "blockstop": 8,  "p1": 100, "p2": 75,
-	  "airhit": 12, "airhit_ch": 11,
+	  "airhit": 12, "airhit_ch": 11, "pushback": 0
 	},
 	# Lvl 1
 	{ "hitstop": 9,  "hitstop_ch": 0, "hitstun": 12, "hitstun_ch": 4,
 	  "blockstun": 11, "blockstop": 9,  "p1": 100, "p2": 80,
-	  "airhit": 12, "airhit_ch": 12,
+	  "airhit": 12, "airhit_ch": 12, "pushback": 1500
 	},
 	# Lvl 2
 	{ "hitstop": 10, "hitstop_ch": 1, "hitstun": 14, "hitstun_ch": 4,
 	  "blockstun": 13, "blockstop": 10, "p1": 100, "p2": 85,
-	  "airhit": 14, "airhit_ch": 12,
+	  "airhit": 14, "airhit_ch": 12, "pushback": 2200
 	},
 	# Lvl 3
 	{ "hitstop": 11, "hitstop_ch": 2, "hitstun": 17, "hitstun_ch": 5,
 	  "blockstun": 16, "blockstop": 11, "p1": 100, "p2": 89,
-	  "airhit": 17, "airhit_ch": 14,
+	  "airhit": 17, "airhit_ch": 14, "pushback": 3500
 	},
 	# Lvl 4
 	{ "hitstop": 12, "hitstop_ch": 5, "hitstun": 19, "hitstun_ch": 5,
@@ -118,33 +118,33 @@ enum InvulType  { None, Head, Body, Foot, Throw, Projectile, Burst, Full, GuardP
 
 ## Overrides — set to -1 to use table default.[br]
 ## [br]
-## override_hitstun:    Lvl0:10  Lvl1:12  Lvl2:14  Lvl3:17  Lvl4:19  Lvl5:21 [br]
-## Counter Hit Added:  Lvl0:+4  Lvl1:+4  Lvl2:+4  Lvl3:+5  Lvl4:+5  Lvl5:+6
-@export var override_hitstun   : Array[int] = []   ## Per hit index. Empty = use table.
+## override_hitstun:    Lvl0:10  Lvl1:12  Lvl2:14  Lvl3:17  Lvl4:19   [br]
+## Counter Hit Added:  Lvl0:+4  Lvl1:+4  Lvl2:+4  Lvl3:+5  Lvl4:+5 
+@export var override_hitstun   : Array[int] = []
 ## [br]
-## override_hitstop:    Lvl0:8   Lvl1:9   Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13 [br]
-## Counter Hit Added:  Lvl0:+0  Lvl1:+0  Lvl2:+1  Lvl3:+2  Lvl4:+5  Lvl5:+8
-@export var override_hitstop   : Array[int] = []   ## Per hit index. Empty = use table.
+## override_hitstop:    Lvl0:8   Lvl1:9   Lvl2:10  Lvl3:11  Lvl4:12  [br]
+## Counter Hit Added:  Lvl0:+0  Lvl1:+0  Lvl2:+1  Lvl3:+2  Lvl4:+5 
+@export var override_hitstop   : Array[int] = []
 ## [br]
-## override_blockstun:  Lvl0:9   Lvl1:11  Lvl2:13  Lvl3:16  Lvl4:18  Lvl5:20
-@export var override_blockstun : Array[int] = []   ## Per hit index. Empty = use table.
+## override_blockstun:  Lvl0:9   Lvl1:11  Lvl2:13  Lvl3:16  Lvl4:18  
+@export var override_blockstun : Array[int] = []
 ## [br]
-## override_blockstop:  Lvl0:8   Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13
-@export var override_blockstop : Array[int] = []   ## Per hit index. Empty = use table.
+## override_blockstop:  Lvl0:8   Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12
+@export var override_blockstop : Array[int] = []
 ## [br]
-## override_airhit:     Lvl0:12  Lvl1:12  Lvl2:14  Lvl3:17  Lvl4:19  Lvl5:21 [br]
-## Counter Hit Added:  Lvl0:+0  Lvl1:+0  Lvl2:+0  Lvl3:+3  Lvl4:+4  Lvl5:+6
-@export var override_airhit    : Array[int] = []   ## Per hit index. Empty = use table.
-@export var override_airhit_ch : Array[int] = []   ## Per hit index. Empty = use table.
+## override_airhit:     Lvl0:12  Lvl1:12  Lvl2:14  Lvl3:17  Lvl4:19  [br]
+## Counter Hit Added:  Lvl0:+0  Lvl1:+0  Lvl2:+0  Lvl3:+3  Lvl4:+4 
+@export var override_airhit    : Array[int] = []
+@export var override_airhit_ch : Array[int] = []
 
 ## Asymmetric blockstop/hitstop — per hit. Empty = symmetric (use table)[br]
 ## [br]
-## blockstop attacker/defender: Lvl0:8  Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13
+## blockstop attacker/defender: Lvl0:8  Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  
 @export var override_blockstop_attacker : Array[int] = []
 @export var override_blockstop_defender : Array[int] = []
 ## [br]
-## hitstop attacker/defender:   Lvl0:8  Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  Lvl5:13 [br]
-## Counter Hit Added:           Lvl0:+0 Lvl1:+0 Lvl2:+1  Lvl3:+2  Lvl4:+5  Lvl5:+8
+## hitstop attacker/defender:   Lvl0:8  Lvl1:9  Lvl2:10  Lvl3:11  Lvl4:12  [br]
+## Counter Hit Added:           Lvl0:+0 Lvl1:+0 Lvl2:+1  Lvl3:+2  Lvl4:+5 
 @export var override_hitstop_attacker   : Array[int] = []
 @export var override_hitstop_defender   : Array[int] = []
 

@@ -111,6 +111,7 @@ func imgui_player_root(label: String, player, max_y: float) -> void:
 	if ImGui.CollapsingHeader(label):
 		imgui_core_info(player)
 		imgui_health_info(player)
+		imgui_meter_info(player)
 		imgui_movement_info(player, max_y)
 		imgui_state_info(player)
 		imgui_property_info(player)
@@ -130,6 +131,42 @@ func imgui_health_info(player) -> void:
 	var max_hp : int  = player.char_data.base_max_health
 	var pct   : float = float(curr) / float(max_hp) if max_hp > 0 else 0.0
 	ImGui.TextColored(Color(1.0 - pct, pct, 0.0, 1.0), "HP: %d / %d (%.0f%%)" % [curr, max_hp, pct * 100])
+
+# =============================================================================
+# Meters
+# =============================================================================
+func imgui_meter_info(player) -> void:
+	var cd  : CharacterData = player.char_data
+	var cm  : ComboManager  = Global.combo_manager
+
+	# Limit (Heat) — 0-10000 units, display as 0-100
+	var limit_pct   : float = float(cd.curr_Limit) / float(cd.base_max_Limit)
+	var heat_display : int  = cd.curr_Limit / 100
+	var in_cooldown  : bool = cm != null and cm._is_in_heat_cooldown(player)
+	var auto_heat    : bool = float(cd.curr_health) / float(cd.base_max_health) < cm.heat_auto_hp_threshold if cm != null else false
+	var limit_color  : Color
+	if in_cooldown:
+		limit_color = Color(1.0, 0.5, 0.0)   # Orange — cooldown active
+	elif auto_heat:
+		limit_color = Color(1.0, 0.9, 0.2)   # Yellow — auto gain active
+	else:
+		limit_color = Color(0.3, 0.8, 1.0)   # Blue — normal
+	ImGui.TextColored(limit_color, "Limit: %d / 100%s%s" % [
+		heat_display,
+		"  [COOLDOWN]" if in_cooldown else "",
+		"  [AUTO]" if auto_heat else ""
+	])
+	ImGui.ProgressBar(limit_pct, Vector2(-1, 8), "")
+
+	# Burst
+	var burst_pct : float = float(cd.curr_burst) / float(cd.base_max_burst)
+	ImGui.TextColored(Color(0.8, 0.3, 1.0), "Burst: %d / %d" % [cd.curr_burst, cd.base_max_burst])
+	ImGui.ProgressBar(burst_pct, Vector2(-1, 8), "")
+
+	# Flow
+	var flow_pct : float = float(cd.curr_flow) / float(cd.base_max_flow)
+	ImGui.TextColored(Color(0.2, 1.0, 0.6), "Flow:  %d / %d" % [cd.curr_flow, cd.base_max_flow])
+	ImGui.ProgressBar(flow_pct, Vector2(-1, 8), "")
 
 # =============================================================================
 # Movement
