@@ -32,30 +32,6 @@ script = ExtResource("1_5yy71")
 on_hit = true
 on_block = true
 
-[sub_resource type="Resource" id="Resource_yp0ix"]
-script = ExtResource("1_y7i5b")
-command = "Button C"
-hfd_path = "Components/FrameData/Nml_5C"
-metadata/_custom_type_script = "uid://coqvqgr4ov570"
-
-[sub_resource type="Resource" id="Resource_xvch6"]
-script = ExtResource("1_y7i5b")
-command = "2B"
-hfd_path = "Components/FrameData/Nml_2B"
-metadata/_custom_type_script = "uid://coqvqgr4ov570"
-
-[sub_resource type="Resource" id="Resource_utwt4"]
-script = ExtResource("1_y7i5b")
-command = "Button B"
-hfd_path = "Components/FrameData/Cmd_6B"
-metadata/_custom_type_script = "uid://coqvqgr4ov570"
-
-[sub_resource type="Resource" id="Resource_t4vcw"]
-script = ExtResource("1_y7i5b")
-command = "6B"
-hfd_path = "Components/FrameData/Cmd_6B"
-metadata/_custom_type_script = "uid://coqvqgr4ov570"
-
 [sub_resource type="Resource" id="Resource_2i463"]
 script = ExtResource("1_5yy71")
 on_hit = true
@@ -81,5 +57,4 @@ cancel_dash = SubResource("Resource_acc0j")
 cancel_backdash = SubResource("Resource_g4rs3")
 cancel_burst = SubResource("Resource_5yy71")
 pushback = Array[float]([2000.0])
-cancel_routes = Array[ExtResource("1_y7i5b")]([SubResource("Resource_yp0ix"), SubResource("Resource_xvch6"), SubResource("Resource_utwt4"), SubResource("Resource_t4vcw")])
 metadata/_custom_type_script = "uid://c1ie505730ew"

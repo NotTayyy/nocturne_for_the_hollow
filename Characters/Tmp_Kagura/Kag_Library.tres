@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CancelRouteLibrary" format=3 uid="uid://bcb53pn2ponvc"]
+
+[ext_resource type="Script" uid="uid://tefq24ambgj2" path="res://Scripts/Class_Base/CancelRouteLibrary.gd" id="1_4fshp"]
+
+[resource]
+script = ExtResource("1_4fshp")
+commands = Array[String](["Button A", "Button B", "Button C", "Button D", "2A", "2B", "2C", "2D", "6A", "6B", "6C", "6D", "3C"])
+hfd_paths = {
+"2B": NodePath("Components/FrameData/Nml_2B"),
+"5A": NodePath("Components/FrameData/Nml_5A"),
+"5B": NodePath("Components/FrameData/Nml_5B"),
+"5C": NodePath("Components/FrameData/Nml_5C"),
+"6A": NodePath("Components/FrameData/Cmd_6A"),
+"6B": NodePath("Components/FrameData/Cmd_6B")
+}

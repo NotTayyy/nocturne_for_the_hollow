@@ -99,10 +99,6 @@ command_list = [{
 "Priority": "Special",
 "Sequence": ["4", "6", "B"]
 }, {
-"Command": "22A",
-"Priority": "Special",
-"Sequence": ["2", "5", "2", "A"]
-}, {
 "Command": "Quarter-Circle Fwd A",
 "Priority": "Special",
 "Sequence": ["2", "3", "6", "A"]
@@ -134,7 +130,7 @@ command_list = [{
 "Sequence": ["C"]
 }, {
 "Command": "Button D",
-"Priority": "Normal",
+"Priority": "Special",
 "Sequence": ["D"]
 }, {
 "Command": "2A",

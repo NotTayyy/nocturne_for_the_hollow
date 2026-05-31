@@ -186,10 +186,18 @@ func on_command(command: Dictionary) -> void:
 
 	# Cancel routes
 	for route : CancelRoute in hfd.move_data.cancel_routes:
-		if route == null or route.command != cmd or route.path == "":
+		if route == null or route.command != cmd:
 			continue
 		if not _cancel_allowed(hfd, command):
 			break
-		_request_from_route(command, route.path)
+		if route.is_state:
+			# Direct state transition
+			var sid : String = route.resolve_state_id()
+			if sid != "" and state_manager.states.has(sid):
+				fighter.input_buffer.consume_buffer()
+				state_manager.force_transition(sid)
+		else:
+			# HFD cancel — go to Attack state with staged HFD
+			_request_attack(command, route.resolve_hfd_path())
 		return
 	# No valid cancel — leave command in buffer so it executes when attack ends

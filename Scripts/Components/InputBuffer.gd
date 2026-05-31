@@ -65,7 +65,7 @@ const PRIORITY : Dictionary = {
 }
 
 ## Input buffer window — frames a matched command stays buffered
-@export var BUFFER_WINDOW : int = 8
+@export var BUFFER_WINDOW : int = 12
 
 # -----------------------------------------------------------------------------
 # Runtime state

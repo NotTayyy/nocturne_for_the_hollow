@@ -1,6 +1,3 @@
-## meta-description: This State is for Landing recovery for a Jump, Lock out Walking, Backdashing,
-## and Jumping, But everything else is fine.
-
 extends State_Base
 class_name St_JumpLanding
 

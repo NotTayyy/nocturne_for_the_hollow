@@ -75,6 +75,8 @@ func on_command(command: Dictionary) -> void:
 			_request_attack(command, "Components/FrameData/Cmd_6A")
 		"6B":
 			_request_attack(command, "Components/FrameData/Cmd_6B")
+		"Button D":
+			state_manager.request("Neutral_Stance", prio)
 		"Walk", "WalkBack":
 			state_manager.request("Walk", prio)
 		"Crouch":
