@@ -31,22 +31,23 @@
 [ext_resource type="Texture2D" uid="uid://djs4e2p455dii" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/BDash/kg033_02.png" id="20_tglwn"]
 [ext_resource type="Texture2D" uid="uid://bbw8qm78ctlw8" path="res://Characters/Tmp_Kagura/Kag_Sprites/Idle/kg000_06.png" id="20_vvkhf"]
 [ext_resource type="Resource" uid="uid://dxrjbm3k2o05b" path="res://Characters/Tmp_Kagura/Moves/Kag_Nml_5B.tres" id="21_06sb7"]
-[ext_resource type="Script" uid="uid://ug01jlri0voy" path="res://Characters/Tmp_Kagura/States/ST_Kag_G_Stance.gd" id="21_7c2vq"]
+[ext_resource type="Script" uid="uid://ug01jlri0voy" path="res://Characters/Tmp_Kagura/States/ST_Kag_5D.gd" id="21_7c2vq"]
 [ext_resource type="Texture2D" uid="uid://caj6yn7rxg4al" path="res://Characters/Tmp_Kagura/Kag_Sprites/Idle/kg000_05.png" id="21_7nql1"]
 [ext_resource type="Script" uid="uid://cbwxaakj7kt6j" path="res://Scripts/States/ST_StandBlock.gd" id="21_a3ux8"]
 [ext_resource type="Texture2D" uid="uid://b14f6uq0e730j" path="res://Characters/Tmp_Kagura/Kag_Sprites/Idle/kg000_07.png" id="21_c4vh0"]
 [ext_resource type="Texture2D" uid="uid://dafxa4waigoec" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/BDash/kg033_03.png" id="21_dwlsq"]
 [ext_resource type="Texture2D" uid="uid://b04dx8kx8bhmy" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/ABDash/kg036_00.png" id="21_rp8v4"]
 [ext_resource type="Texture2D" uid="uid://btxxfyicphtro" path="res://Characters/Tmp_Kagura/Kag_Sprites/Crouch/kg010_03.png" id="21_wq2oq"]
+[ext_resource type="Script" uid="uid://yk60i46jpytd" path="res://Characters/Tmp_Kagura/States/ST_Kag_2D.gd" id="22_7jrop"]
 [ext_resource type="Texture2D" uid="uid://cgp1y8lbxk0ff" path="res://Characters/Tmp_Kagura/Kag_Sprites/Crouch/Crouch_Turn/kg013_00.png" id="22_flxcq"]
 [ext_resource type="Texture2D" uid="uid://l2ggqarejsgi" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/BDash/kg033_04.png" id="22_lwon6"]
 [ext_resource type="Texture2D" uid="uid://c01i81kmtm42q" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/AFDash/kg035_01.png" id="22_mium3"]
 [ext_resource type="Texture2D" uid="uid://0fb4jkjifhj" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/ABDash/kg036_01.png" id="22_oyf83"]
 [ext_resource type="Texture2D" uid="uid://dxxer0ydi8wng" path="res://Characters/Tmp_Kagura/Kag_Sprites/Crouch/kg010_04.png" id="22_rcj2y"]
 [ext_resource type="Texture2D" uid="uid://bfekc1fnsok33" path="res://Characters/Tmp_Kagura/Kag_Sprites/Crouch/kg010_05.png" id="23_3x780"]
-[ext_resource type="Script" uid="uid://3r224lneir17" path="res://Characters/Tmp_Kagura/States/ST_Kag_A_Stance.gd" id="23_7jrop"]
 [ext_resource type="Texture2D" uid="uid://byq5saoj6hmop" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/AFDash/kg035_02.png" id="23_ljw5q"]
 [ext_resource type="Texture2D" uid="uid://b4xhhi5tbfusg" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/BDash/kg033_05.png" id="23_ocx4e"]
+[ext_resource type="Script" uid="uid://ca6b83oeqarb8" path="res://Characters/Tmp_Kagura/States/ST_Kag_6D.gd" id="23_oik8o"]
 [ext_resource type="Texture2D" uid="uid://dgbi61cy0d44c" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/ABDash/kg036_02.png" id="23_qv5ip"]
 [ext_resource type="Texture2D" uid="uid://do5715up5lwv8" path="res://Characters/Tmp_Kagura/Kag_Sprites/Crouch/Crouch_Turn/kg013_01.png" id="23_v7kyq"]
 [ext_resource type="Texture2D" uid="uid://c4gd2tf4b1jd1" path="res://Characters/Tmp_Kagura/Kag_Sprites/Dash/ABDash/kg036_03.png" id="24_6d8s5"]
@@ -197,7 +198,7 @@
 [ext_resource type="Texture2D" uid="uid://dibgm2e8x2w5v" path="res://Characters/Tmp_Kagura/Kag_Sprites/Normal/Nml_5C/kg202_16.png" id="140_pbn5l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pbvoj"]
-size = Vector2(104, 165.5)
+size = Vector2(104, 187)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bed0j"]
 size = Vector2(104, 188)
@@ -581,25 +582,6 @@ _data = {
 &"DashF_Loop": SubResource("Animation_3vdwe"),
 &"DashF_Start": SubResource("Animation_eqog8"),
 &"Dash_Skid": SubResource("Animation_gr8cw")
-}
-
-[sub_resource type="Animation" id="Animation_arep5"]
-
-[sub_resource type="Animation" id="Animation_nqfs7"]
-
-[sub_resource type="Animation" id="Animation_7jrop"]
-
-[sub_resource type="Animation" id="Animation_oik8o"]
-
-[sub_resource type="Animation" id="Animation_bnl2h"]
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_arep5"]
-_data = {
-&"Air_Hit": SubResource("Animation_arep5"),
-&"Air_Loop": SubResource("Animation_nqfs7"),
-&"Crouch_Lv1": SubResource("Animation_7jrop"),
-&"Stand_Low_Lv1": SubResource("Animation_oik8o"),
-&"Stand_Lv1": SubResource("Animation_bnl2h")
 }
 
 [sub_resource type="Animation" id="Animation_ljw5q"]
@@ -1375,7 +1357,6 @@ script = ExtResource("2_ys73i")
 metadata/_custom_type_script = "uid://vdot3es4dinw"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Pushbox" unique_id=487061554]
-position = Vector2(0, 10.75)
 shape = SubResource("RectangleShape2D_pbvoj")
 debug_color = Color(0, 0.5537673, 0.4214139, 0.41960785)
 
@@ -1398,9 +1379,8 @@ hfd_node = NodePath("../../FrameData/State_Hurtboxes/ST_Walk")
 [node name="ST_Airborne" type="Node" parent="Components/State_Manager" unique_id=969018460]
 script = ExtResource("7_kt4rh")
 
-[node name="ST_Crouch" type="Node" parent="Components/State_Manager" unique_id=176756570 node_paths=PackedStringArray("hfd_node")]
+[node name="ST_Crouch" type="Node" parent="Components/State_Manager" unique_id=176756570]
 script = ExtResource("8_0ha2o")
-hfd_node = NodePath("../../FrameData/State_Hurtboxes/ST_Crouch_Idle")
 
 [node name="ST_Prejump" type="Node" parent="Components/State_Manager" unique_id=365754318]
 script = ExtResource("9_v36ip")
@@ -1434,20 +1414,21 @@ script = ExtResource("20_lx7m0")
 [node name="ST_StandBlock" type="Node" parent="Components/State_Manager" unique_id=1422982182]
 script = ExtResource("21_a3ux8")
 
-[node name="ST_Kag_G_Stance" type="Node" parent="Components/State_Manager" unique_id=232040254]
+[node name="ST_Kag_5D" type="Node" parent="Components/State_Manager" unique_id=232040254]
 script = ExtResource("21_7c2vq")
-Stance_Timer = 72
 metadata/_custom_type_script = "uid://dg4yxb8v6hcl2"
 
-[node name="ST_JumpLanding" type="Node" parent="Components/State_Manager" unique_id=566390554]
+[node name="ST_Kag_2D" type="Node" parent="Components/State_Manager" unique_id=1471342621]
+script = ExtResource("22_7jrop")
+metadata/_custom_type_script = "uid://dg4yxb8v6hcl2"
+
+[node name="ST_Kag_6D" type="Node" parent="Components/State_Manager" unique_id=29966696]
+script = ExtResource("23_oik8o")
+metadata/_custom_type_script = "uid://dg4yxb8v6hcl2"
+
+[node name="State_Base" type="Node" parent="Components/State_Manager" unique_id=566390554]
 script = ExtResource("24_oik8o")
 metadata/_custom_type_script = "uid://dg4yxb8v6hcl2"
-
-[node name="ST_Kag_A_Stance" type="Node" parent="Components/State_Manager" unique_id=123902037]
-script = ExtResource("23_7jrop")
-Stance_Timer = 72
-actionable = 8
-metadata/_custom_type_script = "uid://db7kad22d8fin"
 
 [node name="FrameData" type="Node2D" parent="Components" unique_id=403102285]
 
@@ -1521,6 +1502,7 @@ hurtbox_sets = {
 "start_frame": 5
 }])
 }
+preview_frame = 12
 hitbox_data_backup = Array[Dictionary]([{
 "end_frame": 7,
 "hit_index": 0,
@@ -2209,12 +2191,12 @@ hitbox_data_backup = Array[Dictionary]([{
 "hit_index": 0,
 "name": &"HitDO_1_index_0",
 "position": {
-"x": 346.75,
-"y": -214.5
+"x": 318.25,
+"y": -220.0
 },
 "size": {
-"x": 482.5,
-"y": 39.0
+"x": 425.5,
+"y": 50.0
 },
 "start_frame": -1
 }, {
@@ -2222,12 +2204,12 @@ hitbox_data_backup = Array[Dictionary]([{
 "hit_index": 0,
 "name": &"HitDO_3_index_0",
 "position": {
-"x": 206.0,
-"y": -91.0
+"x": 241.5,
+"y": -113.0
 },
 "size": {
-"x": 344.0,
-"y": 104.0
+"x": 401.0,
+"y": 50.0
 },
 "start_frame": -1
 }, {
@@ -2235,12 +2217,12 @@ hitbox_data_backup = Array[Dictionary]([{
 "hit_index": 0,
 "name": &"HitDO_4_index_0",
 "position": {
-"x": 264.0,
-"y": -172.5
+"x": 258.0,
+"y": -203.0
 },
 "size": {
-"x": 446.0,
-"y": 163.0
+"x": 434.0,
+"y": 158.0
 },
 "start_frame": 19
 }, {
@@ -2248,12 +2230,12 @@ hitbox_data_backup = Array[Dictionary]([{
 "hit_index": 0,
 "name": &"HitDO_5_index_0",
 "position": {
-"x": 313.0,
-"y": -175.0
+"x": 288.0,
+"y": -179.0
 },
 "size": {
-"x": 486.0,
-"y": 88.0
+"x": 436.0,
+"y": 50.0
 },
 "start_frame": 19
 }])
@@ -2429,6 +2411,12 @@ hurtbox_sets_backup = {
 }])
 }
 active_set = "Normals/Nml_5C"
+metadata/_custom_type_script = "uid://lsrl3hjuitwo"
+
+[node name="Sp_5D" type="Area2D" parent="Components/FrameData" unique_id=1224547927]
+collision_layer = 16
+script = ExtResource("18_3x780")
+active_set = ""
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
 [node name="Nml_2B" type="Area2D" parent="Components/FrameData" unique_id=177207602]
@@ -3525,163 +3513,6 @@ hurtbox_sets_backup = {
 active_set = "Idle/Idle"
 metadata/_custom_type_script = "uid://lsrl3hjuitwo"
 
-[node name="ST_Kag_G_Stance" type="Area2D" parent="Components/FrameData/State_Hurtboxes" unique_id=1224547927]
-collision_layer = 16
-script = ExtResource("18_3x780")
-preview_animation_player = NodePath("../../../../Char_Sprite_Animator")
-active_set = ""
-metadata/_custom_type_script = "uid://lsrl3hjuitwo"
-
-[node name="ST_Crouch_Idle" type="Area2D" parent="Components/FrameData/State_Hurtboxes" unique_id=1668856758]
-collision_layer = 16
-script = ExtResource("18_3x780")
-mode = 1
-valid_animations = Array[String](["Crouch/Crouch_Start", "Crouch/Crouch_End", "Crouch/Crouch_Loop", "Crouch/Crouch_Turn", "Crouch/Crouch_Block"])
-hurtbox_sets = {
-"Crouch/Crouch_End": Array[Dictionary]([{
-"end_frame": -1,
-"name": &"HurtDO_1",
-"position": {
-"x": 7.5,
-"y": 47.5
-},
-"size": {
-"x": 221.0,
-"y": 93.0
-},
-"start_frame": 0
-}, {
-"end_frame": -1,
-"name": &"HurtDO_2",
-"position": {
-"x": -1.0,
-"y": -71.0
-},
-"size": {
-"x": 140.0,
-"y": 330.0
-},
-"start_frame": 4
-}, {
-"end_frame": 3,
-"name": &"HurtDO_3",
-"position": {
-"x": -1.0,
-"y": -42.0
-},
-"size": {
-"x": 140.0,
-"y": 268.0
-},
-"start_frame": 0
-}]),
-"Crouch/Crouch_Loop": Array[Dictionary]([{
-"end_frame": -1,
-"name": &"HurtDO_1",
-"position": {
-"x": 8.5,
-"y": -23.5
-},
-"size": {
-"x": 159.0,
-"y": 241.0
-},
-"start_frame": 0
-}]),
-"Crouch/Crouch_Start": Array[Dictionary]([{
-"end_frame": -1,
-"name": &"HurtDO_1",
-"position": {
-"x": 7.5,
-"y": 47.5
-},
-"size": {
-"x": 221.0,
-"y": 93.0
-},
-"start_frame": 0
-}, {
-"end_frame": 3,
-"name": &"HurtDO_2",
-"position": {
-"x": -1.0,
-"y": -71.0
-},
-"size": {
-"x": 140.0,
-"y": 330.0
-},
-"start_frame": 0
-}, {
-"end_frame": -1,
-"name": &"HurtDO_3",
-"position": {
-"x": -1.0,
-"y": -42.0
-},
-"size": {
-"x": 140.0,
-"y": 268.0
-},
-"start_frame": 4
-}])
-}
-preview_animation_player = NodePath("../../../../Char_Sprite_Animator")
-hurtbox_sets_backup = {
-"Crouch/Crouch_Loop": Array[Dictionary]([{
-"end_frame": -1,
-"name": &"HurtDO_1",
-"position": {
-"x": 8.5,
-"y": -23.5
-},
-"size": {
-"x": 159.0,
-"y": 241.0
-},
-"start_frame": 0
-}]),
-"Crouch/Crouch_Start": Array[Dictionary]([{
-"end_frame": -1,
-"name": &"HurtDO_1",
-"position": {
-"x": 7.5,
-"y": 47.5
-},
-"size": {
-"x": 221.0,
-"y": 93.0
-},
-"start_frame": 0
-}, {
-"end_frame": 3,
-"name": &"HurtDO_2",
-"position": {
-"x": -1.0,
-"y": -71.0
-},
-"size": {
-"x": 140.0,
-"y": 330.0
-},
-"start_frame": 0
-}, {
-"end_frame": -1,
-"name": &"HurtDO_3",
-"position": {
-"x": -1.0,
-"y": -42.0
-},
-"size": {
-"x": 140.0,
-"y": 268.0
-},
-"start_frame": 4
-}])
-}
-active_set = "Crouch/Crouch_End"
-metadata/_custom_type_script = "uid://lsrl3hjuitwo"
-
 [node name="Collision_Box" type="CollisionShape2D" parent="." unique_id=299450226]
 visible = false
 z_index = 1
@@ -3696,7 +3527,6 @@ libraries/ = SubResource("AnimationLibrary_7nql1")
 libraries/Airdash = SubResource("AnimationLibrary_0gg8v")
 libraries/Crouch = SubResource("AnimationLibrary_r2n8l")
 libraries/Dash = SubResource("AnimationLibrary_raku0")
-libraries/Hitstun = SubResource("AnimationLibrary_arep5")
 libraries/Idle = SubResource("AnimationLibrary_1hpx1")
 libraries/Jump = SubResource("AnimationLibrary_6d8s5")
 libraries/Normals = SubResource("AnimationLibrary_dyujb")

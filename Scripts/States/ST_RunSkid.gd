@@ -14,8 +14,6 @@
 extends State_Base
 class_name ST_RunSkid
 
-const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack","SuperJump","SuperJumpFwd","SuperJumpBack"]
-
 func _ready() -> void:
 	state_id = "RunSkid"
 

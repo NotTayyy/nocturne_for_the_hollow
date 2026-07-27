@@ -1,8 +1,6 @@
 extends State_Base
 class_name ST_Crouch
 
-const JUMP_COMMANDS := ["SuperJump","SuperJumpFwd","SuperJumpBack"]
-
 const STAND_UP_FRAMES : int = 8
 
 var _stand_up_timer : int  = 0
@@ -61,7 +59,7 @@ func update(_delta: float) -> void:
 
 func on_command(command: Dictionary) -> void:
 	var cmd   : String = command.get("Command", "")
-	var _prio : int    = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
+	var prio : int    = InputBuffer.PRIORITY.get(command.get("Priority", ""), 0)
 	match cmd:
 		"Button B":
 			_request_attack(command, "Components/FrameData/Nml_5B")
@@ -69,8 +67,10 @@ func on_command(command: Dictionary) -> void:
 			_request_attack(command, "Components/FrameData/Nml_2B")
 		"6B":
 			_request_attack(command, "Components/FrameData/Cmd_6B")
+		"Button D", "2D", "6D":
+			state_manager.request("Ground_Stance", prio)
 		_ when cmd in JUMP_COMMANDS:
-			_request_SuperJump(cmd, _prio)
+			_request_SuperJump(cmd, prio)
 			
 func _request_SuperJump(cmd: String, prio: int) -> void:
 	var prejump := state_manager.states.get("Prejump") as ST_Prejump

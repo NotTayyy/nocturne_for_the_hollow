@@ -10,10 +10,12 @@ func enter(_prev: String) -> void:
 	frame              = 0
 	apply_gravity      = false
 	barrier_active     = false
+	fighter.add_property(Property.new(Property.Type.Crouching, -1, "system"))
 	ap.play("Crouch/Crouch_Start")  # Placeholder — replace with crouch block animation
 
 func exit() -> void:
 	barrier_active = false
+	fighter.remove_property(Property.Type.Crouching)
 	_reset_gates()
 
 func update(_delta: float) -> void:

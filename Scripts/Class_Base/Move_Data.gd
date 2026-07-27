@@ -167,9 +167,9 @@ enum InvulType  { None, Head, Body, Foot, Throw, Projectile, Burst, Full, GuardP
 # -----------------------------------------------------------------------------
 @export_group("Hit Effects")
 @export var ground_hit_effect   : Array[HitEffect] = [HitEffect.None]
-@export var ground_hit_duration : Array[int]       = [-1]   ## -1 = use table hitstun
+@export var ground_hit_duration : Array[int]       = [-1]  
 @export var air_hit_effect      : Array[HitEffect] = [HitEffect.None]
-@export var air_hit_duration    : Array[int]       = [-1]   ## -1 = use table untechable
+@export var air_hit_duration    : Array[int]       = [-1]   
 @export var ground_ch_effect    : Array[HitEffect] = [HitEffect.None]
 @export var ground_ch_duration  : Array[int]       = [-1]
 @export var air_ch_effect       : Array[HitEffect] = [HitEffect.None]

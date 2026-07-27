@@ -31,8 +31,6 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Toggle_Debug"):
 		Debug = not Debug
 		print("Debug Mode: ", Debug)
-	if event.is_action_pressed("Btn_Select"):
-		get_tree().reload_current_scene()
 	if event.is_action_pressed("Btn_Exit"):
 		get_tree().quit()
 

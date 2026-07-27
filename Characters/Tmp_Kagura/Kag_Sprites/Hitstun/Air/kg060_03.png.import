@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dof7t7xj8tsra"
-path="res://.godot/imported/kg060_05.png-91fc704c1e6ccca7a27cb10ec748ee0c.ctex"
+uid="uid://11ofr8htfohr"
+path="res://.godot/imported/kg060_03.png-64a78070ae647a3a7260b718fb62d4ed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Characters/Tmp_Kagura/Kag_Sprites/kg060_05.png"
-dest_files=["res://.godot/imported/kg060_05.png-91fc704c1e6ccca7a27cb10ec748ee0c.ctex"]
+source_file="res://Characters/Tmp_Kagura/Kag_Sprites/Hitstun/Air/kg060_03.png"
+dest_files=["res://.godot/imported/kg060_03.png-64a78070ae647a3a7260b718fb62d4ed.ctex"]
 
 [params]
 

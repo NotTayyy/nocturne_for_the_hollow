@@ -7,6 +7,10 @@ var current_level: Node
 func _ready() -> void:
 	Global.level_manager = self
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Btn_Select"):
+		get_tree().reload_current_scene()
+
 func spawn_level(Level: String) -> void:
 	if current_level: 
 		current_level.queue_free()

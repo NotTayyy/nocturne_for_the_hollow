@@ -20,6 +20,7 @@ var states       : Dictionary = {}
 var active_state : State_Base = null
 var fighter      : Fighter
 var _pending     : Dictionary = {}
+var last_command : Dictionary = {}
 
 # -----------------------------------------------------------------------------
 # Initialise
@@ -105,6 +106,7 @@ func _tick_barrier_held(delta: float) -> void:
 # Command routing
 # -----------------------------------------------------------------------------
 func _on_command_matched(command: Dictionary) -> void:
+	last_command = command
 	# Barrier — only allowed when already blocking or wants_to_block
 	if command.get("Command", "") == "Barrier":
 		if fighter.char_data.in_broken:
@@ -141,14 +143,14 @@ func _on_command_matched(command: Dictionary) -> void:
 func _gate_open_for(priority_name: String) -> bool:
 	match priority_name:
 		"Standing":                        return true
-		"Walking":                         return active_state.gate_normal or active_state.gate_special
-		"Crouching":                       return active_state.gate_normal or active_state.gate_special
+		"Walking":                         return true
+		"Crouching":                       return true
 		"Dash":                            return active_state.gate_dash
 		"Jump", "Super Jump":              return active_state.gate_jump
 		"Normal":                          return active_state.gate_normal
 		"Command Normal":                  return active_state.gate_normal
-		"Guard Crush":                     return active_state.gate_normal
-		"Throw":                           return active_state.gate_normal
+		"Guard Crush":                     return active_state.gate_special
+		"Throw":                           return active_state.gate_special
 		"Special", "EX Special":           return active_state.gate_special
 		"Rapid Cancel":                    return active_state.gate_rapid
 		"Ultimate Art":                    return active_state.gate_special
@@ -192,6 +194,7 @@ func _do_transition(target_id: String, player_initiated: bool = true) -> void:
 
 func _enter_state(target_id: String, prev_id: String, consume: bool = true) -> void:
 	active_state = states[target_id]
+	active_state.entered_via = last_command
 	active_state.enter(prev_id)
 	State_Label.text = active_state.state_id
 	# Only consume buffer on player-initiated transitions
@@ -205,8 +208,9 @@ func _state_priority(state_id: String) -> int:
 	match state_id:
 		"Idle", "Walk", "Crouch": return 0
 		"Prejump":                return 1
-		"Airborne":               return 2
-		"AirDash":                return 3
+		"JumpLanding":            return 2
+		"Airborne":               return 3
+		"AirDash":                return 4
 		_:                        return 5
 
 func is_in_state(id: String) -> bool:

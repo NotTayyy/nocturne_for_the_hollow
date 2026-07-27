@@ -1,9 +1,8 @@
 extends Node
 class_name State_Base
 
-# -----------------------------------------------------------------------------
-# Blackboard references — injected by State_Manager.initialise()
-# -----------------------------------------------------------------------------
+const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack","SuperJump","SuperJumpFwd","SuperJumpBack"]
+
 var fighter       : Fighter
 var state_manager : State_Manager
 var input_buffer  : InputBuffer
@@ -22,6 +21,10 @@ var sign_x : float :
 # -----------------------------------------------------------------------------
 var state_id      : String = ""
 var apply_gravity : bool   = false
+
+## The command that triggered the transition into this state.
+## Set by State_Manager before enter() is called.
+var entered_via : Dictionary = {}
 
 # -----------------------------------------------------------------------------
 # Cancel gates

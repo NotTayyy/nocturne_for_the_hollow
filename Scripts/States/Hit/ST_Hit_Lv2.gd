@@ -1,13 +1,8 @@
 extends State_Base
-class_name StKag2d
-
-# TODO: Add any state-specific variables here
-# var _timer : int = 0
-
-const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack","SuperJump","SuperJumpFwd","SuperJumpBack"]
+class_name St_Hit_Lv2
 
 func _ready() -> void:
-	state_id = "Template"   # TODO: rename to match scene node name
+	state_id = "St_Hit_Lv2"
 
 func enter(_prev: String) -> void:
 	frame         = 0

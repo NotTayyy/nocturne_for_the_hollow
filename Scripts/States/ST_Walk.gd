@@ -1,8 +1,6 @@
 extends State_Base
 class_name ST_Walk
 
-const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack","SuperJump","SuperJumpFwd","SuperJumpBack"]
-
 var _last_forward : bool = true
 var forward       : bool = true
 
@@ -77,6 +75,8 @@ func on_command(command: Dictionary) -> void:
 			state_manager.request("Dash", prio)
 		"BackDash":
 			state_manager.request("BackDash", prio)
+		"Button D", "2D", "6D":
+			state_manager.request("Ground_Stance", prio)
 		_ when cmd in JUMP_COMMANDS:
 			_request_jump(cmd, prio)
 

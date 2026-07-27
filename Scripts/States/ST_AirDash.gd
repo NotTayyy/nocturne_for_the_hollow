@@ -1,8 +1,6 @@
 extends State_Base
 class_name ST_AirDash
 
-const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack"]
-
 func _ready() -> void:
 	state_id = "AirDash"
 

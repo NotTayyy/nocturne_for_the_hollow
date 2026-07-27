@@ -1,50 +1,19 @@
 extends State_Base
-class_name StKag6d
-
-# TODO: Add any state-specific variables here
-# var _timer : int = 0
-
-const JUMP_COMMANDS := ["Jump","JumpFwd","JumpBack","SuperJump","SuperJumpFwd","SuperJumpBack"]
+class_name ST_Hit_Lv1
 
 func _ready() -> void:
-	state_id = "Template"   # TODO: rename to match scene node name
+	state_id = "St_Hit_Lv2"
 
 func enter(_prev: String) -> void:
 	frame         = 0
 	apply_gravity = false   # TODO: set true if aerial state
 
-	# TODO: Set velocity if needed
-	# fighter.velocity.x = 0.0
-	# fighter.velocity.y = 0.0
-
-	# TODO: Set cancel gates
-	# All closed by default from _reset_gates() — open only what applies
 	_reset_gates()
-	# gate_self      = true
-	# gate_special   = true
-	# gate_drive     = true
-	# gate_overdrive = true
-	# gate_jump      = true
-	# gate_rapid     = true
-	# gate_dash      = true
-	# gate_backdash  = true
-	# gate_burst     = true
-	# gate_barrier   = true
 
-	# TODO: Set invul flags if needed
-	# invul_strike     = true
-	# invul_throw      = true
-	# invul_head       = true
-	# invul_foot       = true
-	# invul_projectile = true
-	# invul_burst      = true
-	# invul_all        = true
+	gate_overdrive = true
+	gate_burst     = true
 
-	# TODO: Add properties if needed
-	# fighter.add_property(Property.new("PropertyName", duration, "self", value))
-
-	# TODO: Play animation
-	# fighter.anim_player.play("anim_name")
+	fighter.anim_player.play("anim_name")
 
 func exit() -> void:
 	_reset_gates()

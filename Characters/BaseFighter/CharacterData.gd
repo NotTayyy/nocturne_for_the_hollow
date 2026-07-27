@@ -9,10 +9,13 @@ enum BackDashType { Step, Dash, Teleport}
 
 @export_category("Meta Data")
 @export var fighter_scene: PackedScene
-#The CommandData holds Neg and Regular Commands
 @export var command_list: CommandData
 @export var neg_edge: bool = false
 @export var charge_moves: bool = false
+
+## The character's Drive system — assign a DriveSystem resource here.
+## Each character has their own subclass of DriveSystem.
+@export var drive_system : DriveSystem = null
 
 @export_category("Basics Data")
 # Basic Important Stats
@@ -53,14 +56,14 @@ enum BackDashType { Step, Dash, Teleport}
 @export var air_throw_range: int = 120 #99% of peeps will be The default
 @export var landing_recovery: int = 5 ## All Characters Experience 5 Frames of Landing Lag
 @export var friction: float = 0.9  ## Some characters are more slipery
+@export var Stance_Timer: int = 120
 
 @export_category("Walking")
-#Walking
 @export var fwd_walk_speed: int = 400 ## 400 Avg; 550 Fast; 250 Slow;
 @export var bwd_walk_speed: int = 300 ## 300 Avg; 350 Fast ; 200 Slow
 
 @export_category("Dashes")
-@export var dashType: DashType = DashType.Dash
+@export var dashType: DashType = DashType.Dash 
 @export_subgroup("Dash/Run")
 @export var dash_int: int = 800 ## The initial Speed of the character Movement on dash start
 @export var dash_acc: int = 100 ## The Speed added per second of running

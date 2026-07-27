@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://8gbv7m3jiy6a" path="res://Scripts/Class_Base/CancelWindow.gd" id="1_5yy71"]
 [ext_resource type="Script" uid="uid://coqvqgr4ov570" path="res://Scripts/Class_Base/CancelRoute.gd" id="1_y7i5b"]
 [ext_resource type="Script" uid="uid://c1ie505730ew" path="res://Scripts/Class_Base/Move_Data.gd" id="2_5yy71"]
+[ext_resource type="Resource" uid="uid://bcb53pn2ponvc" path="res://Characters/Tmp_Kagura/Kag_Library.tres" id="3_g4rs3"]
 
 [sub_resource type="Resource" id="Resource_g4rs3"]
 script = ExtResource("1_5yy71")
@@ -32,6 +33,27 @@ script = ExtResource("1_5yy71")
 on_hit = true
 on_block = true
 
+[sub_resource type="Resource" id="Resource_yp0ix"]
+script = ExtResource("1_y7i5b")
+library = ExtResource("3_g4rs3")
+command = "Button B"
+path = "2B"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_utwt4"]
+script = ExtResource("1_y7i5b")
+library = ExtResource("3_g4rs3")
+command = "2B"
+path = "2B"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
+[sub_resource type="Resource" id="Resource_7jrop"]
+script = ExtResource("1_y7i5b")
+library = ExtResource("3_g4rs3")
+command = "6B"
+path = "6B"
+metadata/_custom_type_script = "uid://coqvqgr4ov570"
+
 [sub_resource type="Resource" id="Resource_2i463"]
 script = ExtResource("1_5yy71")
 on_hit = true
@@ -45,6 +67,7 @@ startup = 7
 active = Array[int]([3])
 recovery = 11
 damage = Array[int]([600])
+p1 = 90
 p2 = Array[int]([85])
 attack_level = Array[int]([2])
 cancel_normal = SubResource("Resource_e4ukd")
@@ -56,5 +79,7 @@ cancel_rapid = SubResource("Resource_exgao")
 cancel_dash = SubResource("Resource_acc0j")
 cancel_backdash = SubResource("Resource_g4rs3")
 cancel_burst = SubResource("Resource_5yy71")
+air_hit_effect = Array[int]([4])
 pushback = Array[float]([2000.0])
+cancel_routes = Array[ExtResource("1_y7i5b")]([SubResource("Resource_yp0ix"), SubResource("Resource_utwt4"), SubResource("Resource_7jrop")])
 metadata/_custom_type_script = "uid://c1ie505730ew"

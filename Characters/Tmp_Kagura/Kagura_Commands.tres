@@ -150,8 +150,18 @@ command_list = [{
 }, {
 "Command": "2D",
 "Held": ["2"],
-"Priority": "Command Normal",
+"Priority": "Special",
 "Sequence": ["2", "D"]
+}, {
+"Command": "4D",
+"Held": ["4"],
+"Priority": "Special",
+"Sequence": ["4", "D"]
+}, {
+"Command": "6D",
+"Held": ["6"],
+"Priority": "Special",
+"Sequence": ["6", "D"]
 }, {
 "Command": "Tiger Knee",
 "Priority": "Special",
