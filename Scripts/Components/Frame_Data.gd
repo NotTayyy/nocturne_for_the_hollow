@@ -81,8 +81,8 @@ func _get_tool_buttons() -> Array:
 		{ displayName = "Restore from Backup", call = "RestoreFromBackup" },
 	]
 
-func _get_property_list() -> Array:
-	var props : Array = []
+func _get_property_list() -> Array[Dictionary]:
+	var props : Array[Dictionary] = []
 	if valid_animations.is_empty():
 		props.append({
 			"name": "active_set", "type": TYPE_STRING,

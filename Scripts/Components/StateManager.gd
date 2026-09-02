@@ -167,9 +167,9 @@ func request(target_id: String, priority: int) -> void:
 	if _pending.is_empty() or priority > _pending["priority"]:
 		_pending = { "id": target_id, "priority": priority }
 
-func force_transition(target_id: String) -> void:
+func force_transition(target_id: String, payload: HitResult = null) -> void:
 	_pending.clear()
-	_do_transition(target_id, false)
+	_do_transition(target_id, false, payload)
 
 func _flush_pending() -> void:
 	if _pending.is_empty(): return
@@ -177,7 +177,7 @@ func _flush_pending() -> void:
 	_pending.clear()
 	_do_transition(target, true)
 
-func _do_transition(target_id: String, player_initiated: bool = true) -> void:
+func _do_transition(target_id: String, player_initiated: bool = true, payload: HitResult = null) -> void:
 	if not states.has(target_id):
 		push_warning("State_Manager: cannot transition to '%s'" % target_id)
 		return
@@ -190,11 +190,12 @@ func _do_transition(target_id: String, player_initiated: bool = true) -> void:
 	var prev_id := active_state.state_id if active_state else ""
 	if active_state:
 		active_state.exit()
-	_enter_state(target_id, prev_id, player_initiated)
+	_enter_state(target_id, prev_id, player_initiated, payload)
 
-func _enter_state(target_id: String, prev_id: String, consume: bool = true) -> void:
+func _enter_state(target_id: String, prev_id: String, consume: bool = true, payload: HitResult = null) -> void:
 	active_state = states[target_id]
 	active_state.entered_via = last_command
+	active_state.transition_payload = payload
 	active_state.enter(prev_id)
 	State_Label.text = active_state.state_id
 	# Only consume buffer on player-initiated transitions

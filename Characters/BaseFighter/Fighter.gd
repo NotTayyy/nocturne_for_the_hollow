@@ -53,10 +53,11 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	update_facing()
 	_update_block_state()
+	_update_post_slide_flags()
 	state_machine.tick(delta)
 	_tick_properties()
 	move_and_slide()
-	_update_post_slide_flags()
+	
 	char_data.tick_grey_health_decay(delta, self)
 
 # -----------------------------------------------------------------------------
@@ -219,6 +220,7 @@ func recieve_hit(result : HitResult) -> void:
 				velocity.y += result.air_pushback
 			else:
 				velocity.x += result.pushback * dir
+		state_machine.force_transition("Hit", result)
 
 func _is_actionable() -> bool:
 	return not has_property(Property.Type.Hitstun)  \

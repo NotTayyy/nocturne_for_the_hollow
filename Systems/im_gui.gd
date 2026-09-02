@@ -141,7 +141,7 @@ func imgui_meter_info(player) -> void:
 
 	# Limit (Heat) — 0-10000 units, display as 0-100
 	var limit_pct   : float = float(cd.curr_Limit) / float(cd.base_max_Limit)
-	var heat_display : int  = cd.curr_Limit / 100
+	var heat_display : int  = float(cd.curr_Limit) / 100
 	var in_cooldown  : bool = cm != null and cm._is_in_heat_cooldown(player)
 	var auto_heat    : bool = float(cd.curr_health) / float(cd.base_max_health) < cm.heat_auto_hp_threshold if cm != null else false
 	var limit_color  : Color

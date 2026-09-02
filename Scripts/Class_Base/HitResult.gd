@@ -58,9 +58,9 @@ func debug_print() -> String:
 		attack_lvl = move_data._get_level(hit_index)
 	var hit_advantage : int = hitstun - hitstop
 	var base : String = "[HitResult] %s -> %s | Move: %s | Index: %d | Level: %d | Dmg: %d | Hitstun: %d | Hitstop: %d | Hit Adv: %+d | Pushback: %.0f | Effect: %s | CH: %s | Air: %s" % [
-		attacker.name       if attacker  != null else "?",
-		defender.name       if defender  != null else "?",
-		move_data.move_name if move_data != null else "?",
+		attacker.name,
+		defender.name,
+		move_data.move_name,
 		hit_index,
 		attack_lvl,
 		damage,
@@ -68,7 +68,7 @@ func debug_print() -> String:
 		hitstop,
 		hit_advantage,
 		pushback,
-		MoveData.HitEffect.find_key(hit_effect) if move_data != null else "?",
+		MoveData.HitEffect.find_key(hit_effect),
 		str(is_counter),
 		str(is_airborne),
 	]

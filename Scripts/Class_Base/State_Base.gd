@@ -8,7 +8,9 @@ var state_manager : State_Manager
 var input_buffer  : InputBuffer
 var cd            : CharacterData
 var ap            : AnimationPlayer
+
 var lockout_timer : int = 0
+var transition_payload : HitResult = null
 
 @export var hfd_node : HitboxFrameData = null
 

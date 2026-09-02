@@ -11,7 +11,7 @@ enum Type {
 	# --- Physics / State ---
 	
 	Airborne,    ## Marks the Player as Airborne
-	PAirborne,
+	PAirborne,   ## Marks the Player as Grounded But Treating them as Airborn (For cases of Launching moves, Etc)
 	Crouching,   ## Marks the Player as Crouching — applies crouching hitstun bonus
 
 	# --- Buffs (self-applied) ---
