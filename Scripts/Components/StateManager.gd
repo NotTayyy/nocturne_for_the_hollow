@@ -57,7 +57,7 @@ func tick(delta: float) -> void:
 	active_state.update(delta)
 
 	# Apply friction during hitstun/hitstop so pushback decays naturally
-	if not fighter._is_actionable():
+	if not fighter.is_actionable():
 		fighter.velocity.x *= fighter.char_data.friction
 
 	# 2. Gravity
@@ -111,7 +111,7 @@ func _on_command_matched(command: Dictionary) -> void:
 	if command.get("Command", "") == "Barrier":
 		if fighter.char_data.in_broken:
 			return
-		if fighter.wants_to_block and fighter._is_actionable():
+		if fighter.wants_to_block and fighter.is_actionable():
 			var block_type : String = fighter.get_block_type()
 			var target     : String
 			if fighter.is_airborne:
@@ -125,7 +125,7 @@ func _on_command_matched(command: Dictionary) -> void:
 		return
 
 	# During hitstun/hitstop — only burst gets through
-	if not fighter._is_actionable():
+	if not fighter.is_actionable():
 		if command.get("Command", "") == "Burst" and active_state.gate_burst:
 			active_state.on_command(command)
 		return

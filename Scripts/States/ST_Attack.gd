@@ -156,17 +156,12 @@ func _apply_self_impulses() -> void:
 	var md : MoveData = hfd.move_data
 	if md.impulse_x == 0.0 and md.impulse_y == 0.0:
 		return
-	var in_window : bool = true
-	if md.impulse_start != -1 and frame < md.impulse_start: in_window = false
-	if md.impulse_end   != -1 and frame > md.impulse_end:   in_window = false
-	if not in_window:
-		return
+	var start : int = md.impulse_start if md.impulse_start != -1 else 0
+	if frame != start:
+		return   # one-shot: fires exactly once, on the window-open frame
 	var dir_x : float = 1.0 if fighter.dir_facing == "Right" else -1.0
 	fighter.velocity.x += md.impulse_x * dir_x
 	fighter.velocity.y += md.impulse_y
-	if md.impulse_falloff < 1.0:
-		fighter.velocity.x *= md.impulse_falloff
-		fighter.velocity.y *= md.impulse_falloff
 
 func on_command(command: Dictionary) -> void:
 	if hfd == null or hfd.move_data == null:

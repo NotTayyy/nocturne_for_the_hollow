@@ -85,7 +85,6 @@ cancel_dash = SubResource("Resource_1f2vq")
 cancel_backdash = SubResource("Resource_ivnxb")
 cancel_burst = SubResource("Resource_pk4t6")
 impulse_x = 10.0
-impulse_falloff = 10.0
 pushback = Array[float]([2150.0])
 cancel_routes = Array[ExtResource("2_q5qfw")]([SubResource("Resource_q5qfw"), SubResource("Resource_kvrt7"), SubResource("Resource_7jrop")])
 metadata/_custom_type_script = "uid://c1ie505730ew"

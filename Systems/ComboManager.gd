@@ -165,10 +165,6 @@ func register_hit(result : HitResult) -> void:
 			if not md.pushback.is_empty():
 				result.pushback = md.pushback[pb_idx]
 
-		# --- Impulse ---
-		if md.impulse_x != 0.0 or md.impulse_y != 0.0:
-			result.impulse = { "x": md.impulse_x, "y": md.impulse_y, "start": md.impulse_start, "end": md.impulse_end, "falloff": md.impulse_falloff }
-
 		# --- Move history [optional — see header comment] ---
 		if md.move_id != "":
 			move_history.append("%s(%d)" % [md.move_id, result.damage])

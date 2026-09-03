@@ -36,7 +36,6 @@ var hit_duration : int                = -1   ## -1 = use table default
 # =============================================================================
 var pushback     : float      = 0.0   ## Ground pushback
 var air_pushback : float      = 0.0   ## Air pushback
-var impulse      : Dictionary = {}    ## { x, y, falloff } — resolved per hit_index
 
 # =============================================================================
 # Guard / Attribute

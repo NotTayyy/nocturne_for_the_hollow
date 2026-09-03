@@ -203,7 +203,6 @@ enum InvulType  { None, Head, Body, Foot, Throw, Projectile, Burst, Full, GuardP
 @export var impulse_y       : float = 0.0
 @export var impulse_start   : int   = -1
 @export var impulse_end     : int   = -1
-@export var impulse_falloff : float = 1.0
 
 # -----------------------------------------------------------------------------
 # Pushback

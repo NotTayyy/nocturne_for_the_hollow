@@ -222,11 +222,8 @@ func recieve_hit(result : HitResult) -> void:
 				velocity.x += result.pushback * dir
 		state_machine.force_transition("Hit", result)
 
-func _is_actionable() -> bool:
-	return not has_property(Property.Type.Hitstun)  \
-		and not has_property(Property.Type.Blockstun) \
-		and not has_property(Property.Type.Frozen)    \
-		and not has_property(Property.Type.Stunned)
+
+
 
 # =============================================================================
 # Property system
@@ -273,6 +270,13 @@ func get_properties(type: Property.Type, sub_id: String = "") -> Array[Property]
 		if p.type == type and p.sub_id == sub_id: result.append(p)
 	return result
  
+func is_actionable() -> bool:
+	for  p in properties:
+		if not p.is_actionable() == true:
+			return false
+		
+	return true
+
 ## Tick all properties — removes expired ones each frame.
 func _tick_properties() -> void:
 	var i := properties.size() - 1
